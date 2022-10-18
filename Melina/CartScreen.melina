@@ -1,0 +1,22 @@
+suite CartScreen
+    constant
+        cartScreenExperiment MAPPCartScreen
+    end
+        
+    scenario OpenCartScreen
+        arguments
+            experiment constant.cartScreenExperiment
+            isUserLoggedIn true
+        end
+
+        // Open home screen
+        open screen Home
+        tap button Cart
+        expect view someViewIdentifier
+    end
+    
+   // scenario Close cart screen
+   //     ….
+   // end
+end
+

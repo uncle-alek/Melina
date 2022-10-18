@@ -20,6 +20,7 @@ struct Melina: ParsableCommand {
     var path: String
 
     mutating func run() throws {
-       print(path)
+        let content = try FileService().content(at: path)
+        print(content)
     }
 }

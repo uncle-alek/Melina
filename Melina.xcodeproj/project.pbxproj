@@ -10,6 +10,7 @@
 		3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23E128FE3FF30097DDA7 /* main.swift */; };
 		3C1E23EA28FE42AB0097DDA7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 3C1E23E928FE42AB0097DDA7 /* ArgumentParser */; };
 		3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */; };
+		3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E246C28FE62E70097DDA7 /* FileService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		3C1E23DE28FE3FF30097DDA7 /* Melina */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Melina; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C1E23E128FE3FF30097DDA7 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaCommand.swift; sourceTree = "<group>"; };
+		3C1E246C28FE62E70097DDA7 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
+		3C1E246E28FE66A90097DDA7 /* CartScreen.melina */ = {isa = PBXFileReference; lastKnownFileType = text; path = CartScreen.melina; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,8 @@
 			children = (
 				3C1E23E128FE3FF30097DDA7 /* main.swift */,
 				3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */,
+				3C1E246C28FE62E70097DDA7 /* FileService.swift */,
+				3C1E246E28FE66A90097DDA7 /* CartScreen.melina */,
 			);
 			path = Melina;
 			sourceTree = "<group>";
@@ -133,6 +138,7 @@
 			files = (
 				3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */,
 				3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */,
+				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
