@@ -11,6 +11,15 @@
 		3C1E23EA28FE42AB0097DDA7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 3C1E23E928FE42AB0097DDA7 /* ArgumentParser */; };
 		3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */; };
 		3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E246C28FE62E70097DDA7 /* FileService.swift */; };
+		3C1E247028FE7D2F0097DDA7 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */; };
+		3C1E247228FE7DD20097DDA7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E247128FE7DD20097DDA7 /* Token.swift */; };
+		3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */; };
+		3C1E248328FE817B0097DDA7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E247128FE7DD20097DDA7 /* Token.swift */; };
+		3CB12F2A28FFE64C007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12F2928FFE64C007902DB /* CustomDump */; };
+		3CB12FBE28FFE70B007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12FBD28FFE70B007902DB /* CustomDump */; };
+		3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC429011BF3007902DB /* LexerFullTests.swift */; };
+		3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC529011BF3007902DB /* LexerTests.swift */; };
+		3CB12FC929011C71007902DB /* LexerAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC829011C71007902DB /* LexerAssert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +40,12 @@
 		3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaCommand.swift; sourceTree = "<group>"; };
 		3C1E246C28FE62E70097DDA7 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		3C1E246E28FE66A90097DDA7 /* CartScreen.melina */ = {isa = PBXFileReference; lastKnownFileType = text; path = CartScreen.melina; sourceTree = "<group>"; };
+		3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
+		3C1E247128FE7DD20097DDA7 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		3C1E247728FE802F0097DDA7 /* MelinaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MelinaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CB12FC429011BF3007902DB /* LexerFullTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerFullTests.swift; sourceTree = "<group>"; };
+		3CB12FC529011BF3007902DB /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
+		3CB12FC829011C71007902DB /* LexerAssert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexerAssert.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +54,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C1E23EA28FE42AB0097DDA7 /* ArgumentParser in Frameworks */,
+				3CB12F2A28FFE64C007902DB /* CustomDump in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3C1E247428FE802F0097DDA7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CB12FBE28FFE70B007902DB /* CustomDump in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,7 +73,9 @@
 			isa = PBXGroup;
 			children = (
 				3C1E23E028FE3FF30097DDA7 /* Melina */,
+				3C1E247828FE802F0097DDA7 /* MelinaTests */,
 				3C1E23DF28FE3FF30097DDA7 /* Products */,
+				3CB12FBC28FFE70B007902DB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				3C1E23DE28FE3FF30097DDA7 /* Melina */,
+				3C1E247728FE802F0097DDA7 /* MelinaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,9 +94,36 @@
 				3C1E23E128FE3FF30097DDA7 /* main.swift */,
 				3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */,
 				3C1E246C28FE62E70097DDA7 /* FileService.swift */,
+				3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */,
+				3C1E247128FE7DD20097DDA7 /* Token.swift */,
 				3C1E246E28FE66A90097DDA7 /* CartScreen.melina */,
 			);
 			path = Melina;
+			sourceTree = "<group>";
+		};
+		3C1E247828FE802F0097DDA7 /* MelinaTests */ = {
+			isa = PBXGroup;
+			children = (
+				3CB12FC329011BF3007902DB /* Lexer */,
+			);
+			path = MelinaTests;
+			sourceTree = "<group>";
+		};
+		3CB12FBC28FFE70B007902DB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3CB12FC329011BF3007902DB /* Lexer */ = {
+			isa = PBXGroup;
+			children = (
+				3CB12FC429011BF3007902DB /* LexerFullTests.swift */,
+				3CB12FC529011BF3007902DB /* LexerTests.swift */,
+				3CB12FC829011C71007902DB /* LexerAssert.swift */,
+			);
+			path = Lexer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,10 +144,32 @@
 			name = Melina;
 			packageProductDependencies = (
 				3C1E23E928FE42AB0097DDA7 /* ArgumentParser */,
+				3CB12F2928FFE64C007902DB /* CustomDump */,
 			);
 			productName = Melina;
 			productReference = 3C1E23DE28FE3FF30097DDA7 /* Melina */;
 			productType = "com.apple.product-type.tool";
+		};
+		3C1E247628FE802F0097DDA7 /* MelinaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3C1E247B28FE802F0097DDA7 /* Build configuration list for PBXNativeTarget "MelinaTests" */;
+			buildPhases = (
+				3C1E247328FE802F0097DDA7 /* Sources */,
+				3C1E247428FE802F0097DDA7 /* Frameworks */,
+				3C1E247528FE802F0097DDA7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3CB12FBB28FFE6FA007902DB /* PBXTargetDependency */,
+			);
+			name = MelinaTests;
+			packageProductDependencies = (
+				3CB12FBD28FFE70B007902DB /* CustomDump */,
+			);
+			productName = MelinaTests;
+			productReference = 3C1E247728FE802F0097DDA7 /* MelinaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -106,6 +182,9 @@
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					3C1E23DD28FE3FF30097DDA7 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					3C1E247628FE802F0097DDA7 = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
 				};
@@ -121,15 +200,27 @@
 			mainGroup = 3C1E23D528FE3FF30097DDA7;
 			packageReferences = (
 				3C1E23E828FE42AB0097DDA7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				3CB12F2828FFE64C007902DB /* XCRemoteSwiftPackageReference "swift-custom-dump" */,
 			);
 			productRefGroup = 3C1E23DF28FE3FF30097DDA7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				3C1E23DD28FE3FF30097DDA7 /* Melina */,
+				3C1E247628FE802F0097DDA7 /* MelinaTests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3C1E247528FE802F0097DDA7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3C1E23DA28FE3FF30097DDA7 /* Sources */ = {
@@ -137,12 +228,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */,
+				3C1E247228FE7DD20097DDA7 /* Token.swift in Sources */,
 				3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */,
+				3C1E247028FE7D2F0097DDA7 /* Lexer.swift in Sources */,
 				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3C1E247328FE802F0097DDA7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CB12FC929011C71007902DB /* LexerAssert.swift in Sources */,
+				3C1E248328FE817B0097DDA7 /* Token.swift in Sources */,
+				3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */,
+				3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */,
+				3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3CB12FBB28FFE6FA007902DB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 3CB12FBA28FFE6FA007902DB /* CustomDump */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		3C1E23E328FE3FF30097DDA7 /* Debug */ = {
@@ -278,6 +390,34 @@
 			};
 			name = Release;
 		};
+		3C1E247C28FE802F0097DDA7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = uncle.alek.MelinaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		3C1E247D28FE802F0097DDA7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = uncle.alek.MelinaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -299,6 +439,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		3C1E247B28FE802F0097DDA7 /* Build configuration list for PBXNativeTarget "MelinaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3C1E247C28FE802F0097DDA7 /* Debug */,
+				3C1E247D28FE802F0097DDA7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -310,6 +459,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		3CB12F2828FFE64C007902DB /* XCRemoteSwiftPackageReference "swift-custom-dump" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-custom-dump";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -317,6 +474,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3C1E23E828FE42AB0097DDA7 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
+		};
+		3CB12F2928FFE64C007902DB /* CustomDump */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CB12F2828FFE64C007902DB /* XCRemoteSwiftPackageReference "swift-custom-dump" */;
+			productName = CustomDump;
+		};
+		3CB12FBA28FFE6FA007902DB /* CustomDump */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CB12F2828FFE64C007902DB /* XCRemoteSwiftPackageReference "swift-custom-dump" */;
+			productName = CustomDump;
+		};
+		3CB12FBD28FFE70B007902DB /* CustomDump */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CB12F2828FFE64C007902DB /* XCRemoteSwiftPackageReference "swift-custom-dump" */;
+			productName = CustomDump;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
