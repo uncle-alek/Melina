@@ -2,14 +2,14 @@ import XCTest
 
 final class LexerTests: XCTestCase {
     
-    func test_empty_source() throws {
+    func test_empty_source() {
         assert(
             source: "",
             produce: []
         )
     }
     
-    func test_keyword() throws {
+    func test_keyword() {
         assert(
             source: "suite",
             produce: [
@@ -77,7 +77,19 @@ final class LexerTests: XCTestCase {
         )
     }
     
-    func test_number() throws {
+    func test_unknown_keyword() {
+        assert(
+            source: "expecttt",
+            throws: .unknowKeyword
+        )
+        
+        assert(
+            source: "randomkeyword",
+            throws: .unknowKeyword
+        )
+    }
+    
+    func test_number() {
         assert(
             source: "12345",
             produce: [
@@ -90,7 +102,7 @@ final class LexerTests: XCTestCase {
         )
     }
     
-    func test_string() throws {
+    func test_string() {
         assert(
             source: "\"Hello world\"",
             produce: [
@@ -103,10 +115,52 @@ final class LexerTests: XCTestCase {
         )
     }
     
-    func test_comment() throws {
+    func test_comment() {
         assert(
             source: "// This is comment",
             produce: []
+        )
+    }
+    
+    func test_broken_comment() {
+        assert(
+            source: "/ This is comment",
+            throws: .secondSlashRequiredForComment
+        )
+    }
+    
+    func test_newLine() {
+        assert(
+            source: "\n\n\n",
+            produce: [
+                .init(
+                    type: .newLine,
+                    lexeme: "",
+                    line: 1
+                )
+            ]
+        )
+        assert(
+            source: "\n\n\n",
+            produce: [
+                .init(
+                    type: .newLine,
+                    lexeme: "",
+                    line: 1
+                )
+            ]
+        )
+    }
+    
+    func test_unknown_symbol() {
+        assert(
+            source: "?",
+            throws: .unknownSymbol
+        )
+        
+        assert(
+            source: "end ;",
+            throws: .unknownSymbol
         )
     }
 }

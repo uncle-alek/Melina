@@ -1,9 +1,10 @@
 import Foundation
 
-enum LexerError: Error {
+enum LexerError: Error, Equatable {
     case unknownSymbol
-    case wrongComment
-    case wrongKeyword
+    case secondSlashRequiredForComment
+    case unknowKeyword
+    case newLineInStringLiteral
 }
 
 final class Lexer {
@@ -15,10 +16,6 @@ final class Lexer {
         "open" : .open,
         "tap" : .tap,
         "expect" : .expect
-    ]
-    
-    let spacing: [String] = [
-        " ", "\t", "\r", "\n"
     ]
     
     private let source: String
@@ -66,17 +63,16 @@ private extension Lexer {
         case _ where c.isLetter:
             try scanKeyword()
         default:
-            break
+            throw LexerError.unknownSymbol
         }
     }
     
     func scanComment() throws {
         guard advance() == "/" else {
-            throw LexerError.wrongComment
+            throw LexerError.secondSlashRequiredForComment
         }
         while !isEndOfFile() {
-            let c = advance()
-            if c == "\n" {
+            if advance() == "\n" {
                 undo()
                 break
             }
@@ -94,13 +90,22 @@ private extension Lexer {
         if let tokenType = keywords[lexeme()] {
             addToken(tokenType, lexeme())
         } else {
-            throw LexerError.wrongKeyword
+            throw LexerError.unknowKeyword
         }
     }
     
     func scanNewLine() {
         addToken(.newLine)
         line += 1
+
+        while !isEndOfFile() {
+            if advance() == "\n" {
+                line += 1
+            } else {
+                undo()
+                break
+            }
+        }
     }
     
     func scanNumber() throws {
@@ -119,6 +124,8 @@ private extension Lexer {
             let c = advance()
             if c == "\"" {
                 break
+            } else if c == "\n" {
+                throw LexerError.newLineInStringLiteral
             }
         }
         

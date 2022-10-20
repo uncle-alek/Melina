@@ -2,7 +2,7 @@ import XCTest
 
 final class LexerFullTests: XCTestCase {
     
-    func test_suite() throws {
+    func test_suite() {
         assert(
             source:
                 """
