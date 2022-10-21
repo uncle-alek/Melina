@@ -1,4 +1,4 @@
-melina = suite*
+program = suite*
 suite = "suite" STRING ":" scenario* "end"
 scenario = "scenario" STRING ":" step* "end"
 step = action STRING

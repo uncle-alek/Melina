@@ -11,7 +11,7 @@ func assert(
         let result = try Lexer(source: source).tokenize()
         XCTAssertNoDifference(result, tokens + [.init(type: .eof, lexeme: "", line: 0)])
     } catch {
-        XCTFail("Expected no error")
+        XCTFail("Unexpected error: \(error)")
     }
 }
 

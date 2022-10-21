@@ -20,6 +20,13 @@
 		3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC429011BF3007902DB /* LexerFullTests.swift */; };
 		3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC529011BF3007902DB /* LexerTests.swift */; };
 		3CB12FC929011C71007902DB /* LexerAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC829011C71007902DB /* LexerAssert.swift */; };
+		3CB136B229027B47007902DB /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B129027B47007902DB /* Parser.swift */; };
+		3CB136B429027DF8007902DB /* ASTNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B329027DF8007902DB /* ASTNodes.swift */; };
+		3CB136B829029D24007902DB /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B729029D24007902DB /* ParserTests.swift */; };
+		3CB136BA29029E36007902DB /* ParserAsserts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B929029E36007902DB /* ParserAsserts.swift */; };
+		3CB136BB29029F39007902DB /* ASTNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B329027DF8007902DB /* ASTNodes.swift */; };
+		3CB136BC29029F64007902DB /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B129027B47007902DB /* Parser.swift */; };
+		3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +53,12 @@
 		3CB12FC429011BF3007902DB /* LexerFullTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerFullTests.swift; sourceTree = "<group>"; };
 		3CB12FC529011BF3007902DB /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
 		3CB12FC829011C71007902DB /* LexerAssert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexerAssert.swift; sourceTree = "<group>"; };
+		3CB136B129027B47007902DB /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		3CB136B329027DF8007902DB /* ASTNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASTNodes.swift; sourceTree = "<group>"; };
+		3CB136B529028628007902DB /* Grammar */ = {isa = PBXFileReference; lastKnownFileType = text; path = Grammar; sourceTree = "<group>"; };
+		3CB136B729029D24007902DB /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
+		3CB136B929029E36007902DB /* ParserAsserts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserAsserts.swift; sourceTree = "<group>"; };
+		3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +109,9 @@
 				3C1E246C28FE62E70097DDA7 /* FileService.swift */,
 				3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */,
 				3C1E247128FE7DD20097DDA7 /* Token.swift */,
+				3CB136B129027B47007902DB /* Parser.swift */,
+				3CB136B329027DF8007902DB /* ASTNodes.swift */,
+				3CB136B529028628007902DB /* Grammar */,
 				3C1E246E28FE66A90097DDA7 /* CartScreen.melina */,
 			);
 			path = Melina;
@@ -104,6 +120,7 @@
 		3C1E247828FE802F0097DDA7 /* MelinaTests */ = {
 			isa = PBXGroup;
 			children = (
+				3CB136B629029D14007902DB /* Parser */,
 				3CB12FC329011BF3007902DB /* Lexer */,
 			);
 			path = MelinaTests;
@@ -124,6 +141,16 @@
 				3CB12FC829011C71007902DB /* LexerAssert.swift */,
 			);
 			path = Lexer;
+			sourceTree = "<group>";
+		};
+		3CB136B629029D14007902DB /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				3CB136B729029D24007902DB /* ParserTests.swift */,
+				3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */,
+				3CB136B929029E36007902DB /* ParserAsserts.swift */,
+			);
+			path = Parser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,8 +256,10 @@
 			files = (
 				3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */,
 				3C1E247228FE7DD20097DDA7 /* Token.swift in Sources */,
+				3CB136B229027B47007902DB /* Parser.swift in Sources */,
 				3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */,
 				3C1E247028FE7D2F0097DDA7 /* Lexer.swift in Sources */,
+				3CB136B429027DF8007902DB /* ASTNodes.swift in Sources */,
 				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,7 +269,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CB12FC929011C71007902DB /* LexerAssert.swift in Sources */,
+				3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */,
+				3CB136BA29029E36007902DB /* ParserAsserts.swift in Sources */,
+				3CB136BB29029F39007902DB /* ASTNodes.swift in Sources */,
 				3C1E248328FE817B0097DDA7 /* Token.swift in Sources */,
+				3CB136B829029D24007902DB /* ParserTests.swift in Sources */,
+				3CB136BC29029F64007902DB /* Parser.swift in Sources */,
 				3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */,
 				3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */,
 				3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */,
