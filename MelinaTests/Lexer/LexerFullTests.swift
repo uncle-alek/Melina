@@ -6,8 +6,8 @@ final class LexerFullTests: XCTestCase {
         assert(
             source:
                 """
-                    suite "HomeScreen"
-                        scenario "Open Home Screen"
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
                             open "homeScreenIdentifier"
                             tap "loginButton"
                             expect "loginScreenIdentifier"
@@ -26,7 +26,7 @@ final class LexerFullTests: XCTestCase {
                     line: 1
                 ),
                 .init(
-                    type: .newLine,
+                    type: .colon,
                     lexeme: "",
                     line: 1
                 ),
@@ -41,7 +41,7 @@ final class LexerFullTests: XCTestCase {
                                 line: 2
                             ),
                             .init(
-                                type: .newLine,
+                                type: .colon,
                                 lexeme: "",
                                 line: 2
                             ),
@@ -56,11 +56,6 @@ final class LexerFullTests: XCTestCase {
                                             line: 3
                                         ),
                                         .init(
-                                            type: .newLine,
-                                            lexeme: "",
-                                            line: 3
-                                        ),
-                                        .init(
                                             type: .tap,
                                             lexeme: "tap",
                                             line: 4
@@ -68,11 +63,6 @@ final class LexerFullTests: XCTestCase {
                                         .init(
                                             type: .string,
                                             lexeme: "\"loginButton\"",
-                                            line: 4
-                                        ),
-                                        .init(
-                                            type: .newLine,
-                                            lexeme: "",
                                             line: 4
                                         ),
                                         .init(
@@ -85,19 +75,9 @@ final class LexerFullTests: XCTestCase {
                                             lexeme: "\"loginScreenIdentifier\"",
                                             line: 5
                                         ),
-                                        .init(
-                                            type: .newLine,
-                                            lexeme: "",
-                                            line: 5
-                                        ),
                             .init(
                                 type: .end,
                                 lexeme: "end",
-                                line: 6
-                            ),
-                            .init(
-                                type: .newLine,
-                                lexeme: "",
                                 line: 6
                             ),
                 .init(

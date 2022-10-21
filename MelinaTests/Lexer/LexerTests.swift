@@ -129,22 +129,12 @@ final class LexerTests: XCTestCase {
         )
     }
     
-    func test_newLine() {
+    func test_colon() {
         assert(
-            source: "\n\n\n",
+            source: ":",
             produce: [
                 .init(
-                    type: .newLine,
-                    lexeme: "",
-                    line: 1
-                )
-            ]
-        )
-        assert(
-            source: "\n\n\n",
-            produce: [
-                .init(
-                    type: .newLine,
+                    type: .colon,
                     lexeme: "",
                     line: 1
                 )

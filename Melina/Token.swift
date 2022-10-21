@@ -8,8 +8,8 @@ struct Token: Equatable {
 }
 
 enum TokenType: Equatable {
-    case newLine,
-         eof
+    case eof,
+         colon
     
     case identifier,
          number,

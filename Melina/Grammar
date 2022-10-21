@@ -1,0 +1,5 @@
+melina = suite*
+suite = "suite" STRING ":" scenario* "end"
+scenario = "scenario" STRING ":" step* "end"
+step = action STRING
+action = "open" | "tap" | "expect"

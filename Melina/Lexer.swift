@@ -54,6 +54,8 @@ private extension Lexer {
             break
         case "\n":
             scanNewLine()
+        case ":":
+            scanColon()
         case "/":
             try scanComment()
         case _ where c.isNumber:
@@ -95,7 +97,6 @@ private extension Lexer {
     }
     
     func scanNewLine() {
-        addToken(.newLine)
         line += 1
 
         while !isEndOfFile() {
@@ -106,6 +107,10 @@ private extension Lexer {
                 break
             }
         }
+    }
+    
+    func scanColon() {
+        addToken(.colon)
     }
     
     func scanNumber() throws {
