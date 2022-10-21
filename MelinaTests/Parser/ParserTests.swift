@@ -41,61 +41,61 @@ final class ParserTests: XCTestCase {
                 Program(
                     suites: [
                         Suite(
-                            name: "\"HomeScreen\"",
+                            name: "HomeScreen",
                             scenarios: [
                                 Scenario(
-                                    name: "\"Open Home Screen\"",
+                                    name: "Open Home Screen",
                                     steps: [
                                         Step(
                                             action: .open,
-                                            elementId: "\"homeScreenIdentifier\""
+                                            elementId: "homeScreenIdentifier"
                                         ),
                                         Step(
                                             action: .tap,
-                                            elementId: "\"loginButton\""
+                                            elementId: "loginButton"
                                         ),
                                         Step(
                                             action: .expect,
-                                            elementId: "\"loginScreenIdentifier\""
+                                            elementId: "loginScreenIdentifier"
                                         )
                                     ]
                                 ),
                                 Scenario(
-                                    name: "\"Open Cart Screen\"",
+                                    name: "Open Cart Screen",
                                     steps: [
                                         Step(
                                             action: .open,
-                                            elementId: "\"homeScreenIdentifier\""
+                                            elementId: "homeScreenIdentifier"
                                         ),
                                         Step(
                                             action: .tap,
-                                            elementId: "\"addToCart\""
+                                            elementId: "addToCart"
                                         ),
                                         Step(
                                             action: .expect,
-                                            elementId: "\"cartScreenIdentifier\""
+                                            elementId: "cartScreenIdentifier"
                                         ),
                                         Step(
                                             action: .expect,
-                                            elementId: "\"cartItemIdentifier\""
+                                            elementId: "cartItemIdentifier"
                                         )
                                     ]
                                 )
                             ]
                         ),
                         Suite(
-                            name: "\"Booking Screen\"",
+                            name: "Booking Screen",
                             scenarios: [
                                 Scenario(
-                                    name: "\"Open Booking Screen\"",
+                                    name: "Open Booking Screen",
                                     steps: [
                                         Step(
                                             action: .open,
-                                            elementId: "\"bookingScreenIdentifier\""
+                                            elementId: "bookingScreenIdentifier"
                                         ),
                                         Step(
                                             action: .expect,
-                                            elementId: "\"priceViewIdentifier\""
+                                            elementId: "priceViewIdentifier"
                                         )
                                     ]
                                 )

@@ -134,7 +134,7 @@ private extension Lexer {
             }
         }
         
-        addToken(.string, lexeme())
+        addToken(.string, stringLexeme())
     }
 }
 
@@ -150,10 +150,6 @@ private extension Lexer {
         currentIndex == source.endIndex
     }
     
-    func peek() -> Character {
-        source[currentIndex]
-    }
-    
     func undo() {
         currentIndex = source.index(before: currentIndex)
     }
@@ -164,5 +160,9 @@ private extension Lexer {
     
     func lexeme() -> String {
         String(source[startIndex..<currentIndex])
+    }
+    
+    func stringLexeme() -> String {
+        String(source[startIndex..<currentIndex].dropFirst().dropLast())
     }
 }

@@ -96,7 +96,7 @@ final class LexerTests: XCTestCase {
             produce: [
                 .init(
                     type: .string,
-                    lexeme: "\"Hello world\"",
+                    lexeme: "Hello world",
                     line: 1
                 )
             ]

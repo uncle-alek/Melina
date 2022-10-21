@@ -22,7 +22,7 @@ final class LexerFullTests: XCTestCase {
                 ),
                 .init(
                     type: .string,
-                    lexeme: "\"HomeScreen\"",
+                    lexeme: "HomeScreen",
                     line: 1
                 ),
                 .init(
@@ -37,7 +37,7 @@ final class LexerFullTests: XCTestCase {
                             ),
                             .init(
                                 type: .string,
-                                lexeme: "\"Open Home Screen\"",
+                                lexeme: "Open Home Screen",
                                 line: 2
                             ),
                             .init(
@@ -52,7 +52,7 @@ final class LexerFullTests: XCTestCase {
                                         ),
                                         .init(
                                             type: .string,
-                                            lexeme: "\"homeScreenIdentifier\"",
+                                            lexeme: "homeScreenIdentifier",
                                             line: 3
                                         ),
                                         .init(
@@ -62,7 +62,7 @@ final class LexerFullTests: XCTestCase {
                                         ),
                                         .init(
                                             type: .string,
-                                            lexeme: "\"loginButton\"",
+                                            lexeme: "loginButton",
                                             line: 4
                                         ),
                                         .init(
@@ -72,7 +72,7 @@ final class LexerFullTests: XCTestCase {
                                         ),
                                         .init(
                                             type: .string,
-                                            lexeme: "\"loginScreenIdentifier\"",
+                                            lexeme: "loginScreenIdentifier",
                                             line: 5
                                         ),
                             .init(
