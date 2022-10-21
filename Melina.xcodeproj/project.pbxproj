@@ -27,6 +27,7 @@
 		3CB136BB29029F39007902DB /* ASTNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B329027DF8007902DB /* ASTNodes.swift */; };
 		3CB136BC29029F64007902DB /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B129027B47007902DB /* Parser.swift */; };
 		3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */; };
+		3CB136C02902DD93007902DB /* LexerErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136BF2902DD93007902DB /* LexerErrorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,6 +60,7 @@
 		3CB136B729029D24007902DB /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
 		3CB136B929029E36007902DB /* ParserAsserts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserAsserts.swift; sourceTree = "<group>"; };
 		3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorTests.swift; sourceTree = "<group>"; };
+		3CB136BF2902DD93007902DB /* LexerErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexerErrorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 				3CB12FC429011BF3007902DB /* LexerFullTests.swift */,
 				3CB12FC529011BF3007902DB /* LexerTests.swift */,
 				3CB12FC829011C71007902DB /* LexerAssert.swift */,
+				3CB136BF2902DD93007902DB /* LexerErrorTests.swift */,
 			);
 			path = Lexer;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CB136C02902DD93007902DB /* LexerErrorTests.swift in Sources */,
 				3CB12FC929011C71007902DB /* LexerAssert.swift in Sources */,
 				3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */,
 				3CB136BA29029E36007902DB /* ParserAsserts.swift in Sources */,
