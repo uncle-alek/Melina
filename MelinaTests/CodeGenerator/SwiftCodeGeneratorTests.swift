@@ -15,22 +15,27 @@ final class SwiftCodeGeneratorTests: XCTestCase {
             produce:
                 Code(
                     testClasses: [
-                        """
-                        import XCTest
-                        
-                        final class HomeScreenTests: XCTestCase {
-                        
-                            func testOpenHomeScreen() {
-                                launchApp()
-                            }
-                        
-                            private func launchApp() {
-                                continueAfterFailure = false
-                                let app: XCUIApplication = XCUIApplication()
-                                app.launchArguments = []
-                            }
-                        }
-                        """
+                        TestClass(
+                            name: "HomeScreenTests.swift",
+                            sourceCode:
+                                """
+                                import XCTest
+                                
+                                final class HomeScreenTests: XCTestCase {
+                                
+                                    func testOpenHomeScreen() {
+                                        let app = launchApp()
+                                    }
+                                
+                                    private func launchApp() {
+                                        continueAfterFailure = false
+                                        let app: XCUIApplication = XCUIApplication()
+                                        app.launchArguments = []
+                                        return app
+                                    }
+                                }
+                                """
+                            )
                     ]
                 )
         )

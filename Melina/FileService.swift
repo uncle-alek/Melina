@@ -26,4 +26,15 @@ final class FileService {
         }
         return String(decoding: data, as: UTF8.self)
     }
+    
+    func write(
+        content: String,
+        with fileName: String
+    ) throws {
+        let currentDirectoryPath = fileManager.currentDirectoryPath
+        fileManager.createFile(
+            atPath: currentDirectoryPath + "/" + fileName,
+            contents: Data(content.utf8)
+        )
+    }
 }

@@ -16,54 +16,55 @@ final class SwiftCodeGenerator {
     }
     
     func generate() throws -> Code {
-        let testClasses = program.suites.map(generateTestClass)
+        let testClasses = program.suites.map(testClass)
         return Code(testClasses: testClasses)
     }
 }
 
 private extension SwiftCodeGenerator {
         
+    func testClass(_ suite: Suite) -> TestClass {
+        TestClass(
+            name: fileName(suite.name),
+            sourceCode: generateTestClass(suite)
+        )
+    }
+    
     func generateTestClass(_ suite: Suite) -> String {
-        var testClass = ""
-        testClass += imports()
-        testClass += classDefinition(suite.name)
-        scopeLevel += 1
-        testClass += suite.scenarios.map(generateTestMethod).joined(separator: newLine())
-        testClass += generateLaunchAppMethod()
-        scopeLevel -= 1
-        testClass += rightCurlyBrace()
-        return testClass
+        apply("") { s in
+            s += tab() + imports() + newLine(2)
+            s += tab() + classDefinition(suite.name) + newLine(2)
+            scopeLevel += 1
+            s += suite.scenarios.map(generateTestMethod).joined(separator: newLine(2))
+            s += launchAppMethodDefinition() + newLine()
+            scopeLevel -= 1
+            s += tab() + rightCurlyBrace() + newLine()
+        }
     }
     
     func generateTestMethod(_ scenario: Scenario) -> String {
-        var testMethod = ""
-        testMethod += tab() + testDefinition(scenario.name)
-        scopeLevel += 1
-        testMethod += tab() + launchAppMethod() + newLine()
-        scopeLevel -= 1
-        testMethod += tab() + rightCurlyBrace() + newLine(2)
-        return testMethod
-    }
-    
-    func generateLaunchAppMethod() -> String {
-        """
-            private func \(launchAppMethod()) {
-                continueAfterFailure = false
-                let app: XCUIApplication = XCUIApplication()
-                app.launchArguments = []
-            }
-        """ + newLine()
+        apply("") { s in
+            s += tab() + testDefinition(scenario.name) + newLine()
+            scopeLevel += 1
+            s += tab() + callLaunchAppMethod() + newLine()
+            scopeLevel -= 1
+            s += tab() + rightCurlyBrace() + newLine(2)
+        }
     }
 }
 
 private extension SwiftCodeGenerator {
     
     func imports() -> String {
-        "import XCTest" + newLine(2)
+        "import XCTest"
     }
     
     func classDefinition(_ name: String) -> String {
-        "final class \(className(name)): XCTestCase {" + newLine(2)
+        "final class \(className(name)): XCTestCase {"
+    }
+    
+    func fileName(_ name: String) -> String {
+        className(name) + ".swift"
     }
     
     func className(_ name: String) -> String {
@@ -75,7 +76,7 @@ private extension SwiftCodeGenerator {
     }
     
     func testDefinition(_ name: String) -> String {
-        "func \(methodName(name)) {" + newLine()
+        "func \(methodName(name)) {"
     }
     
     func methodName(_ name: String) -> String {
@@ -86,8 +87,19 @@ private extension SwiftCodeGenerator {
         + "()"
     }
     
-    func launchAppMethod() -> String {
-        "launchApp()"
+    func callLaunchAppMethod() -> String {
+        "let app = launchApp()"
+    }
+    
+    func launchAppMethodDefinition() -> String {
+        """
+            private func launchApp() {
+                continueAfterFailure = false
+                let app: XCUIApplication = XCUIApplication()
+                app.launchArguments = []
+                return app
+            }
+        """
     }
 }
 
@@ -104,4 +116,10 @@ private extension SwiftCodeGenerator {
     func rightCurlyBrace() -> String {
         "}"
     }
+}
+
+func apply<T>(_ obj: T, block: (inout T) -> Void) -> T {
+    var copy = obj
+    block(&copy)
+    return copy
 }
