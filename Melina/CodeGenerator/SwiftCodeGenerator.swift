@@ -34,18 +34,12 @@ private extension SwiftCodeGenerator {
     func generateTestClass(_ suite: Suite) -> String {
         builder
             .imports()
-            .classDefinition(suite.name)
-            .enterScope()
-            .forEach(suite.scenarios) { b, e in
-                b.testDefinition(e.name)
-                 .enterScope()
-                 .launchAppMethodCall()
-                 .leaveScope()
-                 .rightCurlyBrace()
+            .classDefinition(suite.name) { b in
+                b.testDefinition(suite.scenarios) { b,_ in
+                    b.launchAppMethodCall()
+                }
+                .launchAppMethodDefinition()
             }
-            .launchAppMethodDefinition()
-            .leaveScope()
-            .rightCurlyBrace()
             .build()
     }
 }
@@ -56,40 +50,30 @@ final class SwiftCodeBuilder {
     private var scopeLevel: Int = 0
     
     @discardableResult
-    func enterScope() -> Self {
-        scopeLevel += 1
-        return self
-    }
-    
-    @discardableResult
-    func leaveScope() -> Self {
-        scopeLevel -= 1
-        return self
-    }
-    
-    @discardableResult
-    func forEach<T>(_ list: [T], block: (SwiftCodeBuilder,T) -> Void) -> Self {
-        list.forEach {
-            block(self, $0)
-        }
-        return self
-    }
-    
-    @discardableResult
     func imports() -> Self {
         code += "import XCTest" + newLine(2)
         return self
     }
     
     @discardableResult
-    func classDefinition(_ name: String) -> Self {
+    func classDefinition(_ name: String, block: (Self) -> Void) -> Self {
         code += "final class \(name.className): XCTestCase {" + newLine(2)
+        scopeLevel += 1
+        block(self)
+        scopeLevel -= 1
+        code += "}" + newLine()
         return self
     }
     
     @discardableResult
-    func testDefinition(_ name: String) -> Self {
-        code += tab() + "func \(name.methodName)() {" + newLine()
+    func testDefinition(_ scenarios: [Scenario], block: (Self, Scenario) -> Void) -> Self {
+        scenarios.forEach {
+            code += tab() + "func \($0.name.methodName)() {" + newLine()
+            scopeLevel += 1
+            block(self, $0)
+            scopeLevel -= 1
+            code += tab() + "}" + newLine(2)
+        }
         return self
     }
     
@@ -110,12 +94,6 @@ final class SwiftCodeBuilder {
                 return app
             }
         """ + newLine()
-        return self
-    }
-    
-    @discardableResult
-    func rightCurlyBrace() -> Self {
-        code += tab() + "}" + newLine(2)
         return self
     }
     
