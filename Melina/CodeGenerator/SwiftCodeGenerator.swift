@@ -7,12 +7,13 @@ enum SwiftCodeGeneratorError: Error, Equatable {
 final class SwiftCodeGenerator {
     
     private let program: Program
-    private var scopeLevel: Int = 0
+    private let builder: SwiftCodeBuilder
     
     init(
         program: Program
     ) {
         self.program = program
+        self.builder = SwiftCodeBuilder()
     }
     
     func generate() throws -> Code {
@@ -25,73 +26,82 @@ private extension SwiftCodeGenerator {
         
     func testClass(_ suite: Suite) -> TestClass {
         TestClass(
-            name: fileName(suite.name),
+            name: suite.name.fileName,
             sourceCode: generateTestClass(suite)
         )
     }
     
     func generateTestClass(_ suite: Suite) -> String {
-        apply("") { s in
-            s += tab() + imports() + newLine(2)
-            s += tab() + classDefinition(suite.name) + newLine(2)
-            scopeLevel += 1
-            s += suite.scenarios.map(generateTestMethod).joined(separator: newLine(2))
-            s += launchAppMethodDefinition() + newLine()
-            scopeLevel -= 1
-            s += tab() + rightCurlyBrace() + newLine()
-        }
-    }
-    
-    func generateTestMethod(_ scenario: Scenario) -> String {
-        apply("") { s in
-            s += tab() + testDefinition(scenario.name) + newLine()
-            scopeLevel += 1
-            s += tab() + callLaunchAppMethod() + newLine()
-            scopeLevel -= 1
-            s += tab() + rightCurlyBrace() + newLine(2)
-        }
+        builder
+            .imports()
+            .classDefinition(suite.name)
+            .enterScope()
+            .forEach(suite.scenarios) { b, e in
+                b.testDefinition(e.name)
+                 .enterScope()
+                 .launchAppMethodCall()
+                 .leaveScope()
+                 .rightCurlyBrace()
+            }
+            .launchAppMethodDefinition()
+            .leaveScope()
+            .rightCurlyBrace()
+            .build()
     }
 }
 
-private extension SwiftCodeGenerator {
+final class SwiftCodeBuilder {
     
-    func imports() -> String {
-        "import XCTest"
+    private var code: String = ""
+    private var scopeLevel: Int = 0
+    
+    @discardableResult
+    func enterScope() -> Self {
+        scopeLevel += 1
+        return self
     }
     
-    func classDefinition(_ name: String) -> String {
-        "final class \(className(name)): XCTestCase {"
+    @discardableResult
+    func leaveScope() -> Self {
+        scopeLevel -= 1
+        return self
     }
     
-    func fileName(_ name: String) -> String {
-        className(name) + ".swift"
+    @discardableResult
+    func forEach<T>(_ list: [T], block: (SwiftCodeBuilder,T) -> Void) -> Self {
+        list.forEach {
+            block(self, $0)
+        }
+        return self
     }
     
-    func className(_ name: String) -> String {
-        name
-            .split(separator: " ")
-            .map { $0.capitalized }
-            .joined()
-        + "Tests"
+    @discardableResult
+    func imports() -> Self {
+        code += "import XCTest" + newLine(2)
+        return self
     }
     
-    func testDefinition(_ name: String) -> String {
-        "func \(methodName(name)) {"
+    @discardableResult
+    func classDefinition(_ name: String) -> Self {
+        code += "final class \(name.className): XCTestCase {" + newLine(2)
+        return self
     }
     
-    func methodName(_ name: String) -> String {
-       "test" + name
-            .split(separator: " ")
-            .map { $0.capitalized }
-            .joined()
-        + "()"
+    @discardableResult
+    func testDefinition(_ name: String) -> Self {
+        code += tab() + "func \(name.methodName)() {" + newLine()
+        return self
     }
     
-    func callLaunchAppMethod() -> String {
-        "let app = launchApp()"
+    @discardableResult
+    func launchAppMethodCall() -> Self {
+        code += tab() + "let app = launchApp()" + newLine()
+        return self
     }
     
-    func launchAppMethodDefinition() -> String {
+    @discardableResult
+    func launchAppMethodDefinition() -> Self {
+        code +=
         """
             private func launchApp() {
                 continueAfterFailure = false
@@ -99,11 +109,22 @@ private extension SwiftCodeGenerator {
                 app.launchArguments = []
                 return app
             }
-        """
+        """ + newLine()
+        return self
+    }
+    
+    @discardableResult
+    func rightCurlyBrace() -> Self {
+        code += tab() + "}" + newLine(2)
+        return self
+    }
+    
+    func build() -> String {
+        code
     }
 }
 
-private extension SwiftCodeGenerator {
+private extension SwiftCodeBuilder {
     
     func newLine(_ count: Int = 1) -> String {
         String(repeating: "\n", count: count)
@@ -112,14 +133,26 @@ private extension SwiftCodeGenerator {
     func tab() -> String {
         String(repeating: " ", count: scopeLevel * 4)
     }
-    
-    func rightCurlyBrace() -> String {
-        "}"
-    }
 }
 
-func apply<T>(_ obj: T, block: (inout T) -> Void) -> T {
-    var copy = obj
-    block(&copy)
-    return copy
+extension String {
+    
+    var fileName: String {
+        className + ".swift"
+    }
+    
+    var className: String {
+        self
+            .split(separator: " ")
+            .map { $0.capitalized }
+            .joined()
+        + "Tests"
+    }
+    
+    var methodName: String {
+        "test" + self
+            .split(separator: " ")
+            .map { $0.capitalized }
+            .joined()
+    }
 }

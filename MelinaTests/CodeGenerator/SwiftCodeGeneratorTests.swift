@@ -34,6 +34,8 @@ final class SwiftCodeGeneratorTests: XCTestCase {
                                         return app
                                     }
                                 }
+                                
+                                
                                 """
                             )
                     ]
