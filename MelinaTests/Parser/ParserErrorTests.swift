@@ -138,6 +138,17 @@ final class ParserErrorTests: XCTestCase {
                 """,
             throws: ParserError(type: .missingStepElementIdentifier, line: 3)
         )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                        end
+                    end
+                """,
+            throws: ParserError(type: .missingStepAction, line: 3)
+        )
     }
     
     func test_missing_arguments() {
@@ -199,6 +210,20 @@ final class ParserErrorTests: XCTestCase {
                     end
                 """,
             throws: ParserError(type: .missingColon, line: 4)
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            arguments:
+                            end
+                            verify "homeScreenIdentifier" text
+                        end
+                    end
+                """,
+            throws: ParserError(type: .missingArgumentKey, line: 4)
         )
     }
 }

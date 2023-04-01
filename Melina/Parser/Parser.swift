@@ -90,6 +90,8 @@ private extension Parser {
     
     func parseArgumentsBody() throws -> [Argument] {
         var arguments: [Argument] = []
+        let argument = try parseArgument()
+        arguments.append(argument)
         while !isAtScopeEnd() {
             let argument = try parseArgument()
             arguments.append(argument)
@@ -109,6 +111,8 @@ private extension Parser {
     
     func parseSteps() throws -> [Step] {
         var steps: [Step] = []
+        let step = try parseStep()
+        steps.append(step)
         while !isAtScopeEnd() {
             let step = try parseStep()
             steps.append(step)

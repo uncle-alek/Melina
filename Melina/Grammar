@@ -1,8 +1,10 @@
 program = suite*
 suite = "suite" arguments* STRING ":" scenario* "end"
-arguments = "arguments" argument* :  "end"
+arguments = "arguments" argumentsBody :  "end"
+argumentsBody = argument (argument)*
 argument = STRING ":" STRING
-scenario = "scenario" STRING ":" step* "end"
+scenario = "scenario" STRING ":" steps* "end"
+steps = step (steps)*
 step = action STRING object
 action = "verify" | "tap" | "scrollUp" | "scrollDown"
 object = "button" | "screen" | "text" | "searchField"
