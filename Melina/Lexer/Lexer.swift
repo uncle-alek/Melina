@@ -1,10 +1,16 @@
 import Foundation
 
-enum LexerError: Error, Equatable {
-    case unknownSymbol
-    case secondSlashRequiredForComment
-    case unknowKeyword
-    case newLineInStringLiteral
+struct LexerError: Error, Equatable {
+    
+    let type: `Type`
+    let line: Int
+    
+    enum `Type`: Equatable {
+        case unknownSymbol
+        case secondSlashRequiredForComment
+        case unknowKeyword
+        case newLineInStringLiteral
+    }
 }
 
 final class Lexer {
@@ -42,7 +48,7 @@ final class Lexer {
             try scanToken()
         }
         
-        return tokens + [Token(type: .eof, lexeme: "", line: 0)]
+        return tokens + [Token(type: .eof, lexeme: "", line: line)]
     }
 }
 
@@ -66,13 +72,13 @@ private extension Lexer {
         case _ where c.isLetter:
             try scanKeyword()
         default:
-            throw LexerError.unknownSymbol
+            throw LexerError(type: .unknownSymbol, line: line)
         }
     }
     
     func scanComment() throws {
         guard advance() == "/" else {
-            throw LexerError.secondSlashRequiredForComment
+            throw LexerError(type: .secondSlashRequiredForComment, line: line)
         }
         while !isEndOfFile() {
             if advance() == "\n" {
@@ -93,7 +99,7 @@ private extension Lexer {
         if let tokenType = keywords[lexeme()] {
             addToken(tokenType, lexeme())
         } else {
-            throw LexerError.unknowKeyword
+            throw LexerError(type: .unknowKeyword, line: line)
         }
     }
     
@@ -131,7 +137,7 @@ private extension Lexer {
             if c == "\"" {
                 break
             } else if c == "\n" {
-                throw LexerError.newLineInStringLiteral
+                throw LexerError(type: .newLineInStringLiteral, line: line)
             }
         }
         

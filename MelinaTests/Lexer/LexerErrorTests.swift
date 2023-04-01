@@ -5,31 +5,31 @@ final class LexerErrorTests: XCTestCase {
     func test_unknown_keyword() {
         assert(
             source: "expecttt",
-            throws: .unknowKeyword
+            throws: LexerError(type: .unknowKeyword, line: 1)
         )
         
         assert(
             source: "randomkeyword",
-            throws: .unknowKeyword
+            throws:  LexerError(type: .unknowKeyword, line: 1)
         )
     }
     
     func test_broken_comment() {
         assert(
             source: "/ This is comment",
-            throws: .secondSlashRequiredForComment
+            throws: LexerError(type: .secondSlashRequiredForComment, line: 1)
         )
     }
     
     func test_unknown_symbol() {
         assert(
             source: "?",
-            throws: .unknownSymbol
+            throws: LexerError(type: .unknownSymbol, line: 1)
         )
         
         assert(
             source: "end ;",
-            throws: .unknownSymbol
+            throws: LexerError(type: .unknownSymbol, line: 1)
         )
     }
     
@@ -40,7 +40,7 @@ final class LexerErrorTests: XCTestCase {
                 "Hello
                 World"
             """,
-            throws: .newLineInStringLiteral
+            throws: LexerError(type: .newLineInStringLiteral, line: 1)
         )
     }
 }

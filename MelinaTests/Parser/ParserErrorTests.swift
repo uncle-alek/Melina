@@ -13,7 +13,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingSuiteKeyword
+            throws: ParserError(type: .missingSuiteKeyword, line: 1)
         )
         
         assert(
@@ -25,7 +25,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingSuiteName
+            throws:  ParserError(type: .missingSuiteName, line: 1)
         )
         
         assert(
@@ -37,7 +37,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     
                 """,
-            throws: ParserError.missingEnd
+            throws:  ParserError(type: .missingEnd, line: 5)
         )
         
         assert(
@@ -49,7 +49,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingColon
+            throws:  ParserError(type: .missingColon, line: 2)
         )
     }
     
@@ -63,7 +63,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingScenarioKeyword
+            throws: ParserError(type: .missingScenarioKeyword, line: 2)
         )
         
         assert(
@@ -75,7 +75,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingScenarioName
+            throws: ParserError(type: .missingScenarioName, line: 2)
         )
         
         assert(
@@ -86,7 +86,7 @@ final class ParserErrorTests: XCTestCase {
                             open "homeScreenIdentifier"
                     end
                 """,
-            throws: ParserError.missingEnd
+            throws: ParserError(type: .missingEnd, line: 4)
         )
         
         assert(
@@ -98,7 +98,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingColon
+            throws: ParserError(type: .missingColon, line: 3)
         )
     }
     
@@ -112,7 +112,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingStepAction
+            throws: ParserError(type: .missingStepAction, line: 3)
         )
         
         assert(
@@ -124,7 +124,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingStepElementIdentifier
+            throws: ParserError(type: .missingStepElementIdentifier, line: 4)
         )
     }
     
@@ -142,7 +142,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingColon
+            throws: ParserError(type: .missingColon, line: 4)
         )
         
         assert(
@@ -157,7 +157,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingArgumentValue
+            throws: ParserError(type: .missingArgumentValue, line: 5)
         )
         
         assert(
@@ -171,7 +171,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingArgumentKey
+            throws: ParserError(type: .missingArgumentKey, line: 5)
         )
         
         assert(
@@ -186,7 +186,7 @@ final class ParserErrorTests: XCTestCase {
                         end
                     end
                 """,
-            throws: ParserError.missingColon
+            throws: ParserError(type: .missingColon, line: 4)
         )
     }
 }

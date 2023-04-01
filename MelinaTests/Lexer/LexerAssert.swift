@@ -9,7 +9,8 @@ func assert(
 ) {
     do {
         let result = try Lexer(source: source).tokenize()
-        XCTAssertNoDifference(result, tokens + [.init(type: .eof, lexeme: "", line: 0)])
+        XCTAssertNoDifference(result.last?.type, .eof)
+        XCTAssertNoDifference(result.dropLast(), tokens, file: file, line: line)
     } catch {
         XCTFail("Unexpected error: \(error)")
     }
@@ -21,7 +22,7 @@ func assert(
     file: StaticString = #file,
     line: UInt = #line
 ) {
-    XCTAssertThrowsError(try Lexer(source: source).tokenize()) { e in
-        XCTAssertNoDifference(e as! LexerError, error)
+    XCTAssertThrowsError(try Lexer(source: source).tokenize(), file: file, line: line) { e in
+        XCTAssertNoDifference(e as! LexerError, error, file: file, line: line)
     }
 }

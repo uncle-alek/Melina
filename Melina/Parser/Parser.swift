@@ -1,17 +1,23 @@
 import Foundation
 
-enum ParserError: Error, Equatable {
-    case missingStepAction
-    case missingStepElementIdentifier
-    case missingScenarioKeyword
-    case missingScenarioName
-    case missingSuiteKeyword
-    case missingSuiteName
-    case missingArgumentsKeyword
-    case missingArgumentKey
-    case missingArgumentValue
-    case missingEnd
-    case missingColon
+struct ParserError: Error, Equatable {
+    
+    let type: `Type`
+    let line: Int
+    
+    enum `Type`: Equatable {
+        case missingStepAction
+        case missingStepElementIdentifier
+        case missingScenarioKeyword
+        case missingScenarioName
+        case missingSuiteKeyword
+        case missingSuiteName
+        case missingArgumentsKeyword
+        case missingArgumentKey
+        case missingArgumentValue
+        case missingEnd
+        case missingColon
+    }
 }
 
 final class Parser {
@@ -52,7 +58,7 @@ private extension Parser {
     
     func parseScenarios() throws -> [Scenario] {
         var scenarios: [Scenario] = []
-        while !isAtEnd() && peek().type != .end {
+        while !isAtScopeEnd() {
             let scenario = try parseScenario()
             scenarios.append(scenario)
         }
@@ -83,7 +89,7 @@ private extension Parser {
     
     func parseArgumentsBody() throws -> [Argument] {
         var arguments: [Argument] = []
-        while !isAtEnd() && peek().type != .end {
+        while !isAtScopeEnd() {
             let argument = try parseArgument()
             arguments.append(argument)
         }
@@ -102,7 +108,7 @@ private extension Parser {
     
     func parseSteps() throws -> [Step] {
         var steps: [Step] = []
-        while !isAtEnd() && peek().type != .end {
+        while !isAtScopeEnd() {
             let step = try parseStep()
             steps.append(step)
         }
@@ -121,17 +127,21 @@ private extension Parser {
 
 private extension Parser {
     
+    func isAtScopeEnd() -> Bool {
+        isAtEnd() || peek().type == .end
+    }
+    
     func isAtEnd() -> Bool {
         tokens[currentIndex].type == .eof
     }
     
     @discardableResult
-    func match(tokenTypes: TokenType..., error: ParserError) throws -> Token {
+    func match(tokenTypes: TokenType..., error: ParserError.`Type`) throws -> Token {
         let token = advance()
         if tokenTypes.contains(token.type) {
             return token
         } else {
-            throw error
+            throw ParserError(type: error, line: tokens[currentIndex - 1].line)
         }
     }
     
