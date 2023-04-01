@@ -8,6 +8,9 @@ final class SwiftCodeGeneratorTests: XCTestCase {
                 """
                 suite "Home Screen":
                     scenario "Open Home Screen":
+                        arguments:
+                            "clearState" : "true"
+                        end
                         open "homeScreenIdentifier"
                     end
                 end
@@ -24,6 +27,9 @@ final class SwiftCodeGeneratorTests: XCTestCase {
                                 
                                     func testOpenHomeScreen() {
                                         let app = launchApp()
+                                        app.launchEnvironment = [
+                                            "clearState" : "true",
+                                        ]
                                     }
                                 
                                     private func launchApp() {

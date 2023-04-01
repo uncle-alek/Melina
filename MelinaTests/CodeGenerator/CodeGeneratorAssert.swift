@@ -11,8 +11,8 @@ func assert(
         let tokens = try Lexer(source: source).tokenize()
         let program = try Parser(tokens: tokens).parse()
         let result = SwiftCodeGenerator(program: program).generate()
-        XCTAssertNoDifference(result, code)
+        XCTAssertNoDifference(result, code, file: file, line: line)
     } catch {
-        XCTFail("Unexpected error: \(error)")
+        XCTFail("Unexpected error: \(error)", file: file, line: line)
     }
 }

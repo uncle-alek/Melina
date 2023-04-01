@@ -12,7 +12,7 @@ func assert(
         XCTAssertNoDifference(result.last?.type, .eof)
         XCTAssertNoDifference(result.dropLast(), tokens, file: file, line: line)
     } catch {
-        XCTFail("Unexpected error: \(error)")
+        XCTFail("Unexpected error: \(error)", file: file, line: line)
     }
 }
 

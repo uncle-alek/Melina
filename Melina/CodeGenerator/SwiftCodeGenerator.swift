@@ -43,13 +43,18 @@ final class SwiftCodeGenerator: Visitor {
         generatedCode += tab() + "func \(scenario.name.methodName)() {" + newLine()
         scopeLevel += 1
         generatedCode += tab() + "let app = launchApp()" + newLine()
+        generatedCode += tab() + "app.launchEnvironment = [" + newLine()
+        scopeLevel += 1
+        scenario.arguments.forEach { $0.accept(self) }
+        scopeLevel -= 1
+        generatedCode += tab() + "]" + newLine()
         scenario.steps.forEach { $0.accept(self) }
         scopeLevel -= 1
         generatedCode += tab() + "}" + newLine(2)
     }
     
     func visit(_ argument: Argument) {
-        
+        generatedCode += tab() + "\"\(argument.key)\"" + " : " + "\"\(argument.value)\"" + "," + newLine()
     }
     
     func visit(_ step: Step) {
