@@ -26,17 +26,24 @@ final class SwiftCodeGeneratorTests: XCTestCase {
                                 final class HomeScreenTests: XCTestCase {
                                 
                                     func testOpenHomeScreen() {
-                                        let app = launchApp()
-                                        app.launchEnvironment = [
+                                        let app = launchApp([
                                             "clearState" : "true",
-                                        ]
-                                        app.staticTexts["homeScreenIdentifier"].waitForExistance(timeout: 3)
+                                        ])
+                                        app.staticTexts["homeScreenIdentifier"].firstMatch.verifyExistence(timeout: 3)
                                     }
                                 
-                                    private func launchApp() {
+                                    private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
                                         continueAfterFailure = false
-                                        let app: XCUIApplication = XCUIApplication()
+                                        let app = XCUIApplication()
+                                        app.launchEnvironment = launchEnvironment
+                                        app.launch()
                                         return app
+                                    }
+                                }
+                                
+                                private extension XCUIElement {
+                                    func verifyExistence(timeout: TimeInterval) {
+                                        XCTAssertTrue(self.waitForExistence(timeout: timeout))
                                     }
                                 }
                                 

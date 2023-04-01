@@ -28,25 +28,33 @@ final class SwiftCodeGenerator: Visitor {
         suite.scenarios.forEach { $0.accept(self) }
         generatedCode +=
         """
-            private func launchApp() {
+            private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
                 continueAfterFailure = false
-                let app: XCUIApplication = XCUIApplication()
+                let app = XCUIApplication()
+                app.launchEnvironment = launchEnvironment
+                app.launch()
                 return app
             }
         """ + newLine()
         scopeLevel -= 1
-        generatedCode += "}" + newLine()
+        generatedCode += "}" + newLine(2)
+        generatedCode += """
+        private extension XCUIElement {
+            func verifyExistence(timeout: TimeInterval) {
+                XCTAssertTrue(self.waitForExistence(timeout: timeout))
+            }
+        }
+        """ + newLine()
     }
     
     func visit(_ scenario: Scenario) {
         generatedCode += tab() + "func \(scenario.name.methodName)() {" + newLine()
         scopeLevel += 1
-        generatedCode += tab() + "let app = launchApp()" + newLine()
-        generatedCode += tab() + "app.launchEnvironment = [" + newLine()
+        generatedCode += tab() + "let app = launchApp([" + newLine()
         scopeLevel += 1
         scenario.arguments.forEach { $0.accept(self) }
         scopeLevel -= 1
-        generatedCode += tab() + "]" + newLine()
+        generatedCode += tab() + "])" + newLine()
         scenario.steps.forEach { $0.accept(self) }
         scopeLevel -= 1
         generatedCode += tab() + "}" + newLine(2)
@@ -57,7 +65,7 @@ final class SwiftCodeGenerator: Visitor {
     }
     
     func visit(_ step: Step) {
-        generatedCode += tab() + "app." + "\(step.element.code)" + "[\"\(step.elementId)\"]." + "\(step.action.code)" + newLine()
+        generatedCode += tab() + "app." + "\(step.element.code)" + "[\"\(step.elementId)\"]." + "firstMatch." + "\(step.action.code)" + newLine()
     }
     
     func generate() -> Code {
@@ -115,7 +123,7 @@ extension Action {
     var code: String {
         switch self {
         case .tap: return "tap()"
-        case .verify: return "waitForExistance(timeout: 3)"
+        case .verify: return "verifyExistence(timeout: 3)"
         case .scrollUp: return "swipeUp()"
         case .scrollDown: return "swipeDown()"
         }

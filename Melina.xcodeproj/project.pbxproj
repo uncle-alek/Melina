@@ -55,7 +55,7 @@
 		3C1E23E128FE3FF30097DDA7 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaCommand.swift; sourceTree = "<group>"; };
 		3C1E246C28FE62E70097DDA7 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
-		3C1E246E28FE66A90097DDA7 /* CartScreen.melina */ = {isa = PBXFileReference; lastKnownFileType = text; path = CartScreen.melina; sourceTree = "<group>"; };
+		3C1E246E28FE66A90097DDA7 /* GeneratedUITests.melina */ = {isa = PBXFileReference; lastKnownFileType = text; path = GeneratedUITests.melina; sourceTree = "<group>"; };
 		3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
 		3C1E247128FE7DD20097DDA7 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		3C1E247728FE802F0097DDA7 /* MelinaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MelinaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,7 +126,7 @@
 				3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */,
 				3C1E246C28FE62E70097DDA7 /* FileService.swift */,
 				3CB136B529028628007902DB /* Grammar */,
-				3C1E246E28FE66A90097DDA7 /* CartScreen.melina */,
+				3C1E246E28FE66A90097DDA7 /* GeneratedUITests.melina */,
 			);
 			path = Melina;
 			sourceTree = "<group>";

@@ -1,0 +1,21 @@
+suite "Melina":
+    // constant
+    //    cartScreenExperiment MAPPCartScreen
+    // end
+        
+    scenario "First scenario":
+        arguments:
+            "experiment" : "NewExperiment"
+        end
+
+        // Do some steps
+        verify "Hello, world!" text
+        tap "Button_1" button
+        tap "Button_2" button
+    end
+    
+   // scenario "Second scenario"
+   //     ...
+   // end
+end
+
