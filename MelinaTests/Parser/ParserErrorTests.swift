@@ -9,7 +9,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     "HomeScreen":
                         scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -21,7 +21,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite :
                         scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -33,7 +33,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     
                 """,
@@ -45,7 +45,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite "HomeScreen"
                         scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -59,7 +59,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite "HomeScreen":
                         "Open Home Screen":
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -71,7 +71,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite "HomeScreen":
                         scenario :
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -83,7 +83,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                     end
                 """,
             throws: ParserError(type: .missingEnd, line: 4)
@@ -94,7 +94,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen"
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -108,7 +108,7 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            "homeScreenIdentifier"
+                            "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -120,11 +120,23 @@ final class ParserErrorTests: XCTestCase {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            open
+                            verify "homeScreenIdentifier"
                         end
                     end
                 """,
-            throws: ParserError(type: .missingStepElementIdentifier, line: 4)
+            throws: ParserError(type: .missingStepElement, line: 4)
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            verify text
+                        end
+                    end
+                """,
+            throws: ParserError(type: .missingStepElementIdentifier, line: 3)
         )
     }
     
@@ -138,7 +150,7 @@ final class ParserErrorTests: XCTestCase {
                             arguments:
                                 "clear" "true"
                             end
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -153,7 +165,7 @@ final class ParserErrorTests: XCTestCase {
                             arguments:
                                 "clear" :
                             end
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -167,7 +179,7 @@ final class ParserErrorTests: XCTestCase {
                         scenario "Open Home Screen":
                             arguments:
                                 "clear" : "true"
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -182,7 +194,7 @@ final class ParserErrorTests: XCTestCase {
                             arguments
                                 "clear" : "true"
                             end
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,

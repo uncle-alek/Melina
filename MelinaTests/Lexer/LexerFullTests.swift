@@ -8,9 +8,9 @@ final class LexerFullTests: XCTestCase {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
-                            tap "loginButton"
-                            expect "loginScreenIdentifier"
+                            scrollDown "homeScreenIdentifier" searchField
+                            tap "loginButton" button
+                            verify "loginScreenIdentifier" text
                         end
                     end
                 """,
@@ -46,13 +46,18 @@ final class LexerFullTests: XCTestCase {
                                 line: 2
                             ),
                                         .init(
-                                            type: .open,
-                                            lexeme: "open",
+                                            type: .scrollDown,
+                                            lexeme: "scrollDown",
                                             line: 3
                                         ),
                                         .init(
                                             type: .string,
                                             lexeme: "homeScreenIdentifier",
+                                            line: 3
+                                        ),
+                                        .init(
+                                            type: .searchField,
+                                            lexeme: "searchField",
                                             line: 3
                                         ),
                                         .init(
@@ -66,13 +71,23 @@ final class LexerFullTests: XCTestCase {
                                             line: 4
                                         ),
                                         .init(
-                                            type: .expect,
-                                            lexeme: "expect",
+                                            type: .button,
+                                            lexeme: "button",
+                                            line: 4
+                                        ),
+                                        .init(
+                                            type: .verify,
+                                            lexeme: "verify",
                                             line: 5
                                         ),
                                         .init(
                                             type: .string,
                                             lexeme: "loginScreenIdentifier",
+                                            line: 5
+                                        ),
+                                        .init(
+                                            type: .text,
+                                            lexeme: "text",
                                             line: 5
                                         ),
                             .init(

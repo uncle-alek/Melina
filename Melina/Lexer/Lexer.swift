@@ -16,13 +16,20 @@ struct LexerError: Error, Equatable {
 final class Lexer {
     
     let keywords: [String : TokenType] = [
-        "suite" : .suite,
-        "scenario" : .scenario,
-        "arguments" : .arguments,
-        "end" : .end,
-        "open" : .open,
-        "tap" : .tap,
-        "expect" : .expect
+        "suite"       : .suite,
+        "scenario"    : .scenario,
+        "arguments"   : .arguments,
+
+        "end"         : .end,
+        
+        "button"      : .button,
+        "text"        : .text,
+        "searchField" : .searchField,
+
+        "verify"      : .verify,
+        "tap"         : .tap,
+        "scrollUp"    : .scrollUp,
+        "scrollDown"  : .scrollDown
     ]
     
     private let source: String

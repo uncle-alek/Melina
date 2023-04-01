@@ -31,7 +31,6 @@ final class SwiftCodeGenerator: Visitor {
             private func launchApp() {
                 continueAfterFailure = false
                 let app: XCUIApplication = XCUIApplication()
-                app.launchArguments = []
                 return app
             }
         """ + newLine()
@@ -58,7 +57,7 @@ final class SwiftCodeGenerator: Visitor {
     }
     
     func visit(_ step: Step) {
-
+        generatedCode += tab() + "app." + "\(step.element.code)" + "[\"\(step.elementId)\"]." + "\(step.action.code)" + newLine()
     }
     
     func generate() -> Code {
@@ -97,5 +96,28 @@ extension String {
             .split(separator: " ")
             .map { $0.capitalized }
             .joined()
+    }
+}
+
+extension Element {
+    
+    var code: String {
+        switch self {
+        case .text: return "staticTexts"
+        case .searchField: return "searchFields"
+        case .button: return "buttons"
+        }
+    }
+}
+
+extension Action {
+    
+    var code: String {
+        switch self {
+        case .tap: return "tap()"
+        case .verify: return "waitForExistance(timeout: 3)"
+        case .scrollUp: return "swipeUp()"
+        case .scrollDown: return "swipeDown()"
+        }
     }
 }

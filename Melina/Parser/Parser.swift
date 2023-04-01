@@ -8,6 +8,7 @@ struct ParserError: Error, Equatable {
     enum `Type`: Equatable {
         case missingStepAction
         case missingStepElementIdentifier
+        case missingStepElement
         case missingScenarioKeyword
         case missingScenarioName
         case missingSuiteKeyword
@@ -116,11 +117,13 @@ private extension Parser {
     }
     
     func parseStep() throws -> Step {
-        let actionToken = try match(tokenTypes: .tap, .open, .expect, error: .missingStepAction)
+        let actionToken = try match(tokenTypes: .tap, .verify, .scrollUp, .scrollDown, error: .missingStepAction)
         let elementIdToken = try match(tokenTypes: .string, error: .missingStepElementIdentifier)
+        let elementToken = try match(tokenTypes: .button, .text, .searchField, error: .missingStepElement)
         return Step(
             action: actionToken.type.action!,
-            elementId: elementIdToken.lexeme
+            elementId: elementIdToken.lexeme,
+            element: elementToken.type.element!
         )
     }
 }
@@ -166,8 +169,18 @@ extension TokenType {
     var action: Action? {
         switch self {
         case .tap: return .tap
-        case .expect: return .expect
-        case .open: return .open
+        case .verify: return .verify
+        case .scrollUp: return .scrollUp
+        case .scrollDown: return .scrollDown
+        default: return nil
+        }
+    }
+    
+    var element: Element? {
+        switch self {
+        case .button: return .button
+        case .text: return .text
+        case .searchField: return .searchField
         default: return nil
         }
     }

@@ -11,29 +11,23 @@ final class ParserTests: XCTestCase {
         )
     }
     
-    func test_suite() {
+    func test_mulitple_suites() {
         assert(
             source:
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
-                            tap "loginButton"
-                            expect "loginScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
 
                         scenario "Open Cart Screen":
-                            open "homeScreenIdentifier"
-                            tap "addToCart"
-                            expect "cartScreenIdentifier"
-                            expect "cartItemIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 
                     suite "Booking Screen":
                         scenario "Open Booking Screen":
-                            open "bookingScreenIdentifier"
-                            expect "priceViewIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -48,16 +42,9 @@ final class ParserTests: XCTestCase {
                                     arguments: [],
                                     steps: [
                                         Step(
-                                            action: .open,
-                                            elementId: "homeScreenIdentifier"
-                                        ),
-                                        Step(
-                                            action: .tap,
-                                            elementId: "loginButton"
-                                        ),
-                                        Step(
-                                            action: .expect,
-                                            elementId: "loginScreenIdentifier"
+                                            action: .verify,
+                                            elementId: "homeScreenIdentifier",
+                                            element: .text
                                         )
                                     ]
                                 ),
@@ -66,20 +53,9 @@ final class ParserTests: XCTestCase {
                                     arguments: [],
                                     steps: [
                                         Step(
-                                            action: .open,
-                                            elementId: "homeScreenIdentifier"
-                                        ),
-                                        Step(
-                                            action: .tap,
-                                            elementId: "addToCart"
-                                        ),
-                                        Step(
-                                            action: .expect,
-                                            elementId: "cartScreenIdentifier"
-                                        ),
-                                        Step(
-                                            action: .expect,
-                                            elementId: "cartItemIdentifier"
+                                            action: .verify,
+                                            elementId: "homeScreenIdentifier",
+                                            element: .text
                                         )
                                     ]
                                 )
@@ -93,12 +69,9 @@ final class ParserTests: XCTestCase {
                                     arguments: [],
                                     steps: [
                                         Step(
-                                            action: .open,
-                                            elementId: "bookingScreenIdentifier"
-                                        ),
-                                        Step(
-                                            action: .expect,
-                                            elementId: "priceViewIdentifier"
+                                            action: .verify,
+                                            elementId: "homeScreenIdentifier",
+                                            element: .text
                                         )
                                     ]
                                 )
@@ -120,7 +93,7 @@ final class ParserTests: XCTestCase {
                                 "turnOnExperiment" : "true"
                             end
                 
-                            open "homeScreenIdentifier"
+                            verify "homeScreenIdentifier" text
                         end
                     end
                 """,
@@ -144,8 +117,9 @@ final class ParserTests: XCTestCase {
                                     ],
                                     steps: [
                                         Step(
-                                            action: .open,
-                                            elementId: "homeScreenIdentifier"
+                                            action: .verify,
+                                            elementId: "homeScreenIdentifier",
+                                            element: .text
                                         )
                                     ]
                                 ),

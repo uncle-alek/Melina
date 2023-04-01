@@ -11,8 +11,7 @@ enum TokenType: Equatable {
     case eof,
          colon
     
-    case identifier,
-         number,
+    case number,
          string
     
     case suite,
@@ -20,7 +19,12 @@ enum TokenType: Equatable {
          arguments,
          end
     
-    case open,
+    case button,
+         text,
+         searchField
+    
+    case verify,
          tap,
-         expect
+         scrollUp,
+         scrollDown
 }

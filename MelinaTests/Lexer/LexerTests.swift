@@ -33,22 +33,22 @@ final class LexerTests: XCTestCase {
         )
         
         assert(
-            source: "end",
+            source: "arguments",
             produce: [
                 .init(
-                    type: .end,
-                    lexeme: "end",
+                    type: .arguments,
+                    lexeme: "arguments",
                     line: 1
                 )
             ]
         )
         
         assert(
-            source: "open",
+            source: "end",
             produce: [
                 .init(
-                    type: .open,
-                    lexeme: "open",
+                    type: .end,
+                    lexeme: "end",
                     line: 1
                 )
             ]
@@ -66,22 +66,66 @@ final class LexerTests: XCTestCase {
         )
         
         assert(
-            source: "expect",
+            source: "verify",
             produce: [
                 .init(
-                    type: .expect,
-                    lexeme: "expect",
+                    type: .verify,
+                    lexeme: "verify",
                     line: 1
                 )
             ]
         )
         
         assert(
-            source: "arguments",
+            source: "scrollUp",
             produce: [
                 .init(
-                    type: .arguments,
-                    lexeme: "arguments",
+                    type: .scrollUp,
+                    lexeme: "scrollUp",
+                    line: 1
+                )
+            ]
+        )
+        
+        assert(
+            source: "scrollDown",
+            produce: [
+                .init(
+                    type: .scrollDown,
+                    lexeme: "scrollDown",
+                    line: 1
+                )
+            ]
+        )
+        
+        assert(
+            source: "button",
+            produce: [
+                .init(
+                    type: .button,
+                    lexeme: "button",
+                    line: 1
+                )
+            ]
+        )
+        
+        assert(
+            source: "text",
+            produce: [
+                .init(
+                    type: .text,
+                    lexeme: "text",
+                    line: 1
+                )
+            ]
+        )
+        
+        assert(
+            source: "searchField",
+            produce: [
+                .init(
+                    type: .searchField,
+                    lexeme: "searchField",
                     line: 1
                 )
             ]

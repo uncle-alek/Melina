@@ -35,12 +35,20 @@ struct Argument: Node, Equatable {
 struct Step: Node, Equatable {
     let action: Action
     let elementId: String
+    let element: Element
     
     func accept(_ v: Visitor) { v.visit(self) }
 }
 
 enum Action: Equatable {
-    case open
     case tap
-    case expect
+    case verify
+    case scrollUp
+    case scrollDown
+}
+
+enum Element {
+    case button
+    case text
+    case searchField
 }

@@ -11,7 +11,7 @@ final class SwiftCodeGeneratorTests: XCTestCase {
                         arguments:
                             "clearState" : "true"
                         end
-                        open "homeScreenIdentifier"
+                        verify "homeScreenIdentifier" text
                     end
                 end
                 """,
@@ -30,12 +30,12 @@ final class SwiftCodeGeneratorTests: XCTestCase {
                                         app.launchEnvironment = [
                                             "clearState" : "true",
                                         ]
+                                        app.staticTexts["homeScreenIdentifier"].waitForExistance(timeout: 3)
                                     }
                                 
                                     private func launchApp() {
                                         continueAfterFailure = false
                                         let app: XCUIApplication = XCUIApplication()
-                                        app.launchArguments = []
                                         return app
                                     }
                                 }

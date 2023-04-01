@@ -10,9 +10,8 @@ suite "Cart Screen":
         end
 
         // Open home screen
-        open "Home screen"
-        tap "Cart button"
-        expect "Cart screen view"
+        verify "Home screen" screen
+        tap "Cart button" button
     end
     
    // scenario Close cart screen
