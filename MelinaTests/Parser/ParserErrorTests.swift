@@ -28,18 +28,6 @@ final class ParserErrorTests: XCTestCase {
                 """,
             throws: ParserError.missingSuiteName
         )
-        
-        assert(
-            source:
-                """
-                    suite "HomeScreen"
-                        scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
-                        end
-                    end
-                """,
-            throws: ParserError.missingSuiteColon
-        )
     }
     
     func test_missing_scenario() {
@@ -66,18 +54,6 @@ final class ParserErrorTests: XCTestCase {
                 """,
             throws: ParserError.missingScenarioName
         )
-        
-        assert(
-            source:
-                """
-                    suite "HomeScreen":
-                        scenario "Open Home Screen"
-                            open "homeScreenIdentifier"
-                        end
-                    end
-                """,
-            throws: ParserError.missingScenarioColon
-        )
     }
     
     func test_missing_step() {
@@ -103,6 +79,62 @@ final class ParserErrorTests: XCTestCase {
                     end
                 """,
             throws: ParserError.missingStepElementIdentifier
+        )
+    }
+    
+    func test_missing_colon() {
+        assert(
+            source:
+                """
+                    suite "HomeScreen"
+                        scenario "Open Home Screen":
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            throws: ParserError.missingColon
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen"
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            throws: ParserError.missingColon
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            arguments
+                                "clear" : "true"
+                            end
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            throws: ParserError.missingColon
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            arguments:
+                                "clear" "true"
+                            end
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            throws: ParserError.missingColon
         )
     }
 }

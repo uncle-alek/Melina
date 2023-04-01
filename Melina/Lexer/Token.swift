@@ -9,8 +9,7 @@ struct Token: Equatable {
 
 enum TokenType: Equatable {
     case eof,
-         colon,
-         hyphen
+         colon
     
     case identifier,
          number,

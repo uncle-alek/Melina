@@ -5,14 +5,12 @@ enum ParserError: Error, Equatable {
     case missingStepElementIdentifier
     case missingScenarioKeyword
     case missingScenarioName
-    case missingScenarioColon
     case missingSuiteKeyword
     case missingSuiteName
-    case missingSuiteColon
-    case missingArgumentsColon
     case missingArgumentsKey
     case missingArgumentsValue
     case missingEnd
+    case missingColon
 }
 
 final class Parser {
@@ -42,7 +40,7 @@ private extension Parser {
     func parseSuite() throws -> Suite  {
         try match(tokenTypes: .suite, error: .missingSuiteKeyword)
         let suiteNameToken = try match(tokenTypes: .string, error: .missingSuiteName)
-        try match(tokenTypes: .colon, error: .missingSuiteColon)
+        try match(tokenTypes: .colon, error: .missingColon)
         let scenarios = try parseScenarios()
         return Suite(
             name: suiteNameToken.lexeme,
@@ -67,7 +65,7 @@ private extension Parser {
     func parseScenario() throws -> Scenario {
         try match(tokenTypes: .scenario, error: .missingScenarioKeyword)
         let scenarioNameToken = try match(tokenTypes: .string, error: .missingScenarioName)
-        try match(tokenTypes: .colon, error: .missingScenarioColon)
+        try match(tokenTypes: .colon, error: .missingColon)
         let arguments = try parseArguments()
         let steps = try parseSteps()
         return Scenario(
@@ -80,7 +78,7 @@ private extension Parser {
     func parseArguments() throws -> [Argument] {
         guard check(tokenTypes: .arguments) else { return [] }
         advance()
-        try match(tokenTypes: .colon, error: .missingArgumentsColon)
+        try match(tokenTypes: .colon, error: .missingColon)
         var arguments: [Argument] = []
         while !isAtEnd() {
             if peek().type == .end {
@@ -96,7 +94,7 @@ private extension Parser {
     
     func parseArgument() throws -> Argument {
         let keyToken = try match(tokenTypes: .string, error: .missingArgumentsKey)
-        try match(tokenTypes: .colon, error: .missingArgumentsColon)
+        try match(tokenTypes: .colon, error: .missingColon)
         let valueToken = try match(tokenTypes: .string, error: .missingArgumentsValue)
         return Argument(
             key: keyToken.lexeme,
