@@ -19,7 +19,15 @@ struct Suite: Node, Equatable {
 
 struct Scenario: Node, Equatable {
     let name: String
+    let arguments: [Argument]
     let steps: [Step]
+    
+    func accept(_ v: Visitor) { v.visit(self) }
+}
+
+struct Argument: Node, Equatable {
+    let key: String
+    let value: String
     
     func accept(_ v: Visitor) { v.visit(self) }
 }

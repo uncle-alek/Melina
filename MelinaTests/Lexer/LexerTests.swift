@@ -75,6 +75,17 @@ final class LexerTests: XCTestCase {
                 )
             ]
         )
+        
+        assert(
+            source: "arguments",
+            produce: [
+                .init(
+                    type: .arguments,
+                    lexeme: "arguments",
+                    line: 1
+                )
+            ]
+        )
     }
     
     func test_number() {

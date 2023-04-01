@@ -2,7 +2,7 @@ import XCTest
 
 final class ParserTests: XCTestCase {
     
-    func test_empty_source() {
+    func test_empty_string_parsing() {
         assert(
             source: "",
             produce: Program(
@@ -45,6 +45,7 @@ final class ParserTests: XCTestCase {
                             scenarios: [
                                 Scenario(
                                     name: "Open Home Screen",
+                                    arguments: [],
                                     steps: [
                                         Step(
                                             action: .open,
@@ -62,6 +63,7 @@ final class ParserTests: XCTestCase {
                                 ),
                                 Scenario(
                                     name: "Open Cart Screen",
+                                    arguments: [],
                                     steps: [
                                         Step(
                                             action: .open,
@@ -88,6 +90,7 @@ final class ParserTests: XCTestCase {
                             scenarios: [
                                 Scenario(
                                     name: "Open Booking Screen",
+                                    arguments: [],
                                     steps: [
                                         Step(
                                             action: .open,
@@ -99,6 +102,53 @@ final class ParserTests: XCTestCase {
                                         )
                                     ]
                                 )
+                            ]
+                        )
+                    ]
+                )
+        )
+    }
+    
+    func test_arguments_parsing() {
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            arguments:
+                                "clearState" : "true"
+                                "turnOnExperiment" : "true"
+                            end
+                
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            produce:
+                Program(
+                    suites: [
+                        Suite(
+                            name: "HomeScreen",
+                            scenarios: [
+                                Scenario(
+                                    name: "Open Home Screen",
+                                    arguments: [
+                                        Argument(
+                                            key: "clearState",
+                                            value: "true"
+                                        ),
+                                        Argument(
+                                            key: "turnOnExperiment",
+                                            value: "true"
+                                        )
+                                    ],
+                                    steps: [
+                                        Step(
+                                            action: .open,
+                                            elementId: "homeScreenIdentifier"
+                                        )
+                                    ]
+                                ),
                             ]
                         )
                     ]

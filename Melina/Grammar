@@ -1,5 +1,7 @@
 program = suite*
-suite = "suite" STRING ":" scenario* "end"
+suite = "suite" arguments* STRING ":" scenario* "end"
+arguments = "arguments" argument* :  "end"
+argument = STRING ":" STRING
 scenario = "scenario" STRING ":" step* "end"
 step = action STRING
 action = "open" | "tap" | "expect"

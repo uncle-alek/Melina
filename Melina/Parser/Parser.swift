@@ -9,6 +9,10 @@ enum ParserError: Error, Equatable {
     case missingSuiteKeyword
     case missingSuiteName
     case missingSuiteColon
+    case missingArgumentsColon
+    case missingArgumentsKey
+    case missingArgumentsValue
+    case missingEnd
 }
 
 final class Parser {
@@ -36,43 +40,82 @@ final class Parser {
 private extension Parser {
     
     func parseSuite() throws -> Suite  {
-        let _ = try match(tokenTypes: .suite, error: .missingSuiteKeyword)
+        try match(tokenTypes: .suite, error: .missingSuiteKeyword)
         let suiteNameToken = try match(tokenTypes: .string, error: .missingSuiteName)
-        let _ = try match(tokenTypes: .colon, error: .missingSuiteColon)
-        var scenarios: [Scenario] = []
-        while !isAtEnd() {
-            if peek().type == .end {
-                let _ = advance()
-                break
-            } else {
-                let scenario = try parseScenario()
-                scenarios.append(scenario)
-            }
-        }
+        try match(tokenTypes: .colon, error: .missingSuiteColon)
+        let scenarios = try parseScenarios()
         return Suite(
             name: suiteNameToken.lexeme,
             scenarios: scenarios
         )
     }
     
+    func parseScenarios() throws -> [Scenario] {
+        var scenarios: [Scenario] = []
+        while !isAtEnd() {
+            if peek().type == .end {
+                advance()
+                break
+            } else {
+                let scenario = try parseScenario()
+                scenarios.append(scenario)
+            }
+        }
+        return scenarios
+    }
+    
     func parseScenario() throws -> Scenario {
-        let _ = try match(tokenTypes: .scenario, error: .missingScenarioKeyword)
+        try match(tokenTypes: .scenario, error: .missingScenarioKeyword)
         let scenarioNameToken = try match(tokenTypes: .string, error: .missingScenarioName)
-        let _ = try match(tokenTypes: .colon, error: .missingScenarioColon)
+        try match(tokenTypes: .colon, error: .missingScenarioColon)
+        let arguments = try parseArguments()
+        let steps = try parseSteps()
+        return Scenario(
+            name: scenarioNameToken.lexeme,
+            arguments: arguments,
+            steps: steps
+        )
+    }
+    
+    func parseArguments() throws -> [Argument] {
+        guard check(tokenTypes: .arguments) else { return [] }
+        advance()
+        try match(tokenTypes: .colon, error: .missingArgumentsColon)
+        var arguments: [Argument] = []
+        while !isAtEnd() {
+            if peek().type == .end {
+                advance()
+                break
+            } else {
+                let argument = try parseArgument()
+                arguments.append(argument)
+            }
+        }
+        return arguments
+    }
+    
+    func parseArgument() throws -> Argument {
+        let keyToken = try match(tokenTypes: .string, error: .missingArgumentsKey)
+        try match(tokenTypes: .colon, error: .missingArgumentsColon)
+        let valueToken = try match(tokenTypes: .string, error: .missingArgumentsValue)
+        return Argument(
+            key: keyToken.lexeme,
+            value: valueToken.lexeme
+        )
+    }
+    
+    func parseSteps() throws -> [Step] {
         var steps: [Step] = []
         while !isAtEnd() {
             if peek().type == .end {
-                let _ = advance()
+                advance()
                 break
             } else {
                 let step = try parseStep()
                 steps.append(step)
             }
         }
-        return Scenario(
-            name: scenarioNameToken.lexeme,
-            steps: steps
-        )
+        return steps
     }
     
     func parseStep() throws -> Step {
@@ -91,6 +134,7 @@ private extension Parser {
         tokens[currentIndex].type == .eof
     }
     
+    @discardableResult
     func match(tokenTypes: TokenType..., error: ParserError) throws -> Token {
         let token = advance()
         if tokenTypes.contains(token.type) {
@@ -100,10 +144,15 @@ private extension Parser {
         }
     }
     
+    @discardableResult
     func advance() -> Token {
         let token = tokens[currentIndex]
         currentIndex += 1
         return token
+    }
+    
+    func check(tokenTypes: TokenType...) -> Bool {
+        tokenTypes.contains(peek().type)
     }
     
     func peek() -> Token {

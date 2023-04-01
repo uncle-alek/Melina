@@ -4,10 +4,10 @@ suite "Cart Screen":
     // end
         
     scenario "Open Cart Screen":
-       // arguments
-           // experiment constant.cartScreenExperiment
-           // isUserLoggedIn true
-      // end
+        arguments:
+            "experiment" : "constant.cartScreenExperiment"
+            "isUserLoggedIn" : "true"
+        end
 
         // Open home screen
         open "Home screen"

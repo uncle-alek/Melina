@@ -16,7 +16,7 @@ struct Melina: ParsableCommand {
         let content = try FileService().content(at: path)
         let tokens = try Lexer(source: content).tokenize()
         let program = try Parser(tokens: tokens).parse()
-        let swiftCode = try SwiftCodeGenerator(program: program).generate()
+        let swiftCode = SwiftCodeGenerator(program: program).generate()
         try swiftCode.testClasses.forEach { try FileService().write(content: $0.generatedCode, with: $0.name) }
     }
 }

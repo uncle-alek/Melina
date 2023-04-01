@@ -48,6 +48,10 @@ final class SwiftCodeGenerator: Visitor {
         generatedCode += tab() + "}" + newLine(2)
     }
     
+    func visit(_ argument: Argument) {
+        
+    }
+    
     func visit(_ step: Step) {
 
     }
