@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C00724629D7C7CF00688808 /* SwiftCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */; };
 		3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23E128FE3FF30097DDA7 /* main.swift */; };
 		3C1E23EA28FE42AB0097DDA7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 3C1E23E928FE42AB0097DDA7 /* ArgumentParser */; };
 		3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */; };
@@ -28,12 +29,13 @@
 		3CB136BC29029F64007902DB /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B129027B47007902DB /* Parser.swift */; };
 		3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */; };
 		3CB136C02902DD93007902DB /* LexerErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136BF2902DD93007902DB /* LexerErrorTests.swift */; };
-		3CB136C22902DF39007902DB /* SwiftCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136C12902DF39007902DB /* SwiftCodeGenerator.swift */; };
 		3CB136CA2902E223007902DB /* SwiftCodeGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136C92902E223007902DB /* SwiftCodeGeneratorTests.swift */; };
 		3CB136CC2902E261007902DB /* CodeGeneratorAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136CB2902E261007902DB /* CodeGeneratorAssert.swift */; };
-		3CB136CD2902E299007902DB /* SwiftCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136C12902DF39007902DB /* SwiftCodeGenerator.swift */; };
 		3CB136D02902E82E007902DB /* Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136CF2902E82E007902DB /* Code.swift */; };
 		3CB136D12902E84A007902DB /* Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136CF2902E82E007902DB /* Code.swift */; };
+		3CBFFCC229D4515700232720 /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFFCC129D4515700232720 /* Visitor.swift */; };
+		3CBFFCC329D4517400232720 /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFFCC129D4515700232720 /* Visitor.swift */; };
+		3CBFFCC529D454FC00232720 /* SwiftCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -67,10 +69,11 @@
 		3CB136B929029E36007902DB /* ParserAsserts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserAsserts.swift; sourceTree = "<group>"; };
 		3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorTests.swift; sourceTree = "<group>"; };
 		3CB136BF2902DD93007902DB /* LexerErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexerErrorTests.swift; sourceTree = "<group>"; };
-		3CB136C12902DF39007902DB /* SwiftCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeGenerator.swift; sourceTree = "<group>"; };
 		3CB136C92902E223007902DB /* SwiftCodeGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeGeneratorTests.swift; sourceTree = "<group>"; };
 		3CB136CB2902E261007902DB /* CodeGeneratorAssert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeGeneratorAssert.swift; sourceTree = "<group>"; };
 		3CB136CF2902E82E007902DB /* Code.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Code.swift; sourceTree = "<group>"; };
+		3CBFFCC129D4515700232720 /* Visitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visitor.swift; sourceTree = "<group>"; };
+		3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +181,7 @@
 		3CB136C42902E113007902DB /* Parser */ = {
 			isa = PBXGroup;
 			children = (
+				3CBFFCC129D4515700232720 /* Visitor.swift */,
 				3CB136B129027B47007902DB /* Parser.swift */,
 				3CB136B329027DF8007902DB /* ASTNodes.swift */,
 			);
@@ -187,7 +191,7 @@
 		3CB136C52902E12E007902DB /* CodeGenerator */ = {
 			isa = PBXGroup;
 			children = (
-				3CB136C12902DF39007902DB /* SwiftCodeGenerator.swift */,
+				3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */,
 				3CB136CF2902E82E007902DB /* Code.swift */,
 			);
 			path = CodeGenerator;
@@ -303,7 +307,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3CB136C22902DF39007902DB /* SwiftCodeGenerator.swift in Sources */,
 				3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */,
 				3C1E247228FE7DD20097DDA7 /* Token.swift in Sources */,
 				3CB136B229027B47007902DB /* Parser.swift in Sources */,
@@ -311,6 +314,8 @@
 				3C1E247028FE7D2F0097DDA7 /* Lexer.swift in Sources */,
 				3CB136B429027DF8007902DB /* ASTNodes.swift in Sources */,
 				3CB136D02902E82E007902DB /* Code.swift in Sources */,
+				3CBFFCC229D4515700232720 /* Visitor.swift in Sources */,
+				3CBFFCC529D454FC00232720 /* SwiftCodeGenerator.swift in Sources */,
 				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,11 +332,12 @@
 				3CB136BA29029E36007902DB /* ParserAsserts.swift in Sources */,
 				3CB136BB29029F39007902DB /* ASTNodes.swift in Sources */,
 				3CB136CC2902E261007902DB /* CodeGeneratorAssert.swift in Sources */,
+				3CBFFCC329D4517400232720 /* Visitor.swift in Sources */,
 				3C1E248328FE817B0097DDA7 /* Token.swift in Sources */,
-				3CB136CD2902E299007902DB /* SwiftCodeGenerator.swift in Sources */,
 				3CB136B829029D24007902DB /* ParserTests.swift in Sources */,
 				3CB136BC29029F64007902DB /* Parser.swift in Sources */,
 				3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */,
+				3C00724629D7C7CF00688808 /* SwiftCodeGenerator.swift in Sources */,
 				3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */,
 				3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */,
 			);

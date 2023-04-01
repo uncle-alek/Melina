@@ -16,8 +16,7 @@ final class SwiftCodeGeneratorTests: XCTestCase {
                 Code(
                     testClasses: [
                         TestClass(
-                            name: "HomeScreenTests.swift",
-                            sourceCode:
+                            "HomeScreenTests.swift",
                                 """
                                 import XCTest
                                 

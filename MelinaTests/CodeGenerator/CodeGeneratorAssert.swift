@@ -10,23 +10,9 @@ func assert(
     do {
         let tokens = try Lexer(source: source).tokenize()
         let program = try Parser(tokens: tokens).parse()
-        let result = try SwiftCodeGenerator(program: program).generate()
+        let result = SwiftCodeGenerator(program: program).generate()
         XCTAssertNoDifference(result, code)
     } catch {
         XCTFail("Unexpected error: \(error)")
     }
 }
-
-func assert(
-    source: String,
-    throws error: SwiftCodeGeneratorError,
-    file: StaticString = #file,
-    line: UInt = #line
-) {
-    let tokens = try! Lexer(source: source).tokenize()
-    let program = try! Parser(tokens: tokens).parse()
-    XCTAssertThrowsError(try SwiftCodeGenerator(program: program).generate()) { e in
-        XCTAssertNoDifference(e as! SwiftCodeGeneratorError, error)
-    }
-}
-

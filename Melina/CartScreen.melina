@@ -16,7 +16,7 @@ suite "Cart Screen":
     end
     
    // scenario Close cart screen
-   //     ….
+   //     ...
    // end
 end
 

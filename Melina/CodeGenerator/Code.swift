@@ -6,5 +6,13 @@ struct Code: Equatable {
 
 struct TestClass: Equatable {
     let name: String
-    let sourceCode: String
+    let generatedCode: String
+    
+    init(
+        _ name: String,
+        _ generatedCode: String
+    ) {
+        self.name = name
+        self.generatedCode = generatedCode
+    }
 }
