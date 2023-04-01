@@ -1,5 +1,4 @@
 import Foundation
-
 import XCTest
 
 final class ParserErrorTests: XCTestCase {
@@ -28,6 +27,30 @@ final class ParserErrorTests: XCTestCase {
                 """,
             throws: ParserError.missingSuiteName
         )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            open "homeScreenIdentifier"
+                        end
+                    
+                """,
+            throws: ParserError.missingEnd
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen"
+                        scenario "Open Home Screen":
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            throws: ParserError.missingColon
+        )
     }
     
     func test_missing_scenario() {
@@ -53,6 +76,29 @@ final class ParserErrorTests: XCTestCase {
                     end
                 """,
             throws: ParserError.missingScenarioName
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            open "homeScreenIdentifier"
+                    end
+                """,
+            throws: ParserError.missingEnd
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen"
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            throws: ParserError.missingColon
         )
     }
     
@@ -82,38 +128,15 @@ final class ParserErrorTests: XCTestCase {
         )
     }
     
-    func test_missing_colon() {
-        assert(
-            source:
-                """
-                    suite "HomeScreen"
-                        scenario "Open Home Screen":
-                            open "homeScreenIdentifier"
-                        end
-                    end
-                """,
-            throws: ParserError.missingColon
-        )
-        
-        assert(
-            source:
-                """
-                    suite "HomeScreen":
-                        scenario "Open Home Screen"
-                            open "homeScreenIdentifier"
-                        end
-                    end
-                """,
-            throws: ParserError.missingColon
-        )
-        
+    func test_missing_arguments() {
+      
         assert(
             source:
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            arguments
-                                "clear" : "true"
+                            arguments:
+                                "clear" "true"
                             end
                             open "homeScreenIdentifier"
                         end
@@ -128,7 +151,36 @@ final class ParserErrorTests: XCTestCase {
                     suite "HomeScreen":
                         scenario "Open Home Screen":
                             arguments:
-                                "clear" "true"
+                                "clear" :
+                            end
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            throws: ParserError.missingArgumentValue
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            arguments:
+                                "clear" : "true"
+                            open "homeScreenIdentifier"
+                        end
+                    end
+                """,
+            throws: ParserError.missingArgumentKey
+        )
+        
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            arguments
+                                "clear" : "true"
                             end
                             open "homeScreenIdentifier"
                         end

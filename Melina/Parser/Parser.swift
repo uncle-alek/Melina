@@ -7,8 +7,9 @@ enum ParserError: Error, Equatable {
     case missingScenarioName
     case missingSuiteKeyword
     case missingSuiteName
-    case missingArgumentsKey
-    case missingArgumentsValue
+    case missingArgumentsKeyword
+    case missingArgumentKey
+    case missingArgumentValue
     case missingEnd
     case missingColon
 }
@@ -42,6 +43,7 @@ private extension Parser {
         let suiteNameToken = try match(tokenTypes: .string, error: .missingSuiteName)
         try match(tokenTypes: .colon, error: .missingColon)
         let scenarios = try parseScenarios()
+        try match(tokenTypes: .end, error: .missingEnd)
         return Suite(
             name: suiteNameToken.lexeme,
             scenarios: scenarios
@@ -50,14 +52,9 @@ private extension Parser {
     
     func parseScenarios() throws -> [Scenario] {
         var scenarios: [Scenario] = []
-        while !isAtEnd() {
-            if peek().type == .end {
-                advance()
-                break
-            } else {
-                let scenario = try parseScenario()
-                scenarios.append(scenario)
-            }
+        while !isAtEnd() && peek().type != .end {
+            let scenario = try parseScenario()
+            scenarios.append(scenario)
         }
         return scenarios
     }
@@ -66,8 +63,9 @@ private extension Parser {
         try match(tokenTypes: .scenario, error: .missingScenarioKeyword)
         let scenarioNameToken = try match(tokenTypes: .string, error: .missingScenarioName)
         try match(tokenTypes: .colon, error: .missingColon)
-        let arguments = try parseArguments()
+        let arguments = check(tokenTypes: .arguments) ? try parseArguments() : []
         let steps = try parseSteps()
+        try match(tokenTypes: .end, error: .missingEnd)
         return Scenario(
             name: scenarioNameToken.lexeme,
             arguments: arguments,
@@ -76,26 +74,26 @@ private extension Parser {
     }
     
     func parseArguments() throws -> [Argument] {
-        guard check(tokenTypes: .arguments) else { return [] }
-        advance()
+        try match(tokenTypes: .arguments, error: .missingArgumentsKeyword)
         try match(tokenTypes: .colon, error: .missingColon)
+        let argumentsBody = try parseArgumentsBody()
+        try match(tokenTypes: .end, error: .missingEnd)
+        return argumentsBody
+    }
+    
+    func parseArgumentsBody() throws -> [Argument] {
         var arguments: [Argument] = []
-        while !isAtEnd() {
-            if peek().type == .end {
-                advance()
-                break
-            } else {
-                let argument = try parseArgument()
-                arguments.append(argument)
-            }
+        while !isAtEnd() && peek().type != .end {
+            let argument = try parseArgument()
+            arguments.append(argument)
         }
         return arguments
     }
     
     func parseArgument() throws -> Argument {
-        let keyToken = try match(tokenTypes: .string, error: .missingArgumentsKey)
+        let keyToken = try match(tokenTypes: .string, error: .missingArgumentKey)
         try match(tokenTypes: .colon, error: .missingColon)
-        let valueToken = try match(tokenTypes: .string, error: .missingArgumentsValue)
+        let valueToken = try match(tokenTypes: .string, error: .missingArgumentValue)
         return Argument(
             key: keyToken.lexeme,
             value: valueToken.lexeme
@@ -104,14 +102,9 @@ private extension Parser {
     
     func parseSteps() throws -> [Step] {
         var steps: [Step] = []
-        while !isAtEnd() {
-            if peek().type == .end {
-                advance()
-                break
-            } else {
-                let step = try parseStep()
-                steps.append(step)
-            }
+        while !isAtEnd() && peek().type != .end {
+            let step = try parseStep()
+            steps.append(step)
         }
         return steps
     }
