@@ -4,10 +4,13 @@ final class ParserTests: XCTestCase {
     
     func test_empty_string_parsing() {
         assert(
-            source: "",
-            produce: Program(
-                suites: []
-            )
+            source:
+                "",
+            produce:
+                """
+                <Program_beggining>
+                <Program_end>
+                """
         )
     }
     
@@ -32,53 +35,23 @@ final class ParserTests: XCTestCase {
                     end
                 """,
             produce:
-                Program(
-                    suites: [
-                        Suite(
-                            name: "HomeScreen",
-                            scenarios: [
-                                Scenario(
-                                    name: "Open Home Screen",
-                                    arguments: [],
-                                    steps: [
-                                        Step(
-                                            action: .verify,
-                                            elementId: "homeScreenIdentifier",
-                                            element: .text
-                                        )
-                                    ]
-                                ),
-                                Scenario(
-                                    name: "Open Cart Screen",
-                                    arguments: [],
-                                    steps: [
-                                        Step(
-                                            action: .verify,
-                                            elementId: "homeScreenIdentifier",
-                                            element: .text
-                                        )
-                                    ]
-                                )
-                            ]
-                        ),
-                        Suite(
-                            name: "Booking Screen",
-                            scenarios: [
-                                Scenario(
-                                    name: "Open Booking Screen",
-                                    arguments: [],
-                                    steps: [
-                                        Step(
-                                            action: .verify,
-                                            elementId: "homeScreenIdentifier",
-                                            element: .text
-                                        )
-                                    ]
-                                )
-                            ]
-                        )
-                    ]
-                )
+                """
+                <Program_beggining>
+                <Suite_beggining>:HomeScreen
+                <Scenario_begging>:Open Home Screen
+                Steps:[verify-homeScreenIdentifier-text]
+                <Scenario_end>
+                <Scenario_begging>:Open Cart Screen
+                Steps:[verify-homeScreenIdentifier-text]
+                <Scenario_end>
+                <Suite_end>
+                <Suite_beggining>:Booking Screen
+                <Scenario_begging>:Open Booking Screen
+                Steps:[verify-homeScreenIdentifier-text]
+                <Scenario_end>
+                <Suite_end>
+                <Program_end>
+                """
         )
     }
     
@@ -98,35 +71,16 @@ final class ParserTests: XCTestCase {
                     end
                 """,
             produce:
-                Program(
-                    suites: [
-                        Suite(
-                            name: "HomeScreen",
-                            scenarios: [
-                                Scenario(
-                                    name: "Open Home Screen",
-                                    arguments: [
-                                        Argument(
-                                            key: "clearState",
-                                            value: "true"
-                                        ),
-                                        Argument(
-                                            key: "turnOnExperiment",
-                                            value: "true"
-                                        )
-                                    ],
-                                    steps: [
-                                        Step(
-                                            action: .verify,
-                                            elementId: "homeScreenIdentifier",
-                                            element: .text
-                                        )
-                                    ]
-                                ),
-                            ]
-                        )
-                    ]
-                )
+                """
+                <Program_beggining>
+                <Suite_beggining>:HomeScreen
+                <Scenario_begging>:Open Home Screen
+                Arguments:[clearState:true,turnOnExperiment:true]
+                Steps:[verify-homeScreenIdentifier-text]
+                <Scenario_end>
+                <Suite_end>
+                <Program_end>
+                """
         )
     }
 }

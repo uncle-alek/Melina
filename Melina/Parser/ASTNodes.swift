@@ -11,14 +11,14 @@ struct Program: Node, Equatable {
 }
 
 struct Suite: Node, Equatable {
-    let name: String
+    let name: Token
     let scenarios: [Scenario]
     
     func accept(_ v: Visitor) { v.visit(self) }
 }
 
 struct Scenario: Node, Equatable {
-    let name: String
+    let name: Token
     let arguments: [Argument]
     let steps: [Step]
     
@@ -26,29 +26,16 @@ struct Scenario: Node, Equatable {
 }
 
 struct Argument: Node, Equatable {
-    let key: String
-    let value: String
+    let key: Token
+    let value: Token
     
     func accept(_ v: Visitor) { v.visit(self) }
 }
 
 struct Step: Node, Equatable {
-    let action: Action
-    let elementId: String
-    let element: Element
+    let action: Token
+    let elementId: Token
+    let element: Token
     
     func accept(_ v: Visitor) { v.visit(self) }
-}
-
-enum Action: Equatable {
-    case tap
-    case verify
-    case scrollUp
-    case scrollDown
-}
-
-enum Element {
-    case button
-    case text
-    case searchField
 }

@@ -52,7 +52,7 @@ private extension Parser {
         let scenarios = try parseScenarios()
         try match(tokenTypes: .end, error: .missingEnd)
         return Suite(
-            name: suiteNameToken.lexeme,
+            name: suiteNameToken,
             scenarios: scenarios
         )
     }
@@ -74,7 +74,7 @@ private extension Parser {
         let steps = try parseSteps()
         try match(tokenTypes: .end, error: .missingEnd)
         return Scenario(
-            name: scenarioNameToken.lexeme,
+            name: scenarioNameToken,
             arguments: arguments,
             steps: steps
         )
@@ -104,8 +104,8 @@ private extension Parser {
         try match(tokenTypes: .colon, error: .missingColon)
         let valueToken = try match(tokenTypes: .string, error: .missingArgumentValue)
         return Argument(
-            key: keyToken.lexeme,
-            value: valueToken.lexeme
+            key: keyToken,
+            value: valueToken
         )
     }
     
@@ -125,9 +125,9 @@ private extension Parser {
         let elementIdToken = try match(tokenTypes: .string, error: .missingStepElementIdentifier)
         let elementToken = try match(tokenTypes: .button, .text, .searchField, error: .missingStepElement)
         return Step(
-            action: actionToken.type.action!,
-            elementId: elementIdToken.lexeme,
-            element: elementToken.type.element!
+            action: actionToken,
+            elementId: elementIdToken,
+            element: elementToken
         )
     }
 }
@@ -165,27 +165,5 @@ private extension Parser {
     
     func peek() -> Token {
         tokens[currentIndex]
-    }
-}
-
-extension TokenType {
-    
-    var action: Action? {
-        switch self {
-        case .tap: return .tap
-        case .verify: return .verify
-        case .scrollUp: return .scrollUp
-        case .scrollDown: return .scrollDown
-        default: return nil
-        }
-    }
-    
-    var element: Element? {
-        switch self {
-        case .button: return .button
-        case .text: return .text
-        case .searchField: return .searchField
-        default: return nil
-        }
     }
 }

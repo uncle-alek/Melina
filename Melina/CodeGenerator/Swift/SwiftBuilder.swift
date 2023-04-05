@@ -8,7 +8,7 @@ final class SwiftCodeBuilder {
     }
     
     func buildClass(suite: Suite, block: () -> Void) {
-        generatedCode += "final class \(suite.name.className): XCTestCase {" + newLine(2)
+        generatedCode += "final class \(suite.name.lexeme.className): XCTestCase {" + newLine(2)
         scopeLevel += 1
         block()
         scopeLevel -= 1
@@ -16,7 +16,7 @@ final class SwiftCodeBuilder {
     }
     
     func buildTestMethod(scenario: Scenario, block: () -> Void) {
-        generatedCode += tab() + "func \(scenario.name.methodName)() {" + newLine()
+        generatedCode += tab() + "func \(scenario.name.lexeme.methodName)() {" + newLine()
         scopeLevel += 1
         block()
         scopeLevel -= 1
@@ -32,11 +32,11 @@ final class SwiftCodeBuilder {
     }
     
     func buildArgumentPair(argument: Argument) {
-        generatedCode += tab() + "\"\(argument.key)\"" + " : " + "\"\(argument.value)\"" + "," + newLine()
+        generatedCode += tab() + "\"\(argument.key.lexeme)\"" + " : " + "\"\(argument.value.lexeme)\"" + "," + newLine()
     }
     
     func buildXCTestApiCall(step: Step) {
-        generatedCode += tab() + "app." + "\(step.element.code)" + "[\"\(step.elementId)\"]." + "firstMatch." + "\(step.action.code)" + newLine()
+        generatedCode += tab() + "app." + "\(step.element.generatedElement!)" + "[\"\(step.elementId.lexeme)\"]." + "firstMatch." + "\(step.action.generatedAction!)" + newLine()
     }
     
     func buildLaunchAppMethod() {
@@ -101,25 +101,24 @@ extension String {
     }
 }
 
-extension Element {
+extension Token {
     
-    var code: String {
-        switch self {
+    var generatedElement: String? {
+        switch self.type {
         case .text: return "staticTexts"
         case .searchField: return "searchFields"
         case .button: return "buttons"
+        default: return nil
         }
     }
-}
-
-extension Action {
     
-    var code: String {
-        switch self {
+    var generatedAction: String? {
+        switch self.type {
         case .tap: return "tap()"
         case .verify: return "verifyExistence(timeout: 3)"
         case .scrollUp: return "swipeUp()"
         case .scrollDown: return "swipeDown()"
+        default: return nil
         }
     }
 }
