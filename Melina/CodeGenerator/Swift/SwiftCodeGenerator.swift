@@ -44,7 +44,6 @@ final class SwiftCodeGenerator: Visitor {
     
     func visit(_ step: Step) {
         b.buildXCTestApiCall(step: step)
-        
     }
     
     func generate() -> Code {
