@@ -49,13 +49,12 @@ final class Lexer {
     }
 
     func tokenize() throws -> [Token] {
-        
         while !isEndOfFile() {
             startIndex = currentIndex
             try scanToken()
         }
-        
-        return tokens + [Token(type: .eof, lexeme: "", line: line)]
+        addToken(.eof)
+        return tokens
     }
 }
 
@@ -169,7 +168,7 @@ private extension Lexer {
     }
     
     func addToken(_ type: TokenType, _ lexeme: String = "") {
-        tokens.append(.init(type: type, lexeme: lexeme, line: line))
+        tokens.append(.init(type: type, lexeme: lexeme, line: line, startIndex: startIndex, endIndex: currentIndex))
     }
     
     func lexeme() -> String {

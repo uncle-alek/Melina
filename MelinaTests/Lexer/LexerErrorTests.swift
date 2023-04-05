@@ -1,6 +1,6 @@
 import XCTest
 
-final class LexerErrorTests: XCTestCase {
+final class LexerErrorTests: BaseLexerTests {
     
     func test_unknown_keyword() {
         assert(

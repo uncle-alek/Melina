@@ -5,6 +5,8 @@ struct Token: Equatable {
     let type: TokenType
     let lexeme: String
     let line: Int
+    let startIndex: String.Index
+    let endIndex: String.Index
 }
 
 enum TokenType: Equatable {

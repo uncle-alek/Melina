@@ -1,6 +1,6 @@
 import XCTest
 
-final class LexerTests: XCTestCase {
+final class LexerTests: BaseLexerTests {
     
     func test_empty_source() {
         assert(
@@ -15,8 +15,7 @@ final class LexerTests: XCTestCase {
             produce: [
                 .init(
                     type: .suite,
-                    lexeme: "suite",
-                    line: 1
+                    lexeme: "suite"
                 )
             ]
         )
@@ -26,125 +25,114 @@ final class LexerTests: XCTestCase {
             produce: [
                 .init(
                     type: .scenario,
-                    lexeme: "scenario",
-                    line: 1
+                    lexeme: "scenario"
                 )
             ]
         )
-        
+
         assert(
             source: "arguments",
             produce: [
                 .init(
                     type: .arguments,
-                    lexeme: "arguments",
-                    line: 1
+                    lexeme: "arguments"
                 )
             ]
         )
-        
+
         assert(
             source: "end",
             produce: [
                 .init(
                     type: .end,
-                    lexeme: "end",
-                    line: 1
+                    lexeme: "end"
                 )
             ]
         )
-        
+
         assert(
             source: "tap",
             produce: [
                 .init(
                     type: .tap,
-                    lexeme: "tap",
-                    line: 1
+                    lexeme: "tap"
                 )
             ]
         )
-        
+
         assert(
             source: "verify",
             produce: [
                 .init(
                     type: .verify,
-                    lexeme: "verify",
-                    line: 1
+                    lexeme: "verify"
                 )
             ]
         )
-        
+
         assert(
             source: "scrollUp",
             produce: [
                 .init(
                     type: .scrollUp,
-                    lexeme: "scrollUp",
-                    line: 1
+                    lexeme: "scrollUp"
                 )
             ]
         )
-        
+
         assert(
             source: "scrollDown",
             produce: [
                 .init(
                     type: .scrollDown,
-                    lexeme: "scrollDown",
-                    line: 1
+                    lexeme: "scrollDown"
                 )
             ]
         )
-        
+
         assert(
             source: "button",
             produce: [
                 .init(
                     type: .button,
-                    lexeme: "button",
-                    line: 1
+                    lexeme: "button"
                 )
             ]
         )
-        
+
         assert(
             source: "text",
             produce: [
                 .init(
                     type: .text,
-                    lexeme: "text",
-                    line: 1
+                    lexeme: "text"
                 )
             ]
         )
-        
+
         assert(
             source: "searchField",
             produce: [
                 .init(
                     type: .searchField,
-                    lexeme: "searchField",
-                    line: 1
+                    lexeme: "searchField"
                 )
             ]
         )
     }
-    
+
     func test_number() {
         assert(
             source: "12345",
             produce: [
                 .init(
                     type: .number,
-                    lexeme: "12345",
-                    line: 1
+                    lexeme: "12345"
                 )
             ]
         )
     }
-    
+
     func test_string() {
         assert(
             source: "\"Hello world\"",
@@ -152,19 +140,19 @@ final class LexerTests: XCTestCase {
                 .init(
                     type: .string,
                     lexeme: "Hello world",
-                    line: 1
+                    endOffset: 13
                 )
             ]
         )
     }
-    
+
     func test_comment() {
         assert(
             source: "// This is comment",
             produce: []
         )
     }
-    
+
     func test_colon() {
         assert(
             source: ":",
@@ -172,7 +160,7 @@ final class LexerTests: XCTestCase {
                 .init(
                     type: .colon,
                     lexeme: "",
-                    line: 1
+                    endOffset: 1
                 )
             ]
         )
