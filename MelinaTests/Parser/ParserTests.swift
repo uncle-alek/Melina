@@ -1,6 +1,6 @@
 import XCTest
 
-final class ParserTests: XCTestCase {
+final class ParserTests: BaseParserErrorTests {
     
     func test_empty_string_parsing() {
         assert(

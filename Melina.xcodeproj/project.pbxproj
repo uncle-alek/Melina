@@ -27,7 +27,7 @@
 		3CB136B229027B47007902DB /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B129027B47007902DB /* Parser.swift */; };
 		3CB136B429027DF8007902DB /* ASTNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B329027DF8007902DB /* ASTNodes.swift */; };
 		3CB136B829029D24007902DB /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B729029D24007902DB /* ParserTests.swift */; };
-		3CB136BA29029E36007902DB /* ParserAsserts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B929029E36007902DB /* ParserAsserts.swift */; };
+		3CB136BA29029E36007902DB /* BaseParserErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B929029E36007902DB /* BaseParserErrorTests.swift */; };
 		3CB136BB29029F39007902DB /* ASTNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B329027DF8007902DB /* ASTNodes.swift */; };
 		3CB136BC29029F64007902DB /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136B129027B47007902DB /* Parser.swift */; };
 		3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */; };
@@ -71,7 +71,7 @@
 		3CB136B329027DF8007902DB /* ASTNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASTNodes.swift; sourceTree = "<group>"; };
 		3CB136B529028628007902DB /* Grammar */ = {isa = PBXFileReference; lastKnownFileType = text; path = Grammar; sourceTree = "<group>"; };
 		3CB136B729029D24007902DB /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
-		3CB136B929029E36007902DB /* ParserAsserts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserAsserts.swift; sourceTree = "<group>"; };
+		3CB136B929029E36007902DB /* BaseParserErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseParserErrorTests.swift; sourceTree = "<group>"; };
 		3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorTests.swift; sourceTree = "<group>"; };
 		3CB136BF2902DD93007902DB /* LexerErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexerErrorTests.swift; sourceTree = "<group>"; };
 		3CB136C92902E223007902DB /* SwiftCodeGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeGeneratorTests.swift; sourceTree = "<group>"; };
@@ -178,7 +178,7 @@
 			children = (
 				3CB136B729029D24007902DB /* ParserTests.swift */,
 				3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */,
-				3CB136B929029E36007902DB /* ParserAsserts.swift */,
+				3CB136B929029E36007902DB /* BaseParserErrorTests.swift */,
 				3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */,
 			);
 			path = Parser;
@@ -347,7 +347,7 @@
 				3C3DEB8829DD71340040FF7D /* ASTPrinter.swift in Sources */,
 				3C00815629D8569500688808 /* SwiftBuilder.swift in Sources */,
 				3CB136D12902E84A007902DB /* Code.swift in Sources */,
-				3CB136BA29029E36007902DB /* ParserAsserts.swift in Sources */,
+				3CB136BA29029E36007902DB /* BaseParserErrorTests.swift in Sources */,
 				3CB136BB29029F39007902DB /* ASTNodes.swift in Sources */,
 				3CB136CC2902E261007902DB /* CodeGeneratorAssert.swift in Sources */,
 				3CBFFCC329D4517400232720 /* Visitor.swift in Sources */,

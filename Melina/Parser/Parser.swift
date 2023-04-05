@@ -4,6 +4,7 @@ struct ParserError: Error, Equatable {
     
     let expected: Expected
     let line: Int
+    let index: String.Index
     
     enum Expected: Equatable {
         case suiteKeyword,
@@ -157,7 +158,11 @@ private extension Parser {
         if tokenTypes.contains(token.type) {
             return token
         } else {
-            throw ParserError(expected: error, line: tokens[currentIndex - 1].line)
+            throw ParserError(
+                expected: error,
+                line: tokens[currentIndex - 1].line,
+                index: tokens[currentIndex - 1].startIndex
+            )
         }
     }
     
