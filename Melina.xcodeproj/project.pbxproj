@@ -19,6 +19,10 @@
 		3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */; };
 		3C1E248328FE817B0097DDA7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E247128FE7DD20097DDA7 /* Token.swift */; };
 		3C3DEB8829DD71340040FF7D /* ASTPrinter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */; };
+		3C3DEC1D29DDC4B20040FF7D /* ErrorReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */; };
+		3C3DEC1F29E074380040FF7D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1E29E074380040FF7D /* String+.swift */; };
+		3C3DEC2129E075270040FF7D /* ParserErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */; };
+		3C3DEC2329E076F60040FF7D /* ParserErrorMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2229E076F60040FF7D /* ParserErrorMessageBuilder.swift */; };
 		3CB12F2A28FFE64C007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12F2928FFE64C007902DB /* CustomDump */; };
 		3CB12FBE28FFE70B007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12FBD28FFE70B007902DB /* CustomDump */; };
 		3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC429011BF3007902DB /* LexerFullTests.swift */; };
@@ -64,6 +68,10 @@
 		3C1E247128FE7DD20097DDA7 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		3C1E247728FE802F0097DDA7 /* MelinaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MelinaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASTPrinter.swift; sourceTree = "<group>"; };
+		3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporter.swift; sourceTree = "<group>"; };
+		3C3DEC1E29E074380040FF7D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorMessenger.swift; sourceTree = "<group>"; };
+		3C3DEC2229E076F60040FF7D /* ParserErrorMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorMessageBuilder.swift; sourceTree = "<group>"; };
 		3CB12FC429011BF3007902DB /* LexerFullTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerFullTests.swift; sourceTree = "<group>"; };
 		3CB12FC529011BF3007902DB /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
 		3CB12FC829011C71007902DB /* BaseLexerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLexerTests.swift; sourceTree = "<group>"; };
@@ -133,6 +141,7 @@
 		3C1E23E028FE3FF30097DDA7 /* Melina */ = {
 			isa = PBXGroup;
 			children = (
+				3C3DEC1B29DDC4A10040FF7D /* ErrorReporter */,
 				3CB136C52902E12E007902DB /* CodeGenerator */,
 				3CB136C42902E113007902DB /* Parser */,
 				3CB136C32902E108007902DB /* Lexer */,
@@ -153,6 +162,17 @@
 				3CB12FC329011BF3007902DB /* Lexer */,
 			);
 			path = MelinaTests;
+			sourceTree = "<group>";
+		};
+		3C3DEC1B29DDC4A10040FF7D /* ErrorReporter */ = {
+			isa = PBXGroup;
+			children = (
+				3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */,
+				3C3DEC2229E076F60040FF7D /* ParserErrorMessageBuilder.swift */,
+				3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */,
+				3C3DEC1E29E074380040FF7D /* String+.swift */,
+			);
+			path = ErrorReporter;
 			sourceTree = "<group>";
 		};
 		3CB12FBC28FFE70B007902DB /* Frameworks */ = {
@@ -332,7 +352,11 @@
 				3CBFFCC229D4515700232720 /* Visitor.swift in Sources */,
 				3C00815529D8566700688808 /* SwiftBuilder.swift in Sources */,
 				3CBFFCC529D454FC00232720 /* SwiftCodeGenerator.swift in Sources */,
+				3C3DEC1F29E074380040FF7D /* String+.swift in Sources */,
 				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
+				3C3DEC1D29DDC4B20040FF7D /* ErrorReporter.swift in Sources */,
+				3C3DEC2329E076F60040FF7D /* ParserErrorMessageBuilder.swift in Sources */,
+				3C3DEC2129E075270040FF7D /* ParserErrorMessenger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

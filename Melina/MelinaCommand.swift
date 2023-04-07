@@ -13,10 +13,15 @@ struct Melina: ParsableCommand {
     var path: String
 
     mutating func run() throws {
-        let content = try FileService().content(at: path)
-        let tokens = try Lexer(source: content).tokenize()
-        let program = try Parser(tokens: tokens).parse()
-        let swiftCode = SwiftCodeGenerator(program: program).generate()
-        try swiftCode.testClasses.forEach { try FileService().write(content: $0.generatedCode, with: $0.name) }
+        let sourceCode = try FileService().content(at: path)
+        let reporter = ErrorReporter(filePath: path, source: sourceCode)
+        do {
+            let tokens = try Lexer(source: sourceCode).tokenize()
+            let program = try Parser(tokens: tokens).parse()
+            let swiftCode = SwiftCodeGenerator(program: program).generate()
+            try swiftCode.testClasses.forEach { try FileService().write(content: $0.generatedCode, with: $0.name) }
+        } catch {
+            reporter.report(error: error)
+        }
     }
 }
