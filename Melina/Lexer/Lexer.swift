@@ -4,6 +4,7 @@ struct LexerError: Error, Equatable {
     
     let type: `Type`
     let line: Int
+    let index: String.Index
     
     enum `Type`: Equatable {
         case unknownSymbol
@@ -78,13 +79,13 @@ private extension Lexer {
         case _ where c.isLetter:
             try scanKeyword()
         default:
-            throw LexerError(type: .unknownSymbol, line: line)
+            throw error(.unknownSymbol)
         }
     }
     
     func scanComment() throws {
         guard advance() == "/" else {
-            throw LexerError(type: .secondSlashRequiredForComment, line: line)
+            throw error(.secondSlashRequiredForComment)
         }
         while !isEndOfFile() {
             if advance() == "\n" {
@@ -105,7 +106,7 @@ private extension Lexer {
         if let tokenType = keywords[lexeme()] {
             addToken(tokenType, lexeme())
         } else {
-            throw LexerError(type: .unknowKeyword, line: line)
+            throw error(.unknowKeyword)
         }
     }
     
@@ -143,7 +144,7 @@ private extension Lexer {
             if c == "\"" {
                 break
             } else if c == "\n" {
-                throw LexerError(type: .newLineInStringLiteral, line: line)
+                throw error(.newLineInStringLiteral)
             }
         }
         
@@ -177,5 +178,9 @@ private extension Lexer {
     
     func stringLexeme() -> String {
         String(source[startIndex..<currentIndex].dropFirst().dropLast())
+    }
+    
+    func error(_ type: LexerError.`Type`) -> LexerError {
+        LexerError(type: type, line: line, index: currentIndex)
     }
 }

@@ -2,13 +2,15 @@ import Foundation
 
 final class ErrorReporter {
     
-    private let pemb: ParserErrorMessageBuilder
+    private let pemb: ErrorMessageBuilder<ParserError, ParserErrorMessenger>
+    private let lemb: ErrorMessageBuilder<LexerError, LexerErrorMessenger>
     
     init(
         filePath: String,
         source: String
     ) {
-        self.pemb = ParserErrorMessageBuilder(filePath: filePath, source: source)
+        self.pemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: ParserErrorMessenger())
+        self.lemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: LexerErrorMessenger())
     }
     
     func report(error: Error) {
@@ -23,15 +25,19 @@ final class ErrorReporter {
 private extension ErrorReporter {
     
     func report(lexerError: LexerError) {
-
+        print(
+            lemb.fullMessage(line: lexerError.line, error: lexerError)
+                .errorLine(index: lexerError.index)
+                .marker(index: lexerError.index)
+                .build()
+        )
     }
     
     func report(parserError: ParserError) {
         print(
-            pemb.setError(parserError)
-                .fullMessage()
-                .errorLine()
-                .marker()
+            pemb.fullMessage(line: parserError.line, error: parserError)
+                .errorLine(index: parserError.index)
+                .marker(index: parserError.index)
                 .build()
         )
     }

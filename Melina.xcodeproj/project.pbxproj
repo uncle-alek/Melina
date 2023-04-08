@@ -22,7 +22,8 @@
 		3C3DEC1D29DDC4B20040FF7D /* ErrorReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */; };
 		3C3DEC1F29E074380040FF7D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1E29E074380040FF7D /* String+.swift */; };
 		3C3DEC2129E075270040FF7D /* ParserErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */; };
-		3C3DEC2329E076F60040FF7D /* ParserErrorMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2229E076F60040FF7D /* ParserErrorMessageBuilder.swift */; };
+		3C3DEC2329E076F60040FF7D /* ErrorMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */; };
+		3C3DEC2729E07F470040FF7D /* LexerErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */; };
 		3CB12F2A28FFE64C007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12F2928FFE64C007902DB /* CustomDump */; };
 		3CB12FBE28FFE70B007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12FBD28FFE70B007902DB /* CustomDump */; };
 		3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC429011BF3007902DB /* LexerFullTests.swift */; };
@@ -71,7 +72,8 @@
 		3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporter.swift; sourceTree = "<group>"; };
 		3C3DEC1E29E074380040FF7D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorMessenger.swift; sourceTree = "<group>"; };
-		3C3DEC2229E076F60040FF7D /* ParserErrorMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorMessageBuilder.swift; sourceTree = "<group>"; };
+		3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageBuilder.swift; sourceTree = "<group>"; };
+		3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexerErrorMessenger.swift; sourceTree = "<group>"; };
 		3CB12FC429011BF3007902DB /* LexerFullTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerFullTests.swift; sourceTree = "<group>"; };
 		3CB12FC529011BF3007902DB /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
 		3CB12FC829011C71007902DB /* BaseLexerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLexerTests.swift; sourceTree = "<group>"; };
@@ -168,8 +170,9 @@
 			isa = PBXGroup;
 			children = (
 				3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */,
-				3C3DEC2229E076F60040FF7D /* ParserErrorMessageBuilder.swift */,
 				3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */,
+				3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */,
+				3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */,
 				3C3DEC1E29E074380040FF7D /* String+.swift */,
 			);
 			path = ErrorReporter;
@@ -355,7 +358,8 @@
 				3C3DEC1F29E074380040FF7D /* String+.swift in Sources */,
 				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
 				3C3DEC1D29DDC4B20040FF7D /* ErrorReporter.swift in Sources */,
-				3C3DEC2329E076F60040FF7D /* ParserErrorMessageBuilder.swift in Sources */,
+				3C3DEC2729E07F470040FF7D /* LexerErrorMessenger.swift in Sources */,
+				3C3DEC2329E076F60040FF7D /* ErrorMessageBuilder.swift in Sources */,
 				3C3DEC2129E075270040FF7D /* ParserErrorMessenger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

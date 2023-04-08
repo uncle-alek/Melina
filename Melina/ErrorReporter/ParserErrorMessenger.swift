@@ -1,6 +1,6 @@
 import Foundation
 
-struct ParserErrorMessenger {
+struct ParserErrorMessenger: ErrorMessenger {
     
     func message(for error: ParserError) -> String {
         switch error.expected {

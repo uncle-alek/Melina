@@ -21,12 +21,13 @@ open class BaseLexerTests: XCTestCase {
     
     func assert(
         source: String,
-        throws error: LexerError,
+        throws testError: TestLexerError,
         file: StaticString = #file,
         line: UInt = #line
     ) {
         XCTAssertThrowsError(try Lexer(source: source).tokenize(), file: file, line: line) { e in
-            XCTAssertNoDifference(e as! LexerError, error, file: file, line: line)
+            let resultTestError = (e as! LexerError).toTestLexerError(source: source)
+            XCTAssertNoDifference(resultTestError, testError, file: file, line: line)
         }
     }
 }
@@ -66,6 +67,36 @@ extension Token {
             line: line,
             startOffset: source.distance(from: source.startIndex, to: startIndex),
             endOffset: source.distance(from: source.startIndex, to: endIndex)
+        )
+    }
+}
+
+struct TestLexerError: Equatable {
+    
+    let type: LexerError.`Type`
+    let line: Int
+    let offset: Int
+    
+    init(
+        type: LexerError.`Type`,
+        line: Int,
+        offset: Int
+    ) {
+        self.type = type
+        self.line = line
+        self.offset = offset
+    }
+}
+
+extension LexerError {
+    
+    func toTestLexerError(
+        source: String
+    ) -> TestLexerError {
+        TestLexerError(
+            type: type,
+            line: line,
+            offset: source.distance(from: source.startIndex, to: index)
         )
     }
 }
