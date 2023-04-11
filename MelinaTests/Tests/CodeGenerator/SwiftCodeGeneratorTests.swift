@@ -1,8 +1,8 @@
 import XCTest
 
-final class SwiftCodeGeneratorTests: XCTestCase {
+final class SwiftCodeGeneratorTests: BaseSwiftCodeGeneratorTests {
     
-    func test_swift() {
+    func test_swift_code_generation() {
         assert(
             source:
                 """

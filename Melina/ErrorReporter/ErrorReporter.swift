@@ -4,13 +4,16 @@ final class ErrorReporter {
     
     private let pemb: ErrorMessageBuilder<ParserError, ParserErrorMessenger>
     private let lemb: ErrorMessageBuilder<LexerError, LexerErrorMessenger>
+    private let print: (_ items: String...) -> Void
     
     init(
         filePath: String,
-        source: String
+        source: String,
+        print: @escaping (_ items: String...) -> Void
     ) {
         self.pemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: ParserErrorMessenger())
         self.lemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: LexerErrorMessenger())
+        self.print = print
     }
     
     func report(error: Error) {

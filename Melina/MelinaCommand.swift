@@ -14,7 +14,7 @@ struct Melina: ParsableCommand {
 
     mutating func run() throws {
         let sourceCode = try FileService().content(at: path)
-        let reporter = ErrorReporter(filePath: path, source: sourceCode)
+        let reporter = ErrorReporter(filePath: path, source: sourceCode, print: { print($0, separator: " ", terminator: "\n") })
         do {
             let tokens = try Lexer(source: sourceCode).tokenize()
             let program = try Parser(tokens: tokens).parse()

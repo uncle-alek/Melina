@@ -20,10 +20,23 @@
 		3C1E248328FE817B0097DDA7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E247128FE7DD20097DDA7 /* Token.swift */; };
 		3C3DEB8829DD71340040FF7D /* ASTPrinter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */; };
 		3C3DEC1D29DDC4B20040FF7D /* ErrorReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */; };
-		3C3DEC1F29E074380040FF7D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1E29E074380040FF7D /* String+.swift */; };
+		3C3DEC1F29E074380040FF7D /* MelinaString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1E29E074380040FF7D /* MelinaString.swift */; };
 		3C3DEC2129E075270040FF7D /* ParserErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */; };
 		3C3DEC2329E076F60040FF7D /* ErrorMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */; };
 		3C3DEC2729E07F470040FF7D /* LexerErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */; };
+		3C3DEC2A29E12F900040FF7D /* BaseErrorReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2929E12F900040FF7D /* BaseErrorReporterTests.swift */; };
+		3C3DEC2B29E12F960040FF7D /* ErrorReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */; };
+		3C3DEC2C29E12F980040FF7D /* ParserErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */; };
+		3C3DEC2D29E12F9B0040FF7D /* ErrorMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */; };
+		3C3DEC2E29E12F9D0040FF7D /* LexerErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */; };
+		3C3DEC3129E12FEB0040FF7D /* ErroReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC3029E12FEB0040FF7D /* ErroReporterTests.swift */; };
+		3C3DEC3629E531630040FF7D /* MelinaStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC3529E531630040FF7D /* MelinaStringTests.swift */; };
+		3C3DEC3829E531730040FF7D /* BaseMelinaStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC3729E531730040FF7D /* BaseMelinaStringTests.swift */; };
+		3C3DEC3929E531D50040FF7D /* MelinaString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1E29E074380040FF7D /* MelinaString.swift */; };
+		3C3DEC3D29E55C230040FF7D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC3C29E55C230040FF7D /* String+.swift */; };
+		3C3DEC3F29E55CA20040FF7D /* TestParserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC3E29E55CA20040FF7D /* TestParserError.swift */; };
+		3C3DEC4129E55CE20040FF7D /* TestLexerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4029E55CE20040FF7D /* TestLexerError.swift */; };
+		3C3DEC4329E55CFF0040FF7D /* TestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4229E55CFF0040FF7D /* TestToken.swift */; };
 		3CB12F2A28FFE64C007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12F2928FFE64C007902DB /* CustomDump */; };
 		3CB12FBE28FFE70B007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12FBD28FFE70B007902DB /* CustomDump */; };
 		3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC429011BF3007902DB /* LexerFullTests.swift */; };
@@ -38,7 +51,7 @@
 		3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */; };
 		3CB136C02902DD93007902DB /* LexerErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136BF2902DD93007902DB /* LexerErrorTests.swift */; };
 		3CB136CA2902E223007902DB /* SwiftCodeGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136C92902E223007902DB /* SwiftCodeGeneratorTests.swift */; };
-		3CB136CC2902E261007902DB /* CodeGeneratorAssert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136CB2902E261007902DB /* CodeGeneratorAssert.swift */; };
+		3CB136CC2902E261007902DB /* BaseSwiftCodeGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136CB2902E261007902DB /* BaseSwiftCodeGeneratorTests.swift */; };
 		3CB136D02902E82E007902DB /* Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136CF2902E82E007902DB /* Code.swift */; };
 		3CB136D12902E84A007902DB /* Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB136CF2902E82E007902DB /* Code.swift */; };
 		3CBFFCC229D4515700232720 /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFFCC129D4515700232720 /* Visitor.swift */; };
@@ -70,10 +83,18 @@
 		3C1E247728FE802F0097DDA7 /* MelinaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MelinaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASTPrinter.swift; sourceTree = "<group>"; };
 		3C3DEC1C29DDC4B20040FF7D /* ErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporter.swift; sourceTree = "<group>"; };
-		3C3DEC1E29E074380040FF7D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		3C3DEC1E29E074380040FF7D /* MelinaString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaString.swift; sourceTree = "<group>"; };
 		3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorMessenger.swift; sourceTree = "<group>"; };
 		3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageBuilder.swift; sourceTree = "<group>"; };
 		3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexerErrorMessenger.swift; sourceTree = "<group>"; };
+		3C3DEC2929E12F900040FF7D /* BaseErrorReporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseErrorReporterTests.swift; sourceTree = "<group>"; };
+		3C3DEC3029E12FEB0040FF7D /* ErroReporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroReporterTests.swift; sourceTree = "<group>"; };
+		3C3DEC3529E531630040FF7D /* MelinaStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaStringTests.swift; sourceTree = "<group>"; };
+		3C3DEC3729E531730040FF7D /* BaseMelinaStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMelinaStringTests.swift; sourceTree = "<group>"; };
+		3C3DEC3C29E55C230040FF7D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		3C3DEC3E29E55CA20040FF7D /* TestParserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestParserError.swift; sourceTree = "<group>"; };
+		3C3DEC4029E55CE20040FF7D /* TestLexerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLexerError.swift; sourceTree = "<group>"; };
+		3C3DEC4229E55CFF0040FF7D /* TestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestToken.swift; sourceTree = "<group>"; };
 		3CB12FC429011BF3007902DB /* LexerFullTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerFullTests.swift; sourceTree = "<group>"; };
 		3CB12FC529011BF3007902DB /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
 		3CB12FC829011C71007902DB /* BaseLexerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLexerTests.swift; sourceTree = "<group>"; };
@@ -85,7 +106,7 @@
 		3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrorTests.swift; sourceTree = "<group>"; };
 		3CB136BF2902DD93007902DB /* LexerErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexerErrorTests.swift; sourceTree = "<group>"; };
 		3CB136C92902E223007902DB /* SwiftCodeGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeGeneratorTests.swift; sourceTree = "<group>"; };
-		3CB136CB2902E261007902DB /* CodeGeneratorAssert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeGeneratorAssert.swift; sourceTree = "<group>"; };
+		3CB136CB2902E261007902DB /* BaseSwiftCodeGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSwiftCodeGeneratorTests.swift; sourceTree = "<group>"; };
 		3CB136CF2902E82E007902DB /* Code.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Code.swift; sourceTree = "<group>"; };
 		3CBFFCC129D4515700232720 /* Visitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visitor.swift; sourceTree = "<group>"; };
 		3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeGenerator.swift; sourceTree = "<group>"; };
@@ -143,6 +164,7 @@
 		3C1E23E028FE3FF30097DDA7 /* Melina */ = {
 			isa = PBXGroup;
 			children = (
+				3C3DEC3329E5312B0040FF7D /* InternalTypes */,
 				3C3DEC1B29DDC4A10040FF7D /* ErrorReporter */,
 				3CB136C52902E12E007902DB /* CodeGenerator */,
 				3CB136C42902E113007902DB /* Parser */,
@@ -159,9 +181,8 @@
 		3C1E247828FE802F0097DDA7 /* MelinaTests */ = {
 			isa = PBXGroup;
 			children = (
-				3CB136C82902E214007902DB /* CodeGenerator */,
-				3CB136B629029D14007902DB /* Parser */,
-				3CB12FC329011BF3007902DB /* Lexer */,
+				3C3DEC3B29E55B760040FF7D /* Assistants */,
+				3C3DEC3A29E55B660040FF7D /* Tests */,
 			);
 			path = MelinaTests;
 			sourceTree = "<group>";
@@ -173,9 +194,58 @@
 				3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */,
 				3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */,
 				3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */,
-				3C3DEC1E29E074380040FF7D /* String+.swift */,
 			);
 			path = ErrorReporter;
+			sourceTree = "<group>";
+		};
+		3C3DEC2829E12F750040FF7D /* ErrorReporter */ = {
+			isa = PBXGroup;
+			children = (
+				3C3DEC2929E12F900040FF7D /* BaseErrorReporterTests.swift */,
+				3C3DEC3029E12FEB0040FF7D /* ErroReporterTests.swift */,
+			);
+			path = ErrorReporter;
+			sourceTree = "<group>";
+		};
+		3C3DEC3329E5312B0040FF7D /* InternalTypes */ = {
+			isa = PBXGroup;
+			children = (
+				3C3DEC1E29E074380040FF7D /* MelinaString.swift */,
+			);
+			path = InternalTypes;
+			sourceTree = "<group>";
+		};
+		3C3DEC3429E5314D0040FF7D /* InternalTypes */ = {
+			isa = PBXGroup;
+			children = (
+				3C3DEC3529E531630040FF7D /* MelinaStringTests.swift */,
+				3C3DEC3729E531730040FF7D /* BaseMelinaStringTests.swift */,
+			);
+			path = InternalTypes;
+			sourceTree = "<group>";
+		};
+		3C3DEC3A29E55B660040FF7D /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				3C3DEC3429E5314D0040FF7D /* InternalTypes */,
+				3C3DEC2829E12F750040FF7D /* ErrorReporter */,
+				3CB136C82902E214007902DB /* CodeGenerator */,
+				3CB136B629029D14007902DB /* Parser */,
+				3CB12FC329011BF3007902DB /* Lexer */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		3C3DEC3B29E55B760040FF7D /* Assistants */ = {
+			isa = PBXGroup;
+			children = (
+				3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */,
+				3C3DEC3C29E55C230040FF7D /* String+.swift */,
+				3C3DEC3E29E55CA20040FF7D /* TestParserError.swift */,
+				3C3DEC4229E55CFF0040FF7D /* TestToken.swift */,
+				3C3DEC4029E55CE20040FF7D /* TestLexerError.swift */,
+			);
+			path = Assistants;
 			sourceTree = "<group>";
 		};
 		3CB12FBC28FFE70B007902DB /* Frameworks */ = {
@@ -202,7 +272,6 @@
 				3CB136B729029D24007902DB /* ParserTests.swift */,
 				3CB136BD2902DA3A007902DB /* ParserErrorTests.swift */,
 				3CB136B929029E36007902DB /* BaseParserErrorTests.swift */,
-				3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */,
 			);
 			path = Parser;
 			sourceTree = "<group>";
@@ -239,7 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				3CB136C92902E223007902DB /* SwiftCodeGeneratorTests.swift */,
-				3CB136CB2902E261007902DB /* CodeGeneratorAssert.swift */,
+				3CB136CB2902E261007902DB /* BaseSwiftCodeGeneratorTests.swift */,
 			);
 			path = CodeGenerator;
 			sourceTree = "<group>";
@@ -355,7 +424,7 @@
 				3CBFFCC229D4515700232720 /* Visitor.swift in Sources */,
 				3C00815529D8566700688808 /* SwiftBuilder.swift in Sources */,
 				3CBFFCC529D454FC00232720 /* SwiftCodeGenerator.swift in Sources */,
-				3C3DEC1F29E074380040FF7D /* String+.swift in Sources */,
+				3C3DEC1F29E074380040FF7D /* MelinaString.swift in Sources */,
 				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
 				3C3DEC1D29DDC4B20040FF7D /* ErrorReporter.swift in Sources */,
 				3C3DEC2729E07F470040FF7D /* LexerErrorMessenger.swift in Sources */,
@@ -368,24 +437,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C3DEC2D29E12F9B0040FF7D /* ErrorMessageBuilder.swift in Sources */,
+				3C3DEC3629E531630040FF7D /* MelinaStringTests.swift in Sources */,
 				3CB136CA2902E223007902DB /* SwiftCodeGeneratorTests.swift in Sources */,
 				3CB136C02902DD93007902DB /* LexerErrorTests.swift in Sources */,
 				3CB12FC929011C71007902DB /* BaseLexerTests.swift in Sources */,
+				3C3DEC2B29E12F960040FF7D /* ErrorReporter.swift in Sources */,
 				3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */,
 				3C3DEB8829DD71340040FF7D /* ASTPrinter.swift in Sources */,
+				3C3DEC4329E55CFF0040FF7D /* TestToken.swift in Sources */,
 				3C00815629D8569500688808 /* SwiftBuilder.swift in Sources */,
 				3CB136D12902E84A007902DB /* Code.swift in Sources */,
+				3C3DEC2C29E12F980040FF7D /* ParserErrorMessenger.swift in Sources */,
 				3CB136BA29029E36007902DB /* BaseParserErrorTests.swift in Sources */,
+				3C3DEC3F29E55CA20040FF7D /* TestParserError.swift in Sources */,
+				3C3DEC4129E55CE20040FF7D /* TestLexerError.swift in Sources */,
 				3CB136BB29029F39007902DB /* ASTNodes.swift in Sources */,
-				3CB136CC2902E261007902DB /* CodeGeneratorAssert.swift in Sources */,
+				3CB136CC2902E261007902DB /* BaseSwiftCodeGeneratorTests.swift in Sources */,
 				3CBFFCC329D4517400232720 /* Visitor.swift in Sources */,
 				3C1E248328FE817B0097DDA7 /* Token.swift in Sources */,
 				3CB136B829029D24007902DB /* ParserTests.swift in Sources */,
+				3C3DEC2A29E12F900040FF7D /* BaseErrorReporterTests.swift in Sources */,
 				3CB136BC29029F64007902DB /* Parser.swift in Sources */,
 				3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */,
 				3C00724629D7C7CF00688808 /* SwiftCodeGenerator.swift in Sources */,
+				3C3DEC3929E531D50040FF7D /* MelinaString.swift in Sources */,
 				3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */,
+				3C3DEC3829E531730040FF7D /* BaseMelinaStringTests.swift in Sources */,
 				3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */,
+				3C3DEC2E29E12F9D0040FF7D /* LexerErrorMessenger.swift in Sources */,
+				3C3DEC3D29E55C230040FF7D /* String+.swift in Sources */,
+				3C3DEC3129E12FEB0040FF7D /* ErroReporterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
