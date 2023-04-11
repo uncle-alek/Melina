@@ -29,6 +29,11 @@ final class ErrorMessageBuilder<E, M: ErrorMessenger> where E == M.E {
         return self
     }
     
+    func simpleMessage(error: E)  -> Self {
+        errorMessage += "error: \(errorMessenger.message(for: error))" + "\n"
+        return self
+    }
+    
     func errorLine(index: String.Index) -> Self {
         errorMessage += source.textLine(index, index) + "\n"
         return self

@@ -1,8 +1,15 @@
 import Foundation
 
-enum FileServiceError: Error {
-    case fileIsNotExist
-    case contentIsNotAvailable
+struct FileServiceError: Error {
+    
+    let type: `Type`
+    let filePath: String
+    
+    enum `Type` {
+        case fileIsNotExist
+        case contentIsNotAvailable
+        case failToCreateFile
+    }
 }
 
 final class FileService {
@@ -19,10 +26,10 @@ final class FileService {
         at path: String
     ) throws -> String {
         guard fileManager.fileExists(atPath: path) else {
-            throw FileServiceError.fileIsNotExist
+            throw FileServiceError(type: .fileIsNotExist, filePath: path)
         }
         guard let data = fileManager.contents(atPath: path) else {
-            throw FileServiceError.contentIsNotAvailable
+            throw FileServiceError(type: .contentIsNotAvailable, filePath: path)
         }
         return String(decoding: data, as: UTF8.self)
     }
@@ -31,10 +38,8 @@ final class FileService {
         content: String,
         with fileName: String
     ) throws {
-        let currentDirectoryPath = fileManager.currentDirectoryPath
-        fileManager.createFile(
-            atPath: currentDirectoryPath + "/" + fileName,
-            contents: Data(content.utf8)
-        )
+        let filePath = fileManager.currentDirectoryPath + "/" + fileName
+        let isFileCreated = fileManager.createFile(atPath: filePath, contents: Data(content.utf8))
+        if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: filePath) }
     }
 }

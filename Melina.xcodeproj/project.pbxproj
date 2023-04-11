@@ -37,6 +37,9 @@
 		3C3DEC3F29E55CA20040FF7D /* TestParserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC3E29E55CA20040FF7D /* TestParserError.swift */; };
 		3C3DEC4129E55CE20040FF7D /* TestLexerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4029E55CE20040FF7D /* TestLexerError.swift */; };
 		3C3DEC4329E55CFF0040FF7D /* TestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4229E55CFF0040FF7D /* TestToken.swift */; };
+		3C3DEC4529E560320040FF7D /* FileServiceErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4429E560320040FF7D /* FileServiceErrorMessenger.swift */; };
+		3C3DEC4629E568E60040FF7D /* FileServiceErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4429E560320040FF7D /* FileServiceErrorMessenger.swift */; };
+		3C3DEC4729E568ED0040FF7D /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E246C28FE62E70097DDA7 /* FileService.swift */; };
 		3CB12F2A28FFE64C007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12F2928FFE64C007902DB /* CustomDump */; };
 		3CB12FBE28FFE70B007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12FBD28FFE70B007902DB /* CustomDump */; };
 		3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC429011BF3007902DB /* LexerFullTests.swift */; };
@@ -95,6 +98,7 @@
 		3C3DEC3E29E55CA20040FF7D /* TestParserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestParserError.swift; sourceTree = "<group>"; };
 		3C3DEC4029E55CE20040FF7D /* TestLexerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLexerError.swift; sourceTree = "<group>"; };
 		3C3DEC4229E55CFF0040FF7D /* TestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestToken.swift; sourceTree = "<group>"; };
+		3C3DEC4429E560320040FF7D /* FileServiceErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileServiceErrorMessenger.swift; sourceTree = "<group>"; };
 		3CB12FC429011BF3007902DB /* LexerFullTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerFullTests.swift; sourceTree = "<group>"; };
 		3CB12FC529011BF3007902DB /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
 		3CB12FC829011C71007902DB /* BaseLexerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLexerTests.swift; sourceTree = "<group>"; };
@@ -194,6 +198,7 @@
 				3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */,
 				3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */,
 				3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */,
+				3C3DEC4429E560320040FF7D /* FileServiceErrorMessenger.swift */,
 			);
 			path = ErrorReporter;
 			sourceTree = "<group>";
@@ -415,6 +420,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */,
+				3C3DEC4529E560320040FF7D /* FileServiceErrorMessenger.swift in Sources */,
 				3C1E247228FE7DD20097DDA7 /* Token.swift in Sources */,
 				3CB136B229027B47007902DB /* Parser.swift in Sources */,
 				3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */,
@@ -463,10 +469,12 @@
 				3C00724629D7C7CF00688808 /* SwiftCodeGenerator.swift in Sources */,
 				3C3DEC3929E531D50040FF7D /* MelinaString.swift in Sources */,
 				3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */,
+				3C3DEC4729E568ED0040FF7D /* FileService.swift in Sources */,
 				3C3DEC3829E531730040FF7D /* BaseMelinaStringTests.swift in Sources */,
 				3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */,
 				3C3DEC2E29E12F9D0040FF7D /* LexerErrorMessenger.swift in Sources */,
 				3C3DEC3D29E55C230040FF7D /* String+.swift in Sources */,
+				3C3DEC4629E568E60040FF7D /* FileServiceErrorMessenger.swift in Sources */,
 				3C3DEC3129E12FEB0040FF7D /* ErroReporterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

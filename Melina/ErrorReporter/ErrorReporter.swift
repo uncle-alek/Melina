@@ -4,15 +4,17 @@ final class ErrorReporter {
     
     private let pemb: ErrorMessageBuilder<ParserError, ParserErrorMessenger>
     private let lemb: ErrorMessageBuilder<LexerError, LexerErrorMessenger>
-    private let print: (_ items: String...) -> Void
+    private let fsemb: ErrorMessageBuilder<FileServiceError, FileServiceErrorMessenger>
+    private let print: (_ items: String) -> Void
     
     init(
         filePath: String,
         source: String,
-        print: @escaping (_ items: String...) -> Void
+        print: @escaping (_ items: String) -> Void
     ) {
         self.pemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: ParserErrorMessenger())
         self.lemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: LexerErrorMessenger())
+        self.fsemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: FileServiceErrorMessenger())
         self.print = print
     }
     
@@ -20,6 +22,7 @@ final class ErrorReporter {
         switch error {
         case is LexerError: report(lexerError: error as! LexerError)
         case is ParserError: report(parserError: error as! ParserError)
+        case is FileServiceError: report(fileServiceError: error as! FileServiceError)
         default: fatalError("Unknown error")
         }
     }
@@ -41,6 +44,13 @@ private extension ErrorReporter {
             pemb.fullMessage(line: parserError.line, error: parserError)
                 .errorLine(index: parserError.index)
                 .marker(index: parserError.index)
+                .build()
+        )
+    }
+    
+    func report(fileServiceError: FileServiceError) {
+        print(
+            fsemb.simpleMessage(error: fileServiceError)
                 .build()
         )
     }

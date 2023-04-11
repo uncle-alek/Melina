@@ -39,6 +39,22 @@ open class BaseErrorReporterTests: XCTestCase {
         )
     }
     
+    func assert(
+        error: FileServiceError,
+        errorMessage: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        assert(
+            source: "",
+            fileName: "Melina.swift",
+            error: error,
+            errorMessage: errorMessage,
+            file: file,
+            line: line
+        )
+    }
+    
     private func assert(
         source: String,
         fileName: String,
@@ -47,9 +63,9 @@ open class BaseErrorReporterTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        var result: [String] = []
+        var result: String = ""
         let reporter = ErrorReporter(filePath: fileName, source: source, print: { result = $0 })
         reporter.report(error: error)
-        XCTAssertNoDifference(result, [errorMessage], file: file, line: line)
+        XCTAssertNoDifference(result, errorMessage, file: file, line: line)
     }
 }
