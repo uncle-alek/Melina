@@ -10,6 +10,8 @@
 		3C00724629D7C7CF00688808 /* SwiftCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */; };
 		3C00815529D8566700688808 /* SwiftBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C00815429D8566700688808 /* SwiftBuilder.swift */; };
 		3C00815629D8569500688808 /* SwiftBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C00815429D8566700688808 /* SwiftBuilder.swift */; };
+		3C1A61F829EAB6F80014B908 /* TestSemanticAnalyzerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1A61F729EAB6F80014B908 /* TestSemanticAnalyzerError.swift */; };
+		3C1A61F929EAB9070014B908 /* SemanticAnalyzerErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4C29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift */; };
 		3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23E128FE3FF30097DDA7 /* main.swift */; };
 		3C1E23EA28FE42AB0097DDA7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 3C1E23E928FE42AB0097DDA7 /* ArgumentParser */; };
 		3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */; };
@@ -40,6 +42,9 @@
 		3C3DEC4529E560320040FF7D /* FileServiceErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4429E560320040FF7D /* FileServiceErrorMessenger.swift */; };
 		3C3DEC4629E568E60040FF7D /* FileServiceErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4429E560320040FF7D /* FileServiceErrorMessenger.swift */; };
 		3C3DEC4729E568ED0040FF7D /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E246C28FE62E70097DDA7 /* FileService.swift */; };
+		3C3DEC4A29E5713B0040FF7D /* SemanticAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4929E5713B0040FF7D /* SemanticAnalyzer.swift */; };
+		3C3DEC4B29E5713E0040FF7D /* SemanticAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4929E5713B0040FF7D /* SemanticAnalyzer.swift */; };
+		3C3DEC4D29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4C29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift */; };
 		3CB12F2A28FFE64C007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12F2928FFE64C007902DB /* CustomDump */; };
 		3CB12FBE28FFE70B007902DB /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 3CB12FBD28FFE70B007902DB /* CustomDump */; };
 		3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB12FC429011BF3007902DB /* LexerFullTests.swift */; };
@@ -76,6 +81,7 @@
 
 /* Begin PBXFileReference section */
 		3C00815429D8566700688808 /* SwiftBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuilder.swift; sourceTree = "<group>"; };
+		3C1A61F729EAB6F80014B908 /* TestSemanticAnalyzerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSemanticAnalyzerError.swift; sourceTree = "<group>"; };
 		3C1E23DE28FE3FF30097DDA7 /* Melina */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Melina; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C1E23E128FE3FF30097DDA7 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaCommand.swift; sourceTree = "<group>"; };
@@ -99,6 +105,8 @@
 		3C3DEC4029E55CE20040FF7D /* TestLexerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLexerError.swift; sourceTree = "<group>"; };
 		3C3DEC4229E55CFF0040FF7D /* TestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestToken.swift; sourceTree = "<group>"; };
 		3C3DEC4429E560320040FF7D /* FileServiceErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileServiceErrorMessenger.swift; sourceTree = "<group>"; };
+		3C3DEC4929E5713B0040FF7D /* SemanticAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticAnalyzer.swift; sourceTree = "<group>"; };
+		3C3DEC4C29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticAnalyzerErrorMessenger.swift; sourceTree = "<group>"; };
 		3CB12FC429011BF3007902DB /* LexerFullTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerFullTests.swift; sourceTree = "<group>"; };
 		3CB12FC529011BF3007902DB /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
 		3CB12FC829011C71007902DB /* BaseLexerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLexerTests.swift; sourceTree = "<group>"; };
@@ -168,6 +176,7 @@
 		3C1E23E028FE3FF30097DDA7 /* Melina */ = {
 			isa = PBXGroup;
 			children = (
+				3C3DEC4829E5713B0040FF7D /* SemanticAnalyzer */,
 				3C3DEC3329E5312B0040FF7D /* InternalTypes */,
 				3C3DEC1B29DDC4A10040FF7D /* ErrorReporter */,
 				3CB136C52902E12E007902DB /* CodeGenerator */,
@@ -199,6 +208,7 @@
 				3C3DEC2229E076F60040FF7D /* ErrorMessageBuilder.swift */,
 				3C3DEC2629E07F470040FF7D /* LexerErrorMessenger.swift */,
 				3C3DEC4429E560320040FF7D /* FileServiceErrorMessenger.swift */,
+				3C3DEC4C29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift */,
 			);
 			path = ErrorReporter;
 			sourceTree = "<group>";
@@ -249,8 +259,17 @@
 				3C3DEC3E29E55CA20040FF7D /* TestParserError.swift */,
 				3C3DEC4229E55CFF0040FF7D /* TestToken.swift */,
 				3C3DEC4029E55CE20040FF7D /* TestLexerError.swift */,
+				3C1A61F729EAB6F80014B908 /* TestSemanticAnalyzerError.swift */,
 			);
 			path = Assistants;
+			sourceTree = "<group>";
+		};
+		3C3DEC4829E5713B0040FF7D /* SemanticAnalyzer */ = {
+			isa = PBXGroup;
+			children = (
+				3C3DEC4929E5713B0040FF7D /* SemanticAnalyzer.swift */,
+			);
+			path = SemanticAnalyzer;
 			sourceTree = "<group>";
 		};
 		3CB12FBC28FFE70B007902DB /* Frameworks */ = {
@@ -424,6 +443,7 @@
 				3C1E247228FE7DD20097DDA7 /* Token.swift in Sources */,
 				3CB136B229027B47007902DB /* Parser.swift in Sources */,
 				3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */,
+				3C3DEC4A29E5713B0040FF7D /* SemanticAnalyzer.swift in Sources */,
 				3C1E247028FE7D2F0097DDA7 /* Lexer.swift in Sources */,
 				3CB136B429027DF8007902DB /* ASTNodes.swift in Sources */,
 				3CB136D02902E82E007902DB /* Code.swift in Sources */,
@@ -432,6 +452,7 @@
 				3CBFFCC529D454FC00232720 /* SwiftCodeGenerator.swift in Sources */,
 				3C3DEC1F29E074380040FF7D /* MelinaString.swift in Sources */,
 				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
+				3C3DEC4D29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift in Sources */,
 				3C3DEC1D29DDC4B20040FF7D /* ErrorReporter.swift in Sources */,
 				3C3DEC2729E07F470040FF7D /* LexerErrorMessenger.swift in Sources */,
 				3C3DEC2329E076F60040FF7D /* ErrorMessageBuilder.swift in Sources */,
@@ -466,14 +487,17 @@
 				3C3DEC2A29E12F900040FF7D /* BaseErrorReporterTests.swift in Sources */,
 				3CB136BC29029F64007902DB /* Parser.swift in Sources */,
 				3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */,
+				3C3DEC4B29E5713E0040FF7D /* SemanticAnalyzer.swift in Sources */,
 				3C00724629D7C7CF00688808 /* SwiftCodeGenerator.swift in Sources */,
 				3C3DEC3929E531D50040FF7D /* MelinaString.swift in Sources */,
 				3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */,
 				3C3DEC4729E568ED0040FF7D /* FileService.swift in Sources */,
+				3C1A61F929EAB9070014B908 /* SemanticAnalyzerErrorMessenger.swift in Sources */,
 				3C3DEC3829E531730040FF7D /* BaseMelinaStringTests.swift in Sources */,
 				3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */,
 				3C3DEC2E29E12F9D0040FF7D /* LexerErrorMessenger.swift in Sources */,
 				3C3DEC3D29E55C230040FF7D /* String+.swift in Sources */,
+				3C1A61F829EAB6F80014B908 /* TestSemanticAnalyzerError.swift in Sources */,
 				3C3DEC4629E568E60040FF7D /* FileServiceErrorMessenger.swift in Sources */,
 				3C3DEC3129E12FEB0040FF7D /* ErroReporterTests.swift in Sources */,
 			);

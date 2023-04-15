@@ -19,6 +19,18 @@ struct TestToken: Equatable {
         self.startOffset = startOffset
         self.endOffset = endOffset ?? lexeme.count
     }
+    
+    func toToken(
+        source: String
+    ) -> Token {
+        Token(
+            type: type,
+            lexeme: lexeme,
+            line: line,
+            startIndex: source.index(by: startOffset),
+            endIndex: source.index(by: endOffset)
+        )
+    }
 }
 
 extension Token {

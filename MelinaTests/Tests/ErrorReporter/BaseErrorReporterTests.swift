@@ -55,6 +55,24 @@ open class BaseErrorReporterTests: XCTestCase {
         )
     }
     
+    func assert(
+        source: String,
+        fileName: String,
+        error: TestSemanticAnalyzerError,
+        errorMessage: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        assert(
+            source: source,
+            fileName: fileName,
+            error: error.toSemanticAnalyzerError(source: source),
+            errorMessage: errorMessage,
+            file: file,
+            line: line
+        )
+    }
+    
     private func assert(
         source: String,
         fileName: String,

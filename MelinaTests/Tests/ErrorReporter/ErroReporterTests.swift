@@ -56,4 +56,27 @@ final class ErrorReporterTests: BaseErrorReporterTests {
             """
         )
     }
+    
+    func test_semantic_analyzer_error() {
+        assert(
+            source:
+            """
+            suite "Melina":
+                scenario First scenario":
+                    tap "Button_2" text
+                end
+            end
+            """,
+            fileName: "MelinaTests.swift",
+            error: TestSemanticAnalyzerError.incompatibleAction(
+                element: TestToken(type: .text, lexeme: "text"),
+                action: TestToken(type: .tap, lexeme: "tap")
+            ),
+            errorMessage:
+            """
+            file: MelinaTests.swift line: 0 error: action `tap` can't be applied to the element `text`
+            
+            """
+        )
+    }
 }
