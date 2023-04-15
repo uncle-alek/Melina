@@ -46,8 +46,8 @@ final class SwiftCodeGenerator: Visitor {
         b.buildXCTestApiCall(step: step)
     }
     
-    func generate() -> Code {
+    func generate() -> Result<Code, [Error]> {
         program.accept(self)
-        return Code(testClasses: testClasses)
+        return .success(Code(testClasses: testClasses))
     }
 }

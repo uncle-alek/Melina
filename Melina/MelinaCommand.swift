@@ -15,18 +15,15 @@ struct Melina: ParsableCommand {
 
     mutating func run() throws {
         do {
-            sourceCode = try FileService().content(at: path)
-            let tokens = try Lexer(source: sourceCode).tokenize()
-            let program = try Parser(tokens: tokens).parse()
-            try SemanticAnalyzer(program: program).analyze()
-            let swiftCode = SwiftCodeGenerator(program: program).generate()
-            try swiftCode.testClasses.forEach { try FileService().write(content: $0.generatedCode, with: $0.name) }
-        } catch {
-            ErrorReporter(
-                filePath: path,
-                source: sourceCode,
-                print: { Swift.print($0, terminator: "") }
-            ).report(error: error)
+            try FileService().content(at: path)
+                .flatMap { Lexer(source: $0).tokenize() }
+                .flatMap { Parser(tokens: $0).parse() }
+                .flatMap { SemanticAnalyzer(program: $0).analyze() }
+                .flatMap { SwiftCodeGenerator(program: $0).generate() }
+                .flatMap { FileService().write(code: $0) }
+                .get()
+        } catch let errors as [Error] {
+            ErrorReporter(filePath: path, source: sourceCode).report(errors: errors)
         }
     }
 }

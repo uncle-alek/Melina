@@ -10,8 +10,9 @@ open class BaseParserErrorTests: XCTestCase {
         line: UInt = #line
     ) {
         do {
-            let tokens = try Lexer(source: source).tokenize()
-            let result = try Parser(tokens: tokens).parse()
+            let result = try Lexer(source: source).tokenize()
+                .flatMap { Parser(tokens: $0).parse() }
+                .get()
             let stringResult = ASTPrinter(program: result).toString()
             XCTAssertNoDifference(stringResult, program, file: file, line: line)
         } catch {
@@ -25,10 +26,15 @@ open class BaseParserErrorTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        let tokens = try! Lexer(source: source).tokenize()
-        XCTAssertThrowsError(try Parser(tokens: tokens).parse(), file: file, line: line) { e in
-            let resultTestError = (e as! ParserError).toTestParserError(source: source)
-            XCTAssertNoDifference(resultTestError, testError, file: file, line: line)
+        do {
+            _ = try Lexer(source: source).tokenize()
+                .flatMap { Parser(tokens: $0).parse() }
+                .get()
+        } catch let errors as [Error] {
+            XCTAssertEqual(errors.count, 1, file: file, line: line)
+            XCTAssertNoDifference((errors.first as! ParserError).toTestParserError(source: source), testError, file: file, line: line)
+        } catch {
+            XCTFail("Unexpected error type", file: file, line: line)
         }
     }
 }

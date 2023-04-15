@@ -39,6 +39,7 @@ final class Lexer {
     private var currentIndex: String.Index
     private var line: Int
     private var tokens: [Token] = []
+    private var errors: [Error] = []
 
     init(
         source: String
@@ -49,13 +50,22 @@ final class Lexer {
         self.line = 1
     }
 
-    func tokenize() throws -> [Token] {
+    func tokenize() -> Result<[Token], [Error]> {
         while !isEndOfFile() {
             startIndex = currentIndex
-            try scanToken()
+            do {
+                try scanToken()
+            } catch {
+                errors.append(error)
+                break
+            }
         }
-        addToken(.eof)
-        return tokens
+        if errors.isEmpty {
+            addToken(.eof)
+            return .success(tokens)
+        } else {
+            return .failure(errors)
+        }
     }
 }
 

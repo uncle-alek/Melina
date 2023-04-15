@@ -11,7 +11,7 @@ final class ErrorReporter {
     init(
         filePath: String,
         source: String,
-        print: @escaping (_ items: String) -> Void
+        print: @escaping (_ items: String) -> Void = { Swift.print($0, terminator: "") }
     ) {
         self.pemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: ParserErrorMessenger())
         self.lemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: LexerErrorMessenger())
@@ -19,6 +19,13 @@ final class ErrorReporter {
         self.saemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: SemanticAnalyzerErrorMessenger())
         self.print = print
     }
+    
+    func report(errors: [Error]) {
+        errors.forEach(report(error:))
+    }
+}
+
+private extension ErrorReporter {
     
     func report(error: Error) {
         switch error {
@@ -29,9 +36,6 @@ final class ErrorReporter {
         default: fatalError("Unknown error")
         }
     }
-}
-
-private extension ErrorReporter {
     
     func report(lexerError: LexerError) {
         print(

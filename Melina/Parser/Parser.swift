@@ -36,6 +36,7 @@ final class Parser {
     private let tokens: [Token]
     private var currentIndex: Int = 0
     private var suites: [Suite] = []
+    private var errors: [Error] = []
     
     init(
         tokens: [Token]
@@ -43,13 +44,23 @@ final class Parser {
         self.tokens = tokens
     }
     
-    func parse() throws -> Program {
+    func parse() -> Result<Program, [Error]> {
         var suites: [Suite] = []
         while !isAtEnd() {
-            let suite = try parseSuite()
-            suites.append(suite)
+            do {
+                let suite = try parseSuite()
+                suites.append(suite)
+            } catch {
+                errors.append(error)
+                break
+            }
         }
-        return Program(suites: suites)
+        if errors.isEmpty {
+            return .success(Program(suites: suites))
+        } else {
+            return .failure(errors)
+        }
+        
     }
 }
 

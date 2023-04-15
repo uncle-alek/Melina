@@ -14,7 +14,7 @@ open class BaseErrorReporterTests: XCTestCase {
         assert(
             source: source,
             fileName: fileName,
-            error: error.toLexerError(source: source),
+            errors: [error.toLexerError(source: source)],
             errorMessage: errorMessage,
             file: file,
             line: line
@@ -32,7 +32,7 @@ open class BaseErrorReporterTests: XCTestCase {
         assert(
             source: source,
             fileName: fileName,
-            error: error.toParserError(source: source),
+            errors: [error.toParserError(source: source)],
             errorMessage: errorMessage,
             file: file,
             line: line
@@ -48,7 +48,7 @@ open class BaseErrorReporterTests: XCTestCase {
         assert(
             source: "",
             fileName: "Melina.swift",
-            error: error,
+            errors: [error],
             errorMessage: errorMessage,
             file: file,
             line: line
@@ -66,7 +66,7 @@ open class BaseErrorReporterTests: XCTestCase {
         assert(
             source: source,
             fileName: fileName,
-            error: error.toSemanticAnalyzerError(source: source),
+            errors: [error.toSemanticAnalyzerError(source: source)],
             errorMessage: errorMessage,
             file: file,
             line: line
@@ -76,14 +76,14 @@ open class BaseErrorReporterTests: XCTestCase {
     private func assert(
         source: String,
         fileName: String,
-        error: Error,
+        errors: [Error],
         errorMessage: String,
         file: StaticString = #file,
         line: UInt = #line
     ) {
         var result: String = ""
         let reporter = ErrorReporter(filePath: fileName, source: source, print: { result = $0 })
-        reporter.report(error: error)
+        reporter.report(errors: errors)
         XCTAssertNoDifference(result, errorMessage, file: file, line: line)
     }
 }

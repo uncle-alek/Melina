@@ -10,9 +10,10 @@ open class BaseSwiftCodeGeneratorTests: XCTestCase {
         line: UInt = #line
     ) {
         do {
-            let tokens = try Lexer(source: source).tokenize()
-            let program = try Parser(tokens: tokens).parse()
-            let result = SwiftCodeGenerator(program: program).generate()
+            let result = try Lexer(source: source).tokenize()
+                .flatMap { Parser(tokens: $0).parse() }
+                .flatMap { SwiftCodeGenerator(program: $0).generate() }
+                .get()
             XCTAssertNoDifference(result, code, file: file, line: line)
         } catch {
             XCTFail("Unexpected error: \(error)", file: file, line: line)

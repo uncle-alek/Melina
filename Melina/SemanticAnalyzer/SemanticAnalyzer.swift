@@ -40,10 +40,12 @@ final class SemanticAnalyzer: Visitor {
         }
     }
     
-    func analyze() throws {
+    func analyze() -> Result<Program, [Error]> {
         program.accept(self)
-        if let error = errors.first {
-            throw error
+        if errors.isEmpty {
+            return .success(program)
+        } else {
+            return .failure(errors)
         }
     }
 }

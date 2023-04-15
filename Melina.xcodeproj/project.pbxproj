@@ -12,6 +12,8 @@
 		3C00815629D8569500688808 /* SwiftBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C00815429D8566700688808 /* SwiftBuilder.swift */; };
 		3C1A61F829EAB6F80014B908 /* TestSemanticAnalyzerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1A61F729EAB6F80014B908 /* TestSemanticAnalyzerError.swift */; };
 		3C1A61F929EAB9070014B908 /* SemanticAnalyzerErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4C29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift */; };
+		3C1A61FB29EAED620014B908 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1A61FA29EAED620014B908 /* Array+.swift */; };
+		3C1A61FC29EAF30E0014B908 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1A61FA29EAED620014B908 /* Array+.swift */; };
 		3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23E128FE3FF30097DDA7 /* main.swift */; };
 		3C1E23EA28FE42AB0097DDA7 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 3C1E23E928FE42AB0097DDA7 /* ArgumentParser */; };
 		3C1E23EC28FE4FF70097DDA7 /* MelinaCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */; };
@@ -82,6 +84,7 @@
 /* Begin PBXFileReference section */
 		3C00815429D8566700688808 /* SwiftBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuilder.swift; sourceTree = "<group>"; };
 		3C1A61F729EAB6F80014B908 /* TestSemanticAnalyzerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSemanticAnalyzerError.swift; sourceTree = "<group>"; };
+		3C1A61FA29EAED620014B908 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		3C1E23DE28FE3FF30097DDA7 /* Melina */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Melina; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C1E23E128FE3FF30097DDA7 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaCommand.swift; sourceTree = "<group>"; };
@@ -226,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				3C3DEC1E29E074380040FF7D /* MelinaString.swift */,
+				3C1A61FA29EAED620014B908 /* Array+.swift */,
 			);
 			path = InternalTypes;
 			sourceTree = "<group>";
@@ -447,6 +451,7 @@
 				3C1E247028FE7D2F0097DDA7 /* Lexer.swift in Sources */,
 				3CB136B429027DF8007902DB /* ASTNodes.swift in Sources */,
 				3CB136D02902E82E007902DB /* Code.swift in Sources */,
+				3C1A61FB29EAED620014B908 /* Array+.swift in Sources */,
 				3CBFFCC229D4515700232720 /* Visitor.swift in Sources */,
 				3C00815529D8566700688808 /* SwiftBuilder.swift in Sources */,
 				3CBFFCC529D454FC00232720 /* SwiftCodeGenerator.swift in Sources */,
@@ -468,6 +473,7 @@
 				3C3DEC3629E531630040FF7D /* MelinaStringTests.swift in Sources */,
 				3CB136CA2902E223007902DB /* SwiftCodeGeneratorTests.swift in Sources */,
 				3CB136C02902DD93007902DB /* LexerErrorTests.swift in Sources */,
+				3C1A61FC29EAF30E0014B908 /* Array+.swift in Sources */,
 				3CB12FC929011C71007902DB /* BaseLexerTests.swift in Sources */,
 				3C3DEC2B29E12F960040FF7D /* ErrorReporter.swift in Sources */,
 				3CB136BE2902DA3A007902DB /* ParserErrorTests.swift in Sources */,
