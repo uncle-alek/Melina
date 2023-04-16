@@ -12,6 +12,7 @@ suite "Melina":
         verify "Hello, world!" text
         tap "Button_1" button
         tap "Button_2" button
+        button[name:"Button_2"] tap
     end
     
    // scenario "Second scenario"

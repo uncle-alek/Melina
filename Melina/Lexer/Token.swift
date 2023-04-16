@@ -11,7 +11,9 @@ struct Token: Equatable {
 
 enum TokenType: Equatable {
     case eof,
-         colon
+         colon,
+         leftSquareBrace,
+         rightSquareBrace
     
     case number,
          string
@@ -20,6 +22,8 @@ enum TokenType: Equatable {
          scenario,
          arguments,
          end
+    
+    case name
     
     case button,
          text,

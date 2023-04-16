@@ -8,7 +8,7 @@ final class LexerFullTests: BaseLexerTests {
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        scrollDown "homeScreenIdentifier" searchField
+                        tap button[name: "Button_1"]
                     end
                 end
                 """,
@@ -56,39 +56,67 @@ final class LexerFullTests: BaseLexerTests {
                                 endOffset: 52
                             ),
                                         .init(
-                                            type: .scrollDown,
-                                            lexeme: "scrollDown",
+                                            type: .tap,
+                                            lexeme: "tap",
                                             line: 3,
                                             startOffset: 61,
+                                            endOffset: 64
+                                        ),
+                                        .init(
+                                            type: .button,
+                                            lexeme: "button",
+                                            line: 3,
+                                            startOffset: 65,
                                             endOffset: 71
                                         ),
                                         .init(
-                                            type: .string,
-                                            lexeme: "homeScreenIdentifier",
+                                            type: .leftSquareBrace,
+                                            lexeme: "",
                                             line: 3,
-                                            startOffset: 72,
-                                            endOffset: 94
+                                            startOffset: 71,
+                                            endOffset: 72
                                         ),
                                         .init(
-                                            type: .searchField,
-                                            lexeme: "searchField",
+                                            type: .name,
+                                            lexeme: "name",
                                             line: 3,
-                                            startOffset: 95,
-                                            endOffset: 106
+                                            startOffset: 72,
+                                            endOffset: 76
+                                        ),
+                                        .init(
+                                            type: .colon,
+                                            lexeme: "",
+                                            line: 3,
+                                            startOffset: 76,
+                                            endOffset: 77
+                                        ),
+                                        .init(
+                                            type: .string,
+                                            lexeme: "Button_1",
+                                            line: 3,
+                                            startOffset: 78,
+                                            endOffset: 88
+                                        ),
+                                        .init(
+                                            type: .rightSquareBrace,
+                                            lexeme: "",
+                                            line: 3,
+                                            startOffset: 88,
+                                            endOffset: 89
                                         ),
                             .init(
                                 type: .end,
                                 lexeme: "end",
                                 line: 4,
-                                startOffset: 111,
-                                endOffset: 114
+                                startOffset: 94,
+                                endOffset: 97
                             ),
                 .init(
                     type: .end,
                     lexeme: "end",
                     line: 5,
-                    startOffset: 115,
-                    endOffset: 118
+                    startOffset: 98,
+                    endOffset: 101
                 )
             ]
         )

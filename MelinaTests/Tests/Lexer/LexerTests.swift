@@ -119,6 +119,16 @@ final class LexerTests: BaseLexerTests {
                 )
             ]
         )
+        
+        assert(
+            source: "name",
+            produce: [
+                .init(
+                    type: .name,
+                    lexeme: "name"
+                )
+            ]
+        )
     }
 
     func test_number() {
@@ -153,12 +163,34 @@ final class LexerTests: BaseLexerTests {
         )
     }
 
-    func test_colon() {
+    func test_special_symbols() {
         assert(
             source: ":",
             produce: [
                 .init(
                     type: .colon,
+                    lexeme: "",
+                    endOffset: 1
+                )
+            ]
+        )
+        
+        assert(
+            source: "[",
+            produce: [
+                .init(
+                    type: .leftSquareBrace,
+                    lexeme: "",
+                    endOffset: 1
+                )
+            ]
+        )
+        
+        assert(
+            source: "]",
+            produce: [
+                .init(
+                    type: .rightSquareBrace,
                     lexeme: "",
                     endOffset: 1
                 )

@@ -23,6 +23,8 @@ final class Lexer {
 
         "end"         : .end,
         
+        "name"        : .name,
+        
         "button"      : .button,
         "text"        : .text,
         "searchField" : .searchField,
@@ -80,6 +82,10 @@ private extension Lexer {
             scanNewLine()
         case ":":
             scanColon()
+        case "[":
+            scanLeftSquareBrace()
+        case "]":
+            scanRightSquareBrace()
         case "/":
             try scanComment()
         case _ where c.isNumber:
@@ -135,6 +141,14 @@ private extension Lexer {
     
     func scanColon() {
         addToken(.colon)
+    }
+    
+    func scanLeftSquareBrace() {
+        addToken(.leftSquareBrace)
+    }
+    
+    func scanRightSquareBrace() {
+        addToken(.rightSquareBrace)
     }
     
     func scanNumber() throws {
