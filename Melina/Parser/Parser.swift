@@ -18,8 +18,12 @@ struct ParserError: Error, Equatable {
              scenarioEnd
         
         case stepAction,
-             stepElementIdentifier,
-             stepElement
+             stepElement,
+             stepLeftSquareBrace,
+             stepElementNameKeyword,
+             stepElementColon,
+             stepElementName,
+             stepRightSquareBrace
         
         case argumentsKeyword,
              argumentsColon,
@@ -142,14 +146,24 @@ private extension Parser {
     }
     
     func parseStep() throws -> Step {
-        let actionToken = try match(tokenTypes: .tap, .verify, .scrollUp, .scrollDown, error: .stepAction)
-        let elementIdToken = try match(tokenTypes: .string, error: .stepElementIdentifier)
-        let elementToken = try match(tokenTypes: .button, .text, .searchField, error: .stepElement)
-        return Step(
-            action: actionToken,
-            elementId: elementIdToken,
-            element: elementToken
-        )
+        let action = try parseAction()
+        let element = try parseElement()
+        return Step(action: action, element: element)
+    }
+    
+    func parseAction() throws -> Action {
+        let typeToken = try match(tokenTypes: .tap, .verify, .scrollUp, .scrollDown, error: .stepAction)
+        return Action(type: typeToken)
+    }
+    
+    func parseElement() throws -> Element {
+        let typeToken = try match(tokenTypes: .button, .text, .searchField, error: .stepElement)
+        try match(tokenTypes: .leftSquareBrace, error: .stepLeftSquareBrace)
+        try match(tokenTypes: .name, error: .stepElementNameKeyword)
+        try match(tokenTypes: .colon, error: .stepElementColon)
+        let nameToken = try match(tokenTypes: .string, error: .stepElementName)
+        try match(tokenTypes: .rightSquareBrace, error: .stepRightSquareBrace)
+        return Element(type: typeToken, name: nameToken)
     }
 }
 

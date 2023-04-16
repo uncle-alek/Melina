@@ -35,8 +35,8 @@ final class SemanticAnalyzer: Visitor {
     func visit(_ argument: Argument) {}
     
     func visit(_ step: Step) {
-        if !availableActions[step.element.type]!.contains(step.action.type) {
-            errors.append(.incompatibleAction(element: step.element, action: step.action))
+        if !availableActions[step.element.type.type]!.contains(step.action.type.type) {
+            errors.append(.incompatibleAction(element: step.element.type, action: step.action.type))
         }
     }
     

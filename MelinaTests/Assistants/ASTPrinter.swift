@@ -53,7 +53,7 @@ final class ASTPrinter: Visitor {
     }
     
     func visit(_ step: Step) {
-        formattedText += "\(step.action.lexeme)-\(step.elementId.lexeme)-\(step.element.lexeme)"
+        formattedText += "\(step.action.type.lexeme)-\(step.element.type.lexeme)[name:\(step.element.name.lexeme)]"
     }
     
     func toString() -> String {

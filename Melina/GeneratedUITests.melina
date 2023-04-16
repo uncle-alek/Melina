@@ -1,7 +1,4 @@
 suite "Melina":
-    // constant
-    //    cartScreenExperiment MAPPCartScreen
-    // end
         
     scenario "First scenario":
         arguments:
@@ -9,10 +6,7 @@ suite "Melina":
         end
 
         // Do some steps
-        verify "Hello, world!" text
-        tap "Button_1" button
-        tap "Button_2" button
-        button[name:"Button_2"] tap
+        tap button[name:"Button_1"]
     end
     
    // scenario "Second scenario"

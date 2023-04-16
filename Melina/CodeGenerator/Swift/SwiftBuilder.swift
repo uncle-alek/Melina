@@ -36,7 +36,7 @@ final class SwiftCodeBuilder {
     }
     
     func buildXCTestApiCall(step: Step) {
-        generatedCode += tab() + "app." + "\(step.element.generatedElement!)" + "[\"\(step.elementId.lexeme)\"]." + "firstMatch." + "\(step.action.generatedAction!)" + newLine()
+        generatedCode += tab() + "app." + "\(step.element.type.generatedElement!)" + "[\"\(step.element.name.lexeme)\"]." + "firstMatch." + "\(step.action.type.generatedAction!)" + newLine()
     }
     
     func buildLaunchAppMethod() {

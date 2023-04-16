@@ -11,7 +11,7 @@ final class SwiftCodeGeneratorTests: BaseSwiftCodeGeneratorTests {
                         arguments:
                             "clearState" : "true"
                         end
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                     end
                 end
                 """,
@@ -29,7 +29,7 @@ final class SwiftCodeGeneratorTests: BaseSwiftCodeGeneratorTests {
                                         let app = launchApp([
                                             "clearState" : "true",
                                         ])
-                                        app.staticTexts["homeScreenIdentifier"].firstMatch.verifyExistence(timeout: 3)
+                                        app.buttons["Button_1"].firstMatch.tap()
                                     }
                                 
                                     private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {

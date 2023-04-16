@@ -9,7 +9,7 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 "HomeScreen":
                     scenario "Open Home Screen":
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                     end
                 end
                 """,
@@ -21,7 +21,7 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite :
                     scenario "Open Home Screen":
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                     end
                 end
                 """,
@@ -33,11 +33,11 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                     end
                 
                 """,
-            throws:  .init(expected: .suiteEnd, line: 5, offset: 103)
+            throws:  .init(expected: .suiteEnd, line: 5, offset: 97)
         )
         
         assert(
@@ -45,7 +45,7 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen"
                     scenario "Open Home Screen":
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                     end
                 end
                 """,
@@ -59,7 +59,7 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen":
                     "Open Home Screen":
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                     end
                 end
                 """,
@@ -71,7 +71,7 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen":
                     scenario :
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                     end
                 end
                 """,
@@ -83,9 +83,9 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                 """,
-            throws: .init(expected: .scenarioEnd, line: 3, offset: 91)
+            throws: .init(expected: .scenarioEnd, line: 3, offset: 88)
         )
         
         assert(
@@ -93,7 +93,7 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen"
-                        verify "homeScreenIdentifier" text
+                        tap button[name: "Button_1"]
                     end
                 end
                 """,
@@ -107,7 +107,7 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        "homeScreenIdentifier" text
+                        button[name: "Button_1"]
                     end
                 end
                 """,
@@ -119,11 +119,11 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        verify "homeScreenIdentifier"
+                        tap [name: "Button_1"]
                     end
                 end
                 """,
-            throws: .init(expected: .stepElement, line: 4, offset: 95)
+            throws: .init(expected: .stepElement, line: 3, offset: 65)
         )
         
         assert(
@@ -131,11 +131,59 @@ final class ParserErrorTests: BaseParserErrorTests {
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        verify text
+                        tap button name: "Button_1"]
                     end
                 end
                 """,
-            throws: .init(expected: .stepElementIdentifier, line: 3, offset: 68)
+            throws: .init(expected: .stepLeftSquareBrace, line: 3, offset: 72)
+        )
+        
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                        tap button[: "Button_1"]
+                    end
+                end
+                """,
+            throws: .init(expected: .stepElementNameKeyword, line: 3, offset: 72)
+        )
+        
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                        tap button[name "Button_1"]
+                    end
+                end
+                """,
+            throws: .init(expected: .stepElementColon, line: 3, offset: 77)
+        )
+        
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                        tap button[name: ]
+                    end
+                end
+                """,
+            throws: .init(expected: .stepElementName, line: 3, offset: 78)
+        )
+        
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                        tap button[name: "Button_1"
+                    end
+                end
+                """,
+            throws: .init(expected: .stepRightSquareBrace, line: 4, offset: 93)
         )
         
         assert(

@@ -33,9 +33,17 @@ struct Argument: Node, Equatable {
 }
 
 struct Step: Node, Equatable {
-    let action: Token
-    let elementId: Token
-    let element: Token
+    let action: Action
+    let element: Element
     
     func accept(_ v: Visitor) { v.visit(self) }
+}
+
+struct Action: Equatable {
+    let type: Token
+}
+
+struct Element: Equatable {
+    let type: Token
+    let name: Token
 }

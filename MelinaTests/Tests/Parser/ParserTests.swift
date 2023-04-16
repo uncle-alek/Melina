@@ -20,17 +20,17 @@ final class ParserTests: BaseParserErrorTests {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            verify "homeScreenIdentifier" text
+                            tap button[name: "Button_1"]
                         end
 
                         scenario "Open Cart Screen":
-                            verify "homeScreenIdentifier" text
+                            tap button[name: "Button_2"]
                         end
                     end
                 
                     suite "Booking Screen":
                         scenario "Open Booking Screen":
-                            verify "homeScreenIdentifier" text
+                            tap button[name: "Button_3"]
                         end
                     end
                 """,
@@ -39,15 +39,15 @@ final class ParserTests: BaseParserErrorTests {
                 <Program_beggining>
                 <Suite_beggining>:HomeScreen
                 <Scenario_begging>:Open Home Screen
-                Steps:[verify-homeScreenIdentifier-text]
+                Steps:[tap-button[name:Button_1]]
                 <Scenario_end>
                 <Scenario_begging>:Open Cart Screen
-                Steps:[verify-homeScreenIdentifier-text]
+                Steps:[tap-button[name:Button_2]]
                 <Scenario_end>
                 <Suite_end>
                 <Suite_beggining>:Booking Screen
                 <Scenario_begging>:Open Booking Screen
-                Steps:[verify-homeScreenIdentifier-text]
+                Steps:[tap-button[name:Button_3]]
                 <Scenario_end>
                 <Suite_end>
                 <Program_end>
@@ -66,7 +66,7 @@ final class ParserTests: BaseParserErrorTests {
                                 "turnOnExperiment" : "true"
                             end
                 
-                            verify "homeScreenIdentifier" text
+                            tap button[name: "Button_1"]
                         end
                     end
                 """,
@@ -76,7 +76,7 @@ final class ParserTests: BaseParserErrorTests {
                 <Suite_beggining>:HomeScreen
                 <Scenario_begging>:Open Home Screen
                 Arguments:[clearState:true,turnOnExperiment:true]
-                Steps:[verify-homeScreenIdentifier-text]
+                Steps:[tap-button[name:Button_1]]
                 <Scenario_end>
                 <Suite_end>
                 <Program_end>
