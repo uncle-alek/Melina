@@ -61,6 +61,20 @@ private extension CompilerErrorReporter {
                     .marker(index: action.startIndex)
                     .build()
             )
+        case .suiteNameCollision(let suite):
+            print(
+                saemb.fullMessage(line: suite.line, error: semanticAnalyzerError)
+                    .errorLine(index: suite.startIndex)
+                    .marker(index: suite.startIndex)
+                    .build()
+            )
+        case .scenarioNameCollision(let scenario):
+            print(
+                saemb.fullMessage(line: scenario.line, error: semanticAnalyzerError)
+                    .errorLine(index: scenario.startIndex)
+                    .marker(index: scenario.startIndex)
+                    .build()
+            )
         }
     }
 }
