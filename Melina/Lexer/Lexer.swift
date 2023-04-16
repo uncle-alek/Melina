@@ -191,6 +191,6 @@ private extension Lexer {
     }
     
     func error(_ type: LexerError.`Type`) -> LexerError {
-        LexerError(type: type, line: line, index: currentIndex)
+        LexerError(type: type, line: line, index: source.index(before: currentIndex))
     }
 }
