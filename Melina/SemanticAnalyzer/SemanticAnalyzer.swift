@@ -4,14 +4,22 @@ enum SemanticAnalyzerError: Error, Equatable {
     case scenarioNameCollision(scenario: Token)
 }
 
-final class Scope {
+fileprivate final class Scope {
     let name: String
-    var symbols: [String] = []
+    private var symbols: [String] = []
     
     init(
         name: String
     ) {
         self.name = name
+    }
+    
+    func declareSymbol(name: String) {
+        symbols.append(name)
+    }
+    
+    func isSymbolDeclared(name: String) -> Bool {
+        symbols.contains { $0 == name }
     }
 }
 
@@ -33,18 +41,18 @@ final class SemanticAnalyzer: Visitor {
     }
     
     func visit(_ program: Program) {
-        scopes.append(Scope(name: "global"))
+        scopes.append(Scope(name: "Global"))
         program.suites.forEach { $0.accept(self) }
         _ = scopes.popLast()
     }
     
     func visit(_ suite: Suite) {
-        let currentScope = scopes.last
-        let isNameCollisionDetected = currentScope!.symbols.contains { $0 == suite.name.lexeme }
-        if isNameCollisionDetected {
+        let currentScope = scopes.last!
+        if currentScope.isSymbolDeclared(name: suite.name.lexeme) {
             errors.append(.suiteNameCollision(suite: suite.name))
+        } else {
+            currentScope.declareSymbol(name: suite.name.lexeme)
         }
-        currentScope?.symbols.append(suite.name.lexeme)
         
         scopes.append(Scope(name: suite.name.lexeme))
         suite.scenarios.forEach { $0.accept(self) }
@@ -52,12 +60,12 @@ final class SemanticAnalyzer: Visitor {
     }
     
     func visit(_ scenario: Scenario) {
-        let currentScope = scopes.last
-        let isNameCollisionDetected = currentScope!.symbols.contains { $0 == scenario.name.lexeme }
-        if isNameCollisionDetected {
+        let currentScope = scopes.last!
+        if currentScope.isSymbolDeclared(name: scenario.name.lexeme) {
             errors.append(.scenarioNameCollision(scenario: scenario.name))
+        } else {
+            currentScope.declareSymbol(name: scenario.name.lexeme)
         }
-        currentScope?.symbols.append(scenario.name.lexeme)
         
         scenario.arguments.forEach { $0.accept(self) }
         scenario.steps.forEach { $0.accept(self) }

@@ -58,8 +58,8 @@ final class CompilerErrorReporterTests: BaseCompilerErrorReporterTests {
             """,
             fileName: "MelinaTests.swift",
             error: TestSemanticAnalyzerError.incompatibleAction(
-                element: TestToken(type: .text, lexeme: "text", line: 3, startOffset: 70, endOffset: 74),
-                action: TestToken(type: .tap, lexeme: "tap", line: 3, startOffset: 54, endOffset: 57)
+                action: TestToken(type: .tap, lexeme: "tap", line: 3, startOffset: 54, endOffset: 57),
+                element: TestToken(type: .text, lexeme: "text", line: 3, startOffset: 70, endOffset: 74)
             ),
             errorMessage:
             """

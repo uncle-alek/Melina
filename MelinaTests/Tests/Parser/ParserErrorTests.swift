@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-final class ParserErrorTests: BaseParserErrorTests {
+final class ParserErrorTests: BaseParserTests {
     
     func test_missing_suite() {
         assert(

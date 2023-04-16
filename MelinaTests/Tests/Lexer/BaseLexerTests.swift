@@ -27,6 +27,7 @@ open class BaseLexerTests: XCTestCase {
     ) {
         do {
             _ = try Lexer(source: source).tokenize().get()
+            XCTFail("Expected error")
         } catch let errors as [Error] {
             XCTAssertEqual(errors.count, 1, file: file, line: line)
             XCTAssertNoDifference((errors.first as! LexerError).toTestLexerError(source: source), testError, file: file, line: line)

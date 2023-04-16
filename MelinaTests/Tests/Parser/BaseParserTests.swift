@@ -1,7 +1,7 @@
 import CustomDump
 import XCTest
 
-open class BaseParserErrorTests: XCTestCase {
+open class BaseParserTests: XCTestCase {
  
     func assert(
         source: String,
@@ -27,9 +27,10 @@ open class BaseParserErrorTests: XCTestCase {
         line: UInt = #line
     ) {
         do {
-            _ = try Lexer(source: source).tokenize()
+            _  = try Lexer(source: source).tokenize()
                 .flatMap { Parser(tokens: $0).parse() }
                 .get()
+            XCTFail("Expected error")
         } catch let errors as [Error] {
             XCTAssertEqual(errors.count, 1, file: file, line: line)
             XCTAssertNoDifference((errors.first as! ParserError).toTestParserError(source: source), testError, file: file, line: line)
