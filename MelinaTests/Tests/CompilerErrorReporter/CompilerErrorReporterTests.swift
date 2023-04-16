@@ -1,6 +1,6 @@
 import XCTest
 
-final class ErrorReporterTests: BaseErrorReporterTests {
+final class CompilerErrorReporterTests: BaseCompilerErrorReporterTests {
     
     func test_parser_error() {
         assert(
@@ -58,12 +58,14 @@ final class ErrorReporterTests: BaseErrorReporterTests {
             """,
             fileName: "MelinaTests.swift",
             error: TestSemanticAnalyzerError.incompatibleAction(
-                element: TestToken(type: .text, lexeme: "text"),
-                action: TestToken(type: .tap, lexeme: "tap")
+                element: TestToken(type: .text, lexeme: "text", line: 3, startOffset: 70, endOffset: 74),
+                action: TestToken(type: .tap, lexeme: "tap", line: 3, startOffset: 54, endOffset: 57)
             ),
             errorMessage:
             """
-            file: MelinaTests.swift line: 0 error: action `tap` can't be applied to the element `text`
+            file: MelinaTests.swift line: 3 error: action `tap` can't be applied to the element `text`
+                    tap "Button_2" text
+                    ^
             
             """
         )

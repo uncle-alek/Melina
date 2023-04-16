@@ -53,9 +53,14 @@ private extension CompilerErrorReporter {
     }
     
     func report(semanticAnalyzerError: SemanticAnalyzerError) {
-        print(
-            saemb.fullMessage(line: 0, error: semanticAnalyzerError)
-                .build()
-        )
+        switch semanticAnalyzerError {
+        case .incompatibleAction(_, let action):
+            print(
+                saemb.fullMessage(line: action.line, error: semanticAnalyzerError)
+                    .errorLine(index: action.startIndex)
+                    .marker(index: action.startIndex)
+                    .build()
+            )
+        }
     }
 }

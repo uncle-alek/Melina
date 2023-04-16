@@ -1,7 +1,7 @@
 import CustomDump
 import XCTest
 
-open class BaseErrorReporterTests: XCTestCase {
+open class BaseCompilerErrorReporterTests: XCTestCase {
     
     func assert(
         source: String,
