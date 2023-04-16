@@ -40,22 +40,6 @@ open class BaseErrorReporterTests: XCTestCase {
     }
     
     func assert(
-        error: FileServiceError,
-        errorMessage: String,
-        file: StaticString = #file,
-        line: UInt = #line
-    ) {
-        assert(
-            source: "",
-            fileName: "Melina.swift",
-            errors: [error],
-            errorMessage: errorMessage,
-            file: file,
-            line: line
-        )
-    }
-    
-    func assert(
         source: String,
         fileName: String,
         error: TestSemanticAnalyzerError,
@@ -82,7 +66,7 @@ open class BaseErrorReporterTests: XCTestCase {
         line: UInt = #line
     ) {
         var result: String = ""
-        let reporter = ErrorReporter(filePath: fileName, source: source, print: { result = $0 })
+        let reporter = CompilerErrorReporter(filePath: fileName, source: source, print: { result = $0 })
         reporter.report(errors: errors)
         XCTAssertNoDifference(result, errorMessage, file: file, line: line)
     }

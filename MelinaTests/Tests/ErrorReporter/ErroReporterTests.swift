@@ -46,17 +46,6 @@ final class ErrorReporterTests: BaseErrorReporterTests {
         )
     }
     
-    func test_file_service_error() {
-        assert(
-            error: FileServiceError(type: .fileIsNotExist, filePath: "User/my_user/MelinaTests.swift"),
-            errorMessage:
-            """
-            error: file does not exist at path: User/my_user/MelinaTests.swift
-            
-            """
-        )
-    }
-    
     func test_semantic_analyzer_error() {
         assert(
             source:

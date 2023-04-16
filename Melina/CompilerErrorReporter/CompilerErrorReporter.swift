@@ -1,11 +1,10 @@
 import Foundation
 
-final class ErrorReporter {
+final class CompilerErrorReporter {
     
-    private let pemb: ErrorMessageBuilder<ParserError, ParserErrorMessenger>
-    private let lemb: ErrorMessageBuilder<LexerError, LexerErrorMessenger>
-    private let fsemb: ErrorMessageBuilder<FileServiceError, FileServiceErrorMessenger>
-    private let saemb: ErrorMessageBuilder<SemanticAnalyzerError, SemanticAnalyzerErrorMessenger>
+    private let pemb: CompilerErrorMessageBuilder<ParserError, ParserErrorMessenger>
+    private let lemb: CompilerErrorMessageBuilder<LexerError, LexerErrorMessenger>
+    private let saemb: CompilerErrorMessageBuilder<SemanticAnalyzerError, SemanticAnalyzerErrorMessenger>
     private let print: (_ items: String) -> Void
     
     init(
@@ -13,10 +12,9 @@ final class ErrorReporter {
         source: String,
         print: @escaping (_ items: String) -> Void = { Swift.print($0, terminator: "") }
     ) {
-        self.pemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: ParserErrorMessenger())
-        self.lemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: LexerErrorMessenger())
-        self.fsemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: FileServiceErrorMessenger())
-        self.saemb = ErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: SemanticAnalyzerErrorMessenger())
+        self.pemb = CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: ParserErrorMessenger())
+        self.lemb = CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: LexerErrorMessenger())
+        self.saemb = CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: SemanticAnalyzerErrorMessenger())
         self.print = print
     }
     
@@ -25,13 +23,12 @@ final class ErrorReporter {
     }
 }
 
-private extension ErrorReporter {
+private extension CompilerErrorReporter {
     
     func report(error: Error) {
         switch error {
         case is LexerError: report(lexerError: error as! LexerError)
         case is ParserError: report(parserError: error as! ParserError)
-        case is FileServiceError: report(fileServiceError: error as! FileServiceError)
         case is SemanticAnalyzerError: report(semanticAnalyzerError: error as! SemanticAnalyzerError)
         default: fatalError("Unknown error")
         }
@@ -51,13 +48,6 @@ private extension ErrorReporter {
             pemb.fullMessage(line: parserError.line, error: parserError)
                 .errorLine(index: parserError.index)
                 .marker(index: parserError.index)
-                .build()
-        )
-    }
-    
-    func report(fileServiceError: FileServiceError) {
-        print(
-            fsemb.simpleMessage(error: fileServiceError)
                 .build()
         )
     }

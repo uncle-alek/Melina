@@ -5,7 +5,7 @@ protocol ErrorMessenger {
     func message(for error: E) -> String
 }
 
-final class ErrorMessageBuilder<E, M: ErrorMessenger> where E == M.E {
+final class CompilerErrorMessageBuilder<E, M: ErrorMessenger> where E == M.E {
     
     private var errorMessage: String = ""
     private let errorMessenger: M
