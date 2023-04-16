@@ -9,7 +9,7 @@ extension TestSemanticAnalyzerError {
     ) -> SemanticAnalyzerError {
         switch self {
         case .incompatibleAction(let element, let action):
-            return .incompatibleAction(element: element.toToken(source: source), action: action.toToken(source: source))
+            return .incompatibleAction( action: action.toToken(source: source), element: element.toToken(source: source))
         }
     }
 }

@@ -1,13 +1,12 @@
 enum SemanticAnalyzerError: Error, Equatable {
-    case incompatibleAction(element: Token, action: Token)
+    case incompatibleAction(action: Token, element: Token)
 }
 
 final class SemanticAnalyzer: Visitor {
     
     private let availableActions: [TokenType : [TokenType]] = [
-        .button : [.tap, .verify],
-        .searchField : [.verify],
-        .text : [.verify]
+        .tap : [.button],
+        .verify : [.button, .searchField, .text],
     ]
     
     private var program: Program
@@ -35,8 +34,8 @@ final class SemanticAnalyzer: Visitor {
     func visit(_ argument: Argument) {}
     
     func visit(_ step: Step) {
-        if !availableActions[step.element.type.type]!.contains(step.action.type.type) {
-            errors.append(.incompatibleAction(element: step.element.type, action: step.action.type))
+        if !availableActions[step.action.type.type]!.contains(step.element.type.type) {
+            errors.append(.incompatibleAction(action: step.action.type, element: step.element.type))
         }
     }
     
