@@ -2,9 +2,9 @@ import Foundation
 
 final class CompilerErrorReporter {
     
-    private let pemb: CompilerErrorMessageBuilder<ParserError, ParserErrorMessenger>
-    private let lemb: CompilerErrorMessageBuilder<LexerError, LexerErrorMessenger>
-    private let saemb: CompilerErrorMessageBuilder<SemanticAnalyzerError, SemanticAnalyzerErrorMessenger>
+    private var pemb: () -> CompilerErrorMessageBuilder<ParserError, ParserErrorMessenger>
+    private var lemb: () -> CompilerErrorMessageBuilder<LexerError, LexerErrorMessenger>
+    private var saemb: () -> CompilerErrorMessageBuilder<SemanticAnalyzerError, SemanticAnalyzerErrorMessenger>
     private let print: (_ items: String) -> Void
     
     init(
@@ -12,10 +12,10 @@ final class CompilerErrorReporter {
         source: String,
         print: @escaping (_ items: String) -> Void = { Swift.print($0, terminator: "") }
     ) {
-        self.pemb = CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: ParserErrorMessenger())
-        self.lemb = CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: LexerErrorMessenger())
-        self.saemb = CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: SemanticAnalyzerErrorMessenger())
         self.print = print
+        self.pemb = { CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: ParserErrorMessenger()) }
+        self.lemb = { CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: LexerErrorMessenger()) }
+        self.saemb = { CompilerErrorMessageBuilder(filePath: filePath, source: source, errorMessenger: SemanticAnalyzerErrorMessenger()) }
     }
     
     func report(errors: [Error]) {
@@ -36,7 +36,7 @@ private extension CompilerErrorReporter {
     
     func report(lexerError: LexerError) {
         print(
-            lemb.fullMessage(line: lexerError.line, error: lexerError)
+            lemb().fullMessage(line: lexerError.line, error: lexerError)
                 .errorLine(index: lexerError.index)
                 .marker(index: lexerError.index)
                 .build()
@@ -45,7 +45,7 @@ private extension CompilerErrorReporter {
     
     func report(parserError: ParserError) {
         print(
-            pemb.fullMessage(line: parserError.line, error: parserError)
+            pemb().fullMessage(line: parserError.line, error: parserError)
                 .errorLine(index: parserError.index)
                 .marker(index: parserError.index)
                 .build()
@@ -56,21 +56,21 @@ private extension CompilerErrorReporter {
         switch semanticAnalyzerError {
         case .incompatibleAction(let action, _):
             print(
-                saemb.fullMessage(line: action.line, error: semanticAnalyzerError)
+                saemb().fullMessage(line: action.line, error: semanticAnalyzerError)
                     .errorLine(index: action.startIndex)
                     .marker(index: action.startIndex)
                     .build()
             )
         case .suiteNameCollision(let suite):
             print(
-                saemb.fullMessage(line: suite.line, error: semanticAnalyzerError)
+                saemb().fullMessage(line: suite.line, error: semanticAnalyzerError)
                     .errorLine(index: suite.startIndex)
                     .marker(index: suite.startIndex)
                     .build()
             )
         case .scenarioNameCollision(let scenario):
             print(
-                saemb.fullMessage(line: scenario.line, error: semanticAnalyzerError)
+                saemb().fullMessage(line: scenario.line, error: semanticAnalyzerError)
                     .errorLine(index: scenario.startIndex)
                     .marker(index: scenario.startIndex)
                     .build()
