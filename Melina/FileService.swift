@@ -15,7 +15,7 @@ struct FileServiceError: Error, LocalizedError {
         switch type {
         case .fileIsNotExist: return "file does not exist at path: \(filePath)"
         case .contentIsNotAvailable: return "file's content is not available at path: \(filePath)"
-        case .failToCreateFile: return "failed to crate file at path: \(filePath)"
+        case .failToCreateFile: return "failed to create file at path: \(filePath)"
         }
     }
 }
@@ -44,10 +44,16 @@ final class FileService {
     
     func write(
         content: String,
-        with fileName: String
+        at path: String
     ) throws {
-        let filePath = fileManager.currentDirectoryPath + "/" + fileName
-        let isFileCreated = fileManager.createFile(atPath: filePath, contents: Data(content.utf8))
-        if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: filePath) }
+        let filePath = URL(string: path)!
+        let fileNameWithSuffix = filePath.deletingPathExtension().lastPathComponent + "Generated.tecode"
+        let newFilePath = filePath
+            .deletingLastPathComponent()
+            .appendingPathComponent(fileNameWithSuffix)
+            .appendingPathExtension("json")
+            .absoluteString
+        let isFileCreated = fileManager.createFile(atPath: newFilePath, contents: Data(content.utf8))
+        if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: newFilePath) }
     }
 }

@@ -1,0 +1,15 @@
+suite "Melina":
+        
+    scenario "First scenario":
+        arguments:
+            "experiment" : "NewExperiment"
+        end
+
+        // Do some steps
+        tap button[name:"Button_1"]
+    end
+    
+   // scenario "Second scenario"
+   //     ...
+   // end
+end

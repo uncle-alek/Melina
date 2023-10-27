@@ -14,7 +14,8 @@ struct Melina: ParsableCommand {
 
     mutating func run() throws {
         let sourceCode = try FileService().content(at: path)
-        let code = try Compiler(source: sourceCode, filePath: path).compile()
-        try code.testClasses.forEach { try FileService().write(content: $0.generatedCode, with: $0.name) }
+        let tecode = try Compiler(source: sourceCode, filePath: path).compileSwiftTeCode()
+        let serializedTecode = JSONSerializer.serialize(tecode)
+        try FileService().write(content: serializedTecode, at: path)
     }
 }

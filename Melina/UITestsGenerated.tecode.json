@@ -1,0 +1,17 @@
+[
+{"operands":["Melina"],"mnemonic":"suiteBegin"},
+{"operands":["First scenario"],"mnemonic":"scenarioBegin"},
+{"operands":[],"mnemonic":"application"},
+{"operands":["RUNNING_UI_TESTS"],"mnemonic":"launchArgument"},
+{"operands":["experiment","NewExperiment"],"mnemonic":"launchEnvironment"},
+{"operands":[],"mnemonic":"launch"},
+{"operands":["Button_1"],"mnemonic":"button"},
+{"operands":[],"mnemonic":"exists"},
+{"operands":["2"],"mnemonic":"jumpIfTrue"},
+{"operands":["5"],"mnemonic":"waitForExistence"},
+{"operands":["true"],"mnemonic":"assertBool"},
+{"operands":[],"mnemonic":"tap"},
+{"operands":[],"mnemonic":"terminate"},
+{"operands":["First scenario"],"mnemonic":"scenarioEnd"},
+{"operands":["Melina"],"mnemonic":"suiteEnd"},
+]

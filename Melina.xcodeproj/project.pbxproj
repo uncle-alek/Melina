@@ -25,6 +25,7 @@
 		3C1E247228FE7DD20097DDA7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E247128FE7DD20097DDA7 /* Token.swift */; };
 		3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */; };
 		3C1E248328FE817B0097DDA7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1E247128FE7DD20097DDA7 /* Token.swift */; };
+		3C2157712AEAA0B800003233 /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2157702AEAA0B800003233 /* JSONSerializer.swift */; };
 		3C3DEB8829DD71340040FF7D /* ASTPrinter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */; };
 		3C3DEC1F29E074380040FF7D /* MelinaString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC1E29E074380040FF7D /* MelinaString.swift */; };
 		3C3DEC2129E075270040FF7D /* ParserErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC2029E075270040FF7D /* ParserErrorMessenger.swift */; };
@@ -68,6 +69,12 @@
 		3CBFFCC529D454FC00232720 /* SwiftCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */; };
 		3CD41D3C29EC04C2008743C8 /* BaseSemanticAnalyzerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD41D3B29EC04C2008743C8 /* BaseSemanticAnalyzerTests.swift */; };
 		3CD41D3E29EC04E0008743C8 /* SemanticAnalyzerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD41D3D29EC04DF008743C8 /* SemanticAnalyzerTests.swift */; };
+		3CE96AC32AEA89AB003B3340 /* BaseSwiftTeCodeGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE96AC22AEA89AB003B3340 /* BaseSwiftTeCodeGeneratorTests.swift */; };
+		3CE96AC62AEA89F8003B3340 /* SwiftTeCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE96AC52AEA89F8003B3340 /* SwiftTeCode.swift */; };
+		3CE96AC72AEA8B42003B3340 /* SwiftTeCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE96AC52AEA89F8003B3340 /* SwiftTeCode.swift */; };
+		3CE96AC92AEA8C3B003B3340 /* SwiftTeCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE96AC82AEA8C3B003B3340 /* SwiftTeCodeGenerator.swift */; };
+		3CE96ACA2AEA8CDB003B3340 /* SwiftTeCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE96AC82AEA8C3B003B3340 /* SwiftTeCodeGenerator.swift */; };
+		3CE96ACC2AEA8DEA003B3340 /* SwiftTeCodeGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE96ACB2AEA8DEA003B3340 /* SwiftTeCodeGeneratorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -91,10 +98,11 @@
 		3C1E23E128FE3FF30097DDA7 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaCommand.swift; sourceTree = "<group>"; };
 		3C1E246C28FE62E70097DDA7 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
-		3C1E246E28FE66A90097DDA7 /* GeneratedUITests.melina */ = {isa = PBXFileReference; lastKnownFileType = text; path = GeneratedUITests.melina; sourceTree = "<group>"; };
+		3C1E246E28FE66A90097DDA7 /* UITests.melina */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.melina; sourceTree = "<group>"; };
 		3C1E246F28FE7D2F0097DDA7 /* Lexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
 		3C1E247128FE7DD20097DDA7 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		3C1E247728FE802F0097DDA7 /* MelinaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MelinaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C2157702AEAA0B800003233 /* JSONSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
 		3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASTPrinter.swift; sourceTree = "<group>"; };
 		3C3DEC1C29DDC4B20040FF7D /* CompilerErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompilerErrorReporter.swift; sourceTree = "<group>"; };
 		3C3DEC1E29E074380040FF7D /* MelinaString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelinaString.swift; sourceTree = "<group>"; };
@@ -128,6 +136,10 @@
 		3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftCodeGenerator.swift; sourceTree = "<group>"; };
 		3CD41D3B29EC04C2008743C8 /* BaseSemanticAnalyzerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSemanticAnalyzerTests.swift; sourceTree = "<group>"; };
 		3CD41D3D29EC04DF008743C8 /* SemanticAnalyzerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticAnalyzerTests.swift; sourceTree = "<group>"; };
+		3CE96AC22AEA89AB003B3340 /* BaseSwiftTeCodeGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSwiftTeCodeGeneratorTests.swift; sourceTree = "<group>"; };
+		3CE96AC52AEA89F8003B3340 /* SwiftTeCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTeCode.swift; sourceTree = "<group>"; };
+		3CE96AC82AEA8C3B003B3340 /* SwiftTeCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTeCodeGenerator.swift; sourceTree = "<group>"; };
+		3CE96ACB2AEA8DEA003B3340 /* SwiftTeCodeGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTeCodeGeneratorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +166,8 @@
 		3C00815329D8565200688808 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				3CE96AC52AEA89F8003B3340 /* SwiftTeCode.swift */,
+				3CE96AC82AEA8C3B003B3340 /* SwiftTeCodeGenerator.swift */,
 				3CBFFCC429D454FC00232720 /* SwiftCodeGenerator.swift */,
 				3C00815429D8566700688808 /* SwiftBuilder.swift */,
 			);
@@ -189,11 +203,12 @@
 				3CB136C42902E113007902DB /* Parser */,
 				3CB136C32902E108007902DB /* Lexer */,
 				3C1E23E128FE3FF30097DDA7 /* main.swift */,
+				3C2157702AEAA0B800003233 /* JSONSerializer.swift */,
 				3C1A61FE29EAF7FA0014B908 /* Compiler.swift */,
 				3C1E23EB28FE4FF70097DDA7 /* MelinaCommand.swift */,
 				3C1E246C28FE62E70097DDA7 /* FileService.swift */,
 				3CB136B529028628007902DB /* Grammar */,
-				3C1E246E28FE66A90097DDA7 /* GeneratedUITests.melina */,
+				3C1E246E28FE66A90097DDA7 /* UITests.melina */,
 			);
 			path = Melina;
 			sourceTree = "<group>";
@@ -339,6 +354,7 @@
 		3CB136C82902E214007902DB /* CodeGenerator */ = {
 			isa = PBXGroup;
 			children = (
+				3CE96AC42AEA89B0003B3340 /* Swift */,
 				3CB136C92902E223007902DB /* SwiftCodeGeneratorTests.swift */,
 				3CB136CB2902E261007902DB /* BaseSwiftCodeGeneratorTests.swift */,
 			);
@@ -352,6 +368,15 @@
 				3CD41D3D29EC04DF008743C8 /* SemanticAnalyzerTests.swift */,
 			);
 			path = SemanticAnalyzer;
+			sourceTree = "<group>";
+		};
+		3CE96AC42AEA89B0003B3340 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				3CE96AC22AEA89AB003B3340 /* BaseSwiftTeCodeGeneratorTests.swift */,
+				3CE96ACB2AEA8DEA003B3340 /* SwiftTeCodeGeneratorTests.swift */,
+			);
+			path = Swift;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -459,6 +484,7 @@
 				3C1E247228FE7DD20097DDA7 /* Token.swift in Sources */,
 				3CB136B229027B47007902DB /* Parser.swift in Sources */,
 				3C1E23E228FE3FF30097DDA7 /* main.swift in Sources */,
+				3CE96AC62AEA89F8003B3340 /* SwiftTeCode.swift in Sources */,
 				3C3DEC4A29E5713B0040FF7D /* SemanticAnalyzer.swift in Sources */,
 				3C1E247028FE7D2F0097DDA7 /* Lexer.swift in Sources */,
 				3CB136B429027DF8007902DB /* ASTNodes.swift in Sources */,
@@ -467,9 +493,11 @@
 				3CBFFCC229D4515700232720 /* Visitor.swift in Sources */,
 				3C00815529D8566700688808 /* SwiftBuilder.swift in Sources */,
 				3CBFFCC529D454FC00232720 /* SwiftCodeGenerator.swift in Sources */,
+				3CE96AC92AEA8C3B003B3340 /* SwiftTeCodeGenerator.swift in Sources */,
 				3C3DEC1F29E074380040FF7D /* MelinaString.swift in Sources */,
 				3C1E246D28FE62E70097DDA7 /* FileService.swift in Sources */,
 				3C3DEC4D29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift in Sources */,
+				3C2157712AEAA0B800003233 /* JSONSerializer.swift in Sources */,
 				3C1A61FF29EAF7FA0014B908 /* Compiler.swift in Sources */,
 				3C3DEC2729E07F470040FF7D /* LexerErrorMessenger.swift in Sources */,
 				3C3DEC2329E076F60040FF7D /* CompilerErrorMessageBuilder.swift in Sources */,
@@ -503,10 +531,12 @@
 				3CBFFCC329D4517400232720 /* Visitor.swift in Sources */,
 				3C1E248328FE817B0097DDA7 /* Token.swift in Sources */,
 				3CB136B829029D24007902DB /* ParserTests.swift in Sources */,
+				3CE96AC72AEA8B42003B3340 /* SwiftTeCode.swift in Sources */,
 				3C3DEC2A29E12F900040FF7D /* BaseCompilerErrorReporterTests.swift in Sources */,
 				3CB136BC29029F64007902DB /* Parser.swift in Sources */,
 				3CB12FC629011BF3007902DB /* LexerFullTests.swift in Sources */,
 				3C3DEC4B29E5713E0040FF7D /* SemanticAnalyzer.swift in Sources */,
+				3CE96ACA2AEA8CDB003B3340 /* SwiftTeCodeGenerator.swift in Sources */,
 				3C00724629D7C7CF00688808 /* SwiftCodeGenerator.swift in Sources */,
 				3C3DEC3929E531D50040FF7D /* MelinaString.swift in Sources */,
 				3CD41D3C29EC04C2008743C8 /* BaseSemanticAnalyzerTests.swift in Sources */,
@@ -514,10 +544,12 @@
 				3CB12FC729011BF3007902DB /* LexerTests.swift in Sources */,
 				3C3DEC4729E568ED0040FF7D /* FileService.swift in Sources */,
 				3C1A61F929EAB9070014B908 /* SemanticAnalyzerErrorMessenger.swift in Sources */,
+				3CE96AC32AEA89AB003B3340 /* BaseSwiftTeCodeGeneratorTests.swift in Sources */,
 				3C3DEC3829E531730040FF7D /* BaseMelinaStringTests.swift in Sources */,
 				3C1E248228FE81780097DDA7 /* Lexer.swift in Sources */,
 				3C3DEC2E29E12F9D0040FF7D /* LexerErrorMessenger.swift in Sources */,
 				3C3DEC3D29E55C230040FF7D /* String+.swift in Sources */,
+				3CE96ACC2AEA8DEA003B3340 /* SwiftTeCodeGeneratorTests.swift in Sources */,
 				3C1A61F829EAB6F80014B908 /* TestSemanticAnalyzerError.swift in Sources */,
 				3C3DEC3129E12FEB0040FF7D /* CompilerErrorReporterTests.swift in Sources */,
 			);
