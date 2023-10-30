@@ -42,7 +42,7 @@ final class FileService {
         return String(decoding: data, as: UTF8.self)
     }
     
-    func write(
+    func writeToJsonFile(
         content: String,
         at path: String
     ) throws {
@@ -55,5 +55,13 @@ final class FileService {
             .absoluteString
         let isFileCreated = fileManager.createFile(atPath: newFilePath, contents: Data(content.utf8))
         if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: newFilePath) }
+    }
+
+    func writeToFile(
+        content: String,
+        at path: String
+    ) throws {
+        let isFileCreated = fileManager.createFile(atPath: path, contents: Data(content.utf8))
+        if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: path) }
     }
 }
