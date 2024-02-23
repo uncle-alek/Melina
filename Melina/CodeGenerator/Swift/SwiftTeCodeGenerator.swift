@@ -47,12 +47,12 @@ private extension SwiftTeCodeGenerator {
 
     func genStep(_ step: Step) -> [SwiftTeCode.Command] {
         var commands: [SwiftTeCode.Command] = []
-        commands += getElement(step.element)
-        commands += getAction(step.action)
+        commands += genElement(step.element)
+        commands += genAction(step.action)
         return commands
     }
 
-    func getAction(_ token: Action) -> [SwiftTeCode.Command] {
+    func genAction(_ token: Action) -> [SwiftTeCode.Command] {
         var commands: [SwiftTeCode.Command] = []
         commands.append(SwiftTeCode.Command(mnemonic: mapAction(token.type), operands: []))
         return commands
@@ -65,7 +65,7 @@ private extension SwiftTeCodeGenerator {
         }
     }
 
-    func getElement(_ element: Element) -> [SwiftTeCode.Command] {
+    func genElement(_ element: Element) -> [SwiftTeCode.Command] {
         var commands: [SwiftTeCode.Command] = []
         commands.append(SwiftTeCode.Command(mnemonic: mapElement(element.type), operands: [element.name.lexeme]))
         commands.append(SwiftTeCode.Command(mnemonic: .exists, operands: []))

@@ -1,15 +1,25 @@
+include "Subscenarios.melina"
+
 suite "Melina":
-        
+
     scenario "First scenario":
         arguments:
-            "experiment" : "NewExperiment"
+            "experiment" to "NewExperiment"
         end
 
         // Do some steps
-        tap button[name:"Button_1"]
+        verify view "View_2" is not selected
+        verify view "View_2" contains label "Hello"
+        tap button "Button 4"
+        subscenario "Login"
     end
     
    // scenario "Second scenario"
    //     ...
    // end
+end
+
+subscenario "Login":
+    tap button "Button 1"
+    verify view "View_2" contains label "Hello"
 end

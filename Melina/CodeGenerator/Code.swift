@@ -9,8 +9,8 @@ struct TestClass: Equatable {
     let generatedCode: String
     
     init(
-        _ name: String,
-        _ generatedCode: String
+        name: String,
+        generatedCode: String
     ) {
         self.name = name
         self.generatedCode = generatedCode

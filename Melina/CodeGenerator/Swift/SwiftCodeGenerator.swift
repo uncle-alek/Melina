@@ -15,7 +15,7 @@ final class SwiftCodeGenerator: Visitor {
     func visit(_ program: Program) {
         program.suites.forEach { suite in
             suite.accept(self)
-            testClasses.append(TestClass(suite.name.lexeme.fileName, b.result()))
+            testClasses.append(TestClass(name: suite.name.lexeme.fileName, generatedCode: b.result()))
             b = SwiftCodeBuilder()
         }
     }
