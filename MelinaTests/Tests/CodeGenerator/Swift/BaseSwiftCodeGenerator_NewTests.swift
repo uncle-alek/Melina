@@ -11,7 +11,7 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
     ) throws {
         let result = try generateCode(suiteName: suiteName)
         XCTAssertNoDifference(
-            result.testClasses[0].name,
+            result.files[0].name,
             name,
             file: file,
             line: line
@@ -26,8 +26,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
         let result = try generateCode()
         imports.forEach {
             XCTAssertTrue(
-                result.testClasses[0].generatedCode.contains($0),
-                "No expected imports found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+                result.files[0].content.contains($0),
+                "No expected imports found in the code: \n \"\(result.files[0].content)\"",
                 file: file,
                 line: line
             )
@@ -42,8 +42,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
     ) throws {
         let result = try generateCode(suiteName: suiteName)
         XCTAssertTrue(
-            result.testClasses[0].generatedCode.contains(defenition),
-            "No expected class defenition found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+            result.files[0].content.contains(defenition),
+            "No expected class defenition found in the code: \n \"\(result.files[0].content)\"",
             file: file,
             line: line
         )
@@ -57,8 +57,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
     ) throws {
         let result = try generateCode(scenarioName: scenarioName)
         XCTAssertTrue(
-            result.testClasses[0].generatedCode.contains(defenition),
-            "No expected method defenition found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+            result.files[0].content.contains(defenition),
+            "No expected method defenition found in the code: \n \"\(result.files[0].content)\"",
             file: file,
             line: line
         )
@@ -71,8 +71,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
     ) throws {
         let result = try generateCode()
         XCTAssertTrue(
-            result.testClasses[0].generatedCode.contains(expect),
-            "No expected private method 'launchApp' found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+            result.files[0].content.contains(expect),
+            "No expected private method 'launchApp' found in the code: \n \"\(result.files[0].content)\"",
             file: file,
             line: line
         )
@@ -86,8 +86,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
     ) throws {
         let result = try generateCode(arguments: arguments)
         XCTAssertTrue(
-            result.testClasses[0].generatedCode.contains(expect),
-            "No expected 'launchApp' call found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+            result.files[0].content.contains(expect),
+            "No expected 'launchApp' call found in the code: \n \"\(result.files[0].content)\"",
             file: file,
             line: line
         )
@@ -102,8 +102,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
         let result = try generateCode(steps: [step])
         expect.forEach {
             XCTAssertTrue(
-                result.testClasses[0].generatedCode.contains($0),
-                "No expected line \($0) of XCtest api call found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+                result.files[0].content.contains($0),
+                "No expected line \($0) of XCtest api call found in the code: \n \"\(result.files[0].content)\"",
                 file: file,
                 line: line
             )
@@ -117,8 +117,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
     ) throws {
         let result = try generateCode()
         XCTAssertTrue(
-            result.testClasses[0].generatedCode.contains(expect),
-            "No expected private method 'waitForExistenceIfNeeded' found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+            result.files[0].content.contains(expect),
+            "No expected private method 'waitForExistenceIfNeeded' found in the code: \n \"\(result.files[0].content)\"",
             file: file,
             line: line
         )
@@ -138,8 +138,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
             steps: steps
         )
         XCTAssertTrue(
-            result.testClasses[0].generatedCode.contains(expect),
-            "No expected test method found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+            result.files[0].content.contains(expect),
+            "No expected test method found in the code: \n \"\(result.files[0].content)\"",
             file: file,
             line: line
         )
@@ -162,8 +162,8 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
             indentation: 4
         )
         XCTAssertTrue(
-            result.testClasses[0].generatedCode.contains(expect),
-            "No expected class found in the code: \n \"\(result.testClasses[0].generatedCode)\"",
+            result.files[0].content.contains(expect),
+            "No expected class found in the code: \n \"\(result.files[0].content)\"",
             file: file,
             line: line
         )
@@ -177,7 +177,7 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
     ) throws {
         let result = try Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
-            .flatMap { SwiftCodeGenerator_New(program: $0).generate() }
+            .flatMap { CodeGenerator(program: $0, SwiftBuilder()).generate() }
             .get()
         XCTAssertNoDifference(
             result,
@@ -208,7 +208,7 @@ extension BaseSwiftCodeGenerator_NewTests {
                 """
         return try Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
-            .flatMap { SwiftCodeGenerator_New(program: $0, indentation: indentation).generate() }
+            .flatMap { CodeGenerator(program: $0, SwiftBuilder(indentation: indentation)).generate() }
             .get()
     }
 

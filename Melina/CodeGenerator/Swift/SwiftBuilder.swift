@@ -1,124 +1,200 @@
-final class SwiftCodeBuilder {
-    
+import Foundation
+
+final class SwiftBuilder: CodeBuilder {
+
     private var generatedCode: String = ""
+    private var variableId: Int = 0
     private var scopeLevel: Int = 0
-    
-    func buildImports() {
-        generatedCode += "import XCTest" + newLine(2)
+    private let indentation: Int
+
+    init(
+        indentation: Int = 4
+    ) {
+        self.indentation = indentation
     }
-    
-    func buildClass(suite: Suite, block: () -> Void) {
-        generatedCode += "final class \(suite.name.lexeme.className): XCTestCase {" + newLine(2)
+
+    func buildForSuitBeginning(_ suite: Suite) {
+        generatedCode += wrapLine2(genImports())
+        generatedCode += wrapLine2(genClassDefinition(suite) + " {")
         scopeLevel += 1
-        block()
-        scopeLevel -= 1
-        generatedCode += "}" + newLine(2)
     }
-    
-    func buildTestMethod(scenario: Scenario, block: () -> Void) {
-        generatedCode += tab() + "func \(scenario.name.lexeme.methodName)() {" + newLine()
+
+    func buildForSuitEnd(_ suite: Suite) {
+        generatedCode += genPrivateMethodLaunchApp().map(wrapLine).joined()
+        generatedCode += genPrivateWaitForExistenceIfNeeded().map(wrapLine).joined()
+        scopeLevel -= 1
+        generatedCode += wrapLine("}")
+    }
+
+    func buildForScenarioBeginning(_ scenario: Scenario) {
+        resetVariableId()
+        generatedCode += wrapLine(genMethodDefinition(scenario) + " {")
         scopeLevel += 1
-        block()
-        scopeLevel -= 1
-        generatedCode += tab() + "}" + newLine(2)
     }
-    
-    func buildLaunchAppCall(scenario: Scenario, block: () -> Void) {
-        generatedCode += tab() + "let app = launchApp([" + newLine()
+
+    func buildForScenarioEnd(_ scenario: Scenario) {
+        scopeLevel -= 1
+        generatedCode += wrapLine2("}")
+    }
+
+    func buildForArgumentsBeginning(_ arguments: [Argument]) {
+        let suffix = arguments.isEmpty ? ":])" : ""
+        generatedCode += wrapLine(genLaunchApp() + "([" + suffix)
         scopeLevel += 1
-        block()
+    }
+
+    func buildForArgument(_ argument: Argument) {
+        generatedCode += wrapLine(genArgument(argument) + ",")
+    }
+
+    func buildForArgumentsEnd(_ arguments: [Argument]) {
         scopeLevel -= 1
-        generatedCode += tab() + "])" + newLine()
+        generatedCode += arguments.isEmpty ? "" : wrapLine("])")
     }
-    
-    func buildArgumentPair(argument: Argument) {
-        generatedCode += tab() + "\"\(argument.key.lexeme)\"" + " : " + "\"\(argument.value.lexeme)\"" + "," + newLine()
+
+    func buildForStep(_ step: Step) {
+        generatedCode += genCallXCTestApi(step).map(wrapLine).joined()
     }
-    
-    func buildXCTestApiCall(step: Step) {
-        generatedCode += tab() + "app." + "\(step.element.type.generatedElement!)" + "[\"\(step.element.name.lexeme)\"]." + "firstMatch." + "\(step.action.type.generatedAction!)" + newLine()
+
+    func fileName(_ suit: Suite) -> String {
+        return genClassName(suit.name.lexeme) + ".swift"
     }
-    
-    func buildLaunchAppMethod() {
-        generatedCode +=
-        """
-            private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
-                continueAfterFailure = false
-                let app = XCUIApplication()
-                app.launchEnvironment = launchEnvironment
-                app.launch()
-                return app
-            }
-        """ + newLine()
+
+    func code() -> String {
+        return generatedCode
     }
-    
-    func buildXCUIElementExtension() {
-        generatedCode += """
-        private extension XCUIElement {
-            func verifyExistence(timeout: TimeInterval) {
-                XCTAssertTrue(self.waitForExistence(timeout: timeout))
-            }
-        }
-        """ + newLine()
-    }
-    
-    func result() -> String {
-        generatedCode
+
+    func reset() {
+        generatedCode = ""
+        variableId = 0
+        scopeLevel = 0
     }
 }
 
-extension SwiftCodeBuilder {
-    
-    func newLine(_ count: Int = 1) -> String {
-        String(repeating: "\n", count: count)
-    }
-    
-    func tab() -> String {
-        String(repeating: " ", count: scopeLevel * 4)
-    }
-}
+extension SwiftBuilder {
 
-
-extension String {
-    
-    var fileName: String {
-        className + ".swift"
+    func genPrivateMethodLaunchApp() -> [String] {
+        return [
+            "private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {",
+            "\(tab(1))continueAfterFailure = false",
+            "\(tab(1))let app = XCUIApplication()",
+            "\(tab(1))app.launchEnvironment = launchEnvironment",
+            "\(tab(1))app.launch()",
+            "\(tab(1))return app",
+            "}"
+        ]
     }
-    
-    var className: String {
-        self
+
+    func genPrivateWaitForExistenceIfNeeded() -> [String] {
+        return [
+            "private func waitForExistenceIfNeeded(_ element: XCUIElement) {",
+            "\(tab(1))if !element.exists {",
+            "\(tab(2))XCTAssertTrue(element.waitForExistence(timeout: 5))",
+            "\(tab(1))}",
+            "}"
+        ]
+    }
+
+    func genImports() -> String {
+        return "import XCTest"
+    }
+
+    func genClassDefinition(_ suite: Suite) -> String {
+        let className = genClassName(suite.name.lexeme)
+        return "final class \(className): XCTestCase"
+    }
+
+    func genClassName(_ lexeme: String) -> String {
+        return lexeme
+            .split(separator: " ")
+            .map { $0.capitalized }
+            .joined() + "UITests"
+    }
+
+    func genMethodDefinition(_ scenario: Scenario) -> String {
+        let methodName = genMethodName(scenario.name.lexeme)
+        return "func \(methodName)()"
+    }
+
+    func genMethodName(_ lexeme: String) -> String {
+        return "test" + lexeme
             .split(separator: " ")
             .map { $0.capitalized }
             .joined()
-        + "Tests"
     }
-    
-    var methodName: String {
-        "test" + self
-            .split(separator: " ")
-            .map { $0.capitalized }
-            .joined()
+
+    func genLaunchApp() -> String {
+        return "let app = launchApp"
+    }
+
+    func genArgument(_ argument: Argument) -> String {
+        return "\"\(argument.key.lexeme)\"" + ":" + "\"\(argument.value.lexeme)\""
+    }
+
+    func genCallXCTestApi(_ step: Step) -> [String] {
+        let variable = genVariableName(step.element)
+        let query = step.element.type.genXCUIElementQuery
+        let elementName = step.element.name.lexeme
+        let method = step.action.type.genXCUIElementMethod
+        return [
+            "let \(variable) = app.\(query)[\"\(elementName)\"].firstMatch",
+            "waitForExistenceIfNeeded(\(variable))",
+            "\(variable).\(method)()"
+        ]
+    }
+
+    func genVariableName(_ element: Element) -> String {
+        updateVariableId()
+        return element.type.genElementName + "_" + "\(variableId)"
+    }
+
+    func tab(_ count: Int) -> String {
+        return String(repeating: " ", count: indentation * count)
+    }
+
+    func wrapLine(_ line: String) -> String {
+        return tab(scopeLevel) + line + "\n"
+    }
+
+    func wrapLine2(_ line: String) -> String {
+        return tab(scopeLevel) + line + "\n\n"
+    }
+
+    func resetVariableId() {
+        variableId = 0
+    }
+
+    func updateVariableId() {
+        variableId += 1
     }
 }
 
 extension Token {
-    
-    var generatedElement: String? {
+
+    var genElementName: String {
+        switch self.type {
+        case .text: return "text"
+        case .searchField: return "searchField"
+        case .button: return "button"
+        default: fatalError("Not supported element type: \(self)")
+        }
+    }
+
+
+    var genXCUIElementQuery: String {
         switch self.type {
         case .text: return "staticTexts"
         case .searchField: return "searchFields"
         case .button: return "buttons"
-        default: return nil
+        default: fatalError("Not supported query type: \(self)")
         }
     }
-    
-    var generatedAction: String? {
+
+    var genXCUIElementMethod: String {
         switch self.type {
-        case .tap: return "tap()"
-        case .verify: return "verifyExistence(timeout: 3)"
-        case .scrollUp: return "swipeUp()"
-        case .scrollDown: return "swipeDown()"
-        default: return nil
+        case .tap: return "tap"
+        case .verify: return "verifyExistence"
+        default: fatalError("Not supported method type: \(self)")
         }
     }
 }

@@ -5,21 +5,21 @@ final class SwiftCodeGenerator_NewTests: BaseSwiftCodeGenerator_NewTests {
     func test_name_generation() throws {
         try assertName(
             suiteName: "Home Screen",
-            expect: "HomeScreenUITests"
+            expect: "HomeScreenUITests.swift"
         )
     }
 
     func test_name_generation_with_lower_cased_suite_name() throws {
         try assertName(
             suiteName: "home screen",
-            expect: "HomeScreenUITests"
+            expect: "HomeScreenUITests.swift"
         )
     }
 
     func test_name_generation_with_multiple_spaces_in_suite_name() throws {
         try assertName(
             suiteName: "Home       Screen",
-            expect: "HomeScreenUITests"
+            expect: "HomeScreenUITests.swift"
         )
     }
 
@@ -76,11 +76,11 @@ final class SwiftCodeGenerator_NewTests: BaseSwiftCodeGenerator_NewTests {
             expect: 
 """
 private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
-    continueAfterFailure = false
-    let app = XCUIApplication()
-    app.launchEnvironment = launchEnvironment
-    app.launch()
-    return app
+continueAfterFailure = false
+let app = XCUIApplication()
+app.launchEnvironment = launchEnvironment
+app.launch()
+return app
 }
 """
         )
@@ -104,7 +104,10 @@ let app = launchApp([:])
             ],
             expect:
 """
-let app = launchApp(["clear_state":"true","use_mock_api":"false",])
+let app = launchApp([
+"clear_state":"true",
+"use_mock_api":"false",
+])
 """
         )
     }
@@ -125,9 +128,9 @@ let app = launchApp(["clear_state":"true","use_mock_api":"false",])
             expect:
 """
 private func waitForExistenceIfNeeded(_ element: XCUIElement) {
-    if !element.exists {
-        XCTAssertTrue(element.waitForExistence(timeout: 5))
-    }
+if !element.exists {
+XCTAssertTrue(element.waitForExistence(timeout: 5))
+}
 }
 """
         )
@@ -147,7 +150,10 @@ private func waitForExistenceIfNeeded(_ element: XCUIElement) {
             expect:
 """
 func testLoginUser() {
-let app = launchApp(["clear_state":"true","use_mock_api":"false",])
+let app = launchApp([
+"clear_state":"true",
+"use_mock_api":"false",
+])
 let button_1 = app.buttons["Log in"].firstMatch
 waitForExistenceIfNeeded(button_1)
 button_1.tap()
@@ -174,7 +180,9 @@ button_2.tap()
 final class HomePageUITests: XCTestCase {
 
     func testLoginUser() {
-        let app = launchApp(["clear_state":"true",])
+        let app = launchApp([
+            "clear_state":"true",
+        ])
         let button_1 = app.buttons["Log in"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
@@ -187,7 +195,6 @@ final class HomePageUITests: XCTestCase {
         app.launch()
         return app
     }
-
     private func waitForExistenceIfNeeded(_ element: XCUIElement) {
         if !element.exists {
             XCTAssertTrue(element.waitForExistence(timeout: 5))
@@ -229,24 +236,28 @@ end
 """,
             expect:
                 Code(
-                    testClasses: [
-                        TestClass(
-                            name: "HomeScreenUITests",
-                            generatedCode:
+                    files: [
+                        File(
+                            name: "HomeScreenUITests.swift",
+                            content:
 """
 import XCTest
 
 final class HomeScreenUITests: XCTestCase {
 
     func testOpenHomeScreen() {
-        let app = launchApp(["clear_state":"true",])
+        let app = launchApp([
+            "clear_state":"true",
+        ])
         let button_1 = app.buttons["Ok"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
     }
 
     func testLeaveHomeScreen() {
-        let app = launchApp(["clear_state":"true",])
+        let app = launchApp([
+            "clear_state":"true",
+        ])
         let button_1 = app.buttons["Close"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
@@ -259,25 +270,27 @@ final class HomeScreenUITests: XCTestCase {
         app.launch()
         return app
     }
-
     private func waitForExistenceIfNeeded(_ element: XCUIElement) {
         if !element.exists {
             XCTAssertTrue(element.waitForExistence(timeout: 5))
         }
     }
 }
+
 """
                         ),
-                        TestClass(
-                            name: "LoginScreenUITests",
-                            generatedCode:
+                        File(
+                            name: "LoginScreenUITests.swift",
+                            content:
 """
 import XCTest
 
 final class LoginScreenUITests: XCTestCase {
 
     func testLoginSuccessfully() {
-        let app = launchApp(["clear_state":"false",])
+        let app = launchApp([
+            "clear_state":"false",
+        ])
         let button_1 = app.buttons["Log in"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
@@ -290,13 +303,13 @@ final class LoginScreenUITests: XCTestCase {
         app.launch()
         return app
     }
-
     private func waitForExistenceIfNeeded(_ element: XCUIElement) {
         if !element.exists {
             XCTAssertTrue(element.waitForExistence(timeout: 5))
         }
     }
 }
+
 """
                         )
                     ]
