@@ -2,7 +2,17 @@ import Foundation
 
 
 struct Program: Equatable {
-    let suites: [Suite]
+    let definitions: [Definition]
+}
+
+enum Definition: Equatable {
+    case suite(Suite)
+    case subscenario(Subscenario)
+}
+
+struct Subscenario: Equatable {
+    let name: Token
+    let steps: [Step]
 }
 
 struct Suite: Equatable {
@@ -21,16 +31,27 @@ struct Argument: Equatable {
     let value: Token
 }
 
-struct Step: Equatable {
-    let action: Action
-    let element: Element
+enum Step: Equatable {
+    case action(Action)
+    case subscenarioCall(SubscenarioCall)
 }
 
 struct Action: Equatable {
     let type: Token
+    let element: Element
+    let condition: Condition?
+}
+
+struct SubscenarioCall: Equatable {
+    let name: Token
 }
 
 struct Element: Equatable {
     let type: Token
     let name: Token
+}
+
+struct Condition: Equatable {
+    let type: Token
+    let parameter: Token?
 }

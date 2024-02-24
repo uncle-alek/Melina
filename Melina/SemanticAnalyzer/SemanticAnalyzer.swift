@@ -54,9 +54,18 @@ private extension SemanticAnalyzer {
 
     func analyzeProgram(_ program: Program) {
         scopes.append(Scope(name: "Global"))
-        program.suites.forEach(analyzeSuite)
+        program.definitions.forEach(analyzeDefinition)
         _ = scopes.popLast()
     }
+
+    func analyzeDefinition(_ definition: Definition) {
+        switch definition {
+        case .subscenario(let value): analyzeSubscenario(value)
+        case .suite(let value): analyzeSuite(value)
+        }
+    }
+
+    func analyzeSubscenario(_ subscenario: Subscenario) {}
 
     func analyzeSuite(_ suite: Suite) {
         let currentScope = scopes.last!
@@ -86,8 +95,17 @@ private extension SemanticAnalyzer {
     func analyzeArument(_ argument: Argument) {}
 
     func analyzeStep(_ step: Step) {
-        if !availableActions[step.action.type.type]!.contains(step.element.type.type) {
-            errors.append(.incompatibleAction(action: step.action.type, element: step.element.type))
+        switch step {
+        case .action(let value): analyzeAction(value)
+        case .subscenarioCall(let value): analyzeSubscenarioCall(value)
         }
     }
+
+    func analyzeAction(_ action: Action) {
+        if !availableActions[action.type.type]!.contains(action.element.type.type) {
+            errors.append(.incompatibleAction(action: action.type, element: action.element.type))
+        }
+    }
+
+    func analyzeSubscenarioCall(_ subscenarioCall: SubscenarioCall) {}
 }

@@ -129,6 +129,16 @@ final class LexerTests: BaseLexerTests {
                 )
             ]
         )
+
+        assert(
+            source: "subscenario",
+            produce: [
+                .init(
+                    type: .subscenario,
+                    lexeme: "subscenario"
+                )
+            ]
+        )
     }
 
     func test_compound_tokens() {

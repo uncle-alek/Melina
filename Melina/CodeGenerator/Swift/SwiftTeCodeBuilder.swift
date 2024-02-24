@@ -11,7 +11,13 @@ final class SwiftTeCodeBuilder: CodeBuilder {
     func buildForSuitEnd(_ suite: Suite) {
         commands.append(SwiftTeCode.Command(mnemonic: .suiteEnd, operands: [suite.name.lexeme]))
     }
-    
+
+    func buildForSubscenarioBeginning(_ subscenario: Subscenario) {
+    }
+
+    func buildForSubscenarioEnd(_ subscenario: Subscenario) {
+    }
+
     func buildForScenarioBeginning(_ scenario: Scenario) {
         commands.append(SwiftTeCode.Command(mnemonic: .scenarioBegin, operands: [scenario.name.lexeme]))
         commands.append(SwiftTeCode.Command(mnemonic: .application, operands: []))
@@ -33,14 +39,19 @@ final class SwiftTeCodeBuilder: CodeBuilder {
     func buildForArgumentsEnd(_ arguments: [Argument]) {
         commands.append(SwiftTeCode.Command(mnemonic: .launch, operands: []))
     }
-    
-    func buildForStep(_ step: Step) {
-        buildElement(step)
-        buildAction(step)
+
+    func buildForAction(_ action: Action) {
+        buildElement(action.element)
+        buildAction(action.type)
+        if let condition = action.condition {
+            buildCondition(condition)
+        }
     }
-    
-    func fileName(_ suite: Suite) -> String {
-        return genFileName(suite.name.lexeme)
+
+    func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {}
+
+    func fileName(_ definition: Definition) -> String {
+        ""
     }
     
     func code() -> String {
@@ -54,17 +65,19 @@ final class SwiftTeCodeBuilder: CodeBuilder {
 
 private extension SwiftTeCodeBuilder {
 
-    func buildElement(_ step: Step) {
-        commands.append(SwiftTeCode.Command(mnemonic: mapElement(step.element.type), operands: [step.element.name.lexeme]))
+    func buildElement(_ element: Element) {
+        commands.append(SwiftTeCode.Command(mnemonic: mapElement(element.type), operands: [element.name.lexeme]))
         commands.append(SwiftTeCode.Command(mnemonic: .exists, operands: []))
         commands.append(SwiftTeCode.Command(mnemonic: .jumpIfTrue, operands: ["2"]))
         commands.append(SwiftTeCode.Command(mnemonic: .waitForExistence, operands: ["5"]))
         commands.append(SwiftTeCode.Command(mnemonic: .assertBool, operands: ["true"]))
     }
 
-    func buildAction(_ step: Step) {
-        commands.append(SwiftTeCode.Command(mnemonic: mapAction(step.action.type), operands: []))
+    func buildAction(_ actionType: Token) {
+        commands.append(SwiftTeCode.Command(mnemonic: mapAction(actionType), operands: []))
     }
+
+    func buildCondition(_ condition: Condition) {}
 
     func genFileName(_ lexeme: String) -> String {
         return lexeme

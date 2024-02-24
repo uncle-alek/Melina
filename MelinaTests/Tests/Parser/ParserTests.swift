@@ -20,17 +20,17 @@ final class ParserTests: BaseParserTests {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            tap button[name: "Button_1"]
+                            tap button "Button_1"
                         end
 
                         scenario "Open Cart Screen":
-                            tap button[name: "Button_2"]
+                            tap button "Button_2"
                         end
                     end
                 
                     suite "Booking Screen":
                         scenario "Open Booking Screen":
-                            tap button[name: "Button_3"]
+                            tap button "Button_3"
                         end
                     end
                 """,

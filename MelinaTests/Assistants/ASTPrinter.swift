@@ -21,14 +21,25 @@ private extension ASTPrinter {
 
     func programToString(_ program: Program) {
         formattedText += "<Program_beggining>" + "\n"
-        program.suites.forEach(suiteToString)
+        program.definitions.forEach(definitionToString)
         formattedText += "<Program_end>"
+    }
+
+    func definitionToString(_ definition: Definition) {
+        switch definition {
+        case .suite(let value): suiteToString(value)
+        case .subscenario(let value): subscenarioToString(value)
+        }
     }
 
     func suiteToString(_ suite: Suite) {
         formattedText += "<Suite_beggining>:\(suite.name.lexeme)" + "\n"
         suite.scenarios.forEach(scenarioToString)
         formattedText += "<Suite_end>" + "\n"
+    }
+
+    func subscenarioToString(_ subscenario: Subscenario) {
+        
     }
 
     func scenarioToString(_ scenario: Scenario) {
@@ -49,6 +60,17 @@ private extension ASTPrinter {
     }
 
     func stepToString(_ step: Step) {
-        formattedText += "\(step.action.type.lexeme)-\(step.element.type.lexeme):\(step.element.name.lexeme),"
+        switch step {
+        case .action(let value): actionToString(value)
+        case .subscenarioCall(let value): subscenarioCallToString(value)
+        }
+    }
+
+    func actionToString(_ action: Action) {
+        formattedText += "\(action.type.lexeme)-\(action.element.type.lexeme):\(action.element.name.lexeme),"
+    }
+
+    func subscenarioCallToString(_ subscenarioCall: SubscenarioCall) {
+
     }
 }

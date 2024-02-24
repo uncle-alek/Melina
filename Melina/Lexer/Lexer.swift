@@ -19,6 +19,7 @@ final class Lexer {
     let keywords: [String : TokenType] = [
         "suite"           : .suite,
         "scenario"        : .scenario,
+        "subscenario"     : .subscenario,
         "arguments"       : .arguments,
 
         "to"              : .to,

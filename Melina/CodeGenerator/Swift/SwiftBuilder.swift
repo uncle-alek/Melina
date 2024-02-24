@@ -1,6 +1,23 @@
 import Foundation
 
 final class SwiftBuilder: CodeBuilder {
+    func buildForSubscenarioBeginning(_ subscenario: Subscenario) {
+
+    }
+    
+    func buildForSubscenarioEnd(_ subscenario: Subscenario) {
+
+    }
+
+    
+    func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
+
+    }
+    
+    func fileName(_ definition: Definition) -> String {
+        ""
+    }
+    
 
     private var generatedCode: String = ""
     private var variableId: Int = 0
@@ -52,8 +69,8 @@ final class SwiftBuilder: CodeBuilder {
         generatedCode += arguments.isEmpty ? "" : wrapLine("])")
     }
 
-    func buildForStep(_ step: Step) {
-        generatedCode += genCallXCTestApi(step).map(wrapLine).joined()
+    func buildForAction(_ action: Action) {
+        generatedCode += genCallXCTestApi(action).map(wrapLine).joined()
     }
 
     func fileName(_ suite: Suite) -> String {
@@ -131,11 +148,11 @@ extension SwiftBuilder {
         return "\"\(argument.key.lexeme)\"" + ":" + "\"\(argument.value.lexeme)\""
     }
 
-    func genCallXCTestApi(_ step: Step) -> [String] {
-        let variable = genVariableName(step.element)
-        let query = step.element.type.genXCUIElementQuery
-        let elementName = step.element.name.lexeme
-        let method = step.action.type.genXCUIElementMethod
+    func genCallXCTestApi(_ action: Action) -> [String] {
+        let variable = genVariableName(action.element)
+        let query = action.element.type.genXCUIElementQuery
+        let elementName = action.element.name.lexeme
+        let method = action.type.genXCUIElementMethod
         return [
             "let \(variable) = app.\(query)[\"\(elementName)\"].firstMatch",
             "waitForExistenceIfNeeded(\(variable))",

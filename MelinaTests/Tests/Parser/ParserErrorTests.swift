@@ -13,7 +13,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: .init(expected: .suiteKeyword, line: 1, offset: 0)
+            throws: .init(expected: .definition, line: 1, offset: 0)
         )
         
         assert(
@@ -37,7 +37,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 
                 """,
-            throws:  .init(expected: .suiteEnd, line: 5, offset: 97)
+            throws:  .init(expected: .end, line: 5, offset: 97)
         )
         
         assert(
@@ -49,7 +49,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws:  .init(expected: .suiteColon, line: 2, offset: 23)
+            throws:  .init(expected: .colon, line: 2, offset: 23)
         )
     }
     
@@ -63,7 +63,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: .init(expected: .scenarioKeyword, line: 2, offset: 24)
+            throws: .init(expected: .scenario, line: 2, offset: 24)
         )
         
         assert(
@@ -85,7 +85,7 @@ final class ParserErrorTests: BaseParserTests {
                     scenario "Open Home Screen":
                         tap button[name: "Button_1"]
                 """,
-            throws: .init(expected: .scenarioEnd, line: 3, offset: 88)
+            throws: .init(expected: .end, line: 3, offset: 88)
         )
         
         assert(
@@ -97,7 +97,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: .init(expected: .scenarioColon, line: 3, offset: 60)
+            throws: .init(expected: .colon, line: 3, offset: 60)
         )
     }
     
@@ -111,7 +111,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: .init(expected: .stepAction, line: 3, offset: 61)
+            throws: .init(expected: .step, line: 3, offset: 61)
         )
         
         assert(
@@ -123,78 +123,20 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: .init(expected: .stepElement, line: 3, offset: 65)
+            throws: .init(expected: .elementType, line: 3, offset: 65)
         )
+
         
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        tap button name: "Button_1"]
+                        tap button
                     end
                 end
                 """,
-            throws: .init(expected: .stepLeftSquareBrace, line: 3, offset: 72)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[: "Button_1"]
-                    end
-                end
-                """,
-            throws: .init(expected: .stepElementNameKeyword, line: 3, offset: 72)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[name "Button_1"]
-                    end
-                end
-                """,
-            throws: .init(expected: .stepElementColon, line: 3, offset: 77)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[name: ]
-                    end
-                end
-                """,
-            throws: .init(expected: .stepElementName, line: 3, offset: 78)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[name: "Button_1"
-                    end
-                end
-                """,
-            throws: .init(expected: .stepRightSquareBrace, line: 4, offset: 93)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                    end
-                end
-                """,
-            throws: .init(expected: .stepAction, line: 3, offset: 57)
+            throws: .init(expected: .elementName, line: 3, offset: 78)
         )
     }
     
@@ -212,7 +154,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: .init(expected: .argumentColon, line: 4, offset: 92)
+            throws: .init(expected: .argumentTo, line: 4, offset: 92)
         )
         
         assert(
@@ -221,9 +163,9 @@ final class ParserErrorTests: BaseParserTests {
                 suite "HomeScreen":
                     scenario "Open Home Screen":
                         arguments:
-                            "clear" :
+                            "clear" to
                         end
-                        verify "homeScreenIdentifier" text
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
@@ -236,8 +178,8 @@ final class ParserErrorTests: BaseParserTests {
                 suite "HomeScreen":
                     scenario "Open Home Screen":
                         arguments:
-                            "clear" : "true"
-                        verify "homeScreenIdentifier" text
+                            "clear" to "true"
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
@@ -250,13 +192,13 @@ final class ParserErrorTests: BaseParserTests {
                 suite "HomeScreen":
                     scenario "Open Home Screen":
                         arguments
-                            "clear" : "true"
+                            "clear" to "true"
                         end
-                        verify "homeScreenIdentifier" text
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
-            throws: .init(expected: .argumentsColon, line: 4, offset: 83)
+            throws: .init(expected: .colon, line: 4, offset: 83)
         )
         
         assert(
@@ -266,7 +208,7 @@ final class ParserErrorTests: BaseParserTests {
                     scenario "Open Home Screen":
                         arguments:
                         end
-                        verify "homeScreenIdentifier" text
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
