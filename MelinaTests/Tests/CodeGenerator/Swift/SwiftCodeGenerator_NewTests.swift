@@ -148,15 +148,12 @@ private func waitForExistenceIfNeeded(_ element: XCUIElement) {
 """
 func testLoginUser() {
 let app = launchApp(["clear_state":"true","use_mock_api":"false",])
-
 let button_1 = app.buttons["Log in"].firstMatch
 waitForExistenceIfNeeded(button_1)
 button_1.tap()
-
 let button_2 = app.buttons["Ok"].firstMatch
 waitForExistenceIfNeeded(button_2)
 button_2.tap()
-
 }
 """
         )
@@ -178,11 +175,9 @@ final class HomePageUITests: XCTestCase {
 
     func testLoginUser() {
         let app = launchApp(["clear_state":"true",])
-
         let button_1 = app.buttons["Log in"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
-
     }
 
     private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
@@ -245,20 +240,16 @@ final class HomeScreenUITests: XCTestCase {
 
     func testOpenHomeScreen() {
         let app = launchApp(["clear_state":"true",])
-
         let button_1 = app.buttons["Ok"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
-
     }
 
     func testLeaveHomeScreen() {
         let app = launchApp(["clear_state":"true",])
-
         let button_1 = app.buttons["Close"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
-
     }
 
     private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
@@ -287,11 +278,9 @@ final class LoginScreenUITests: XCTestCase {
 
     func testLoginSuccessfully() {
         let app = launchApp(["clear_state":"false",])
-
         let button_1 = app.buttons["Log in"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
-
     }
 
     private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {

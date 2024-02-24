@@ -82,9 +82,8 @@ private extension SwiftCodeGenerator_New {
     func genMethodBody(_ scenario: Scenario) -> String {
         let callLaunchApp = genCallLaunchApp(scenario.arguments)
         let xctestApiCalls = scenario.steps.map(genCallXCTestApi)
-        let reducedXCTestApiCalls = xctestApiCalls.reduce("") { $0 + $1 + "\n\n" }
-        return callLaunchApp + "\n\n"
-            + reducedXCTestApiCalls
+        let reducedXCTestApiCalls = xctestApiCalls.reduce("") { $0 + $1 }
+        return callLaunchApp + reducedXCTestApiCalls
     }
 
     func genMethodName(_ lexeme: String) -> String {
@@ -117,18 +116,15 @@ private extension SwiftCodeGenerator_New {
     }
 
     func genCallLaunchApp(_ arguments: [Argument]) -> String {
-        let arumentsCode = arguments.isEmpty
-        ? ":"
-        : arguments.reduce("") { $0 + genArgument($1) + "," }
-        return """
-\(tab())let app = launchApp([\(arumentsCode)])
-"""
+        let argumentLines = arguments.map(genArgument)
+        let arumentsCode = argumentLines.isEmpty
+            ? "[:]"
+            : "[" + argumentLines.reduce("") { $0 + $1 + "," } + "]"
+        return wrapLine("let app = launchApp(\(arumentsCode))")
     }
 
     func genArgument(_ argument: Argument) -> String {
-        return "\"\(argument.key.lexeme)\""
-        + ":"
-        + "\"\(argument.value.lexeme)\""
+        return "\"\(argument.key.lexeme)\"" + ":" + "\"\(argument.value.lexeme)\""
     }
 
     func genCallXCTestApi(_ step: Step) -> String {
@@ -136,25 +132,26 @@ private extension SwiftCodeGenerator_New {
         let query = step.element.type.genXCUIElementQuery
         let elementName = step.element.name.lexeme
         let method = step.action.type.genXCUIElementMethod
-        return """
-\(tab())let \(variable) = app.\(query)[\"\(elementName)\"].firstMatch
-\(tab())waitForExistenceIfNeeded(\(variable))
-\(tab())\(variable).\(method)()
-"""
+        let call = wrapLine("let \(variable) = app.\(query)[\"\(elementName)\"].firstMatch") +
+                   wrapLine("waitForExistenceIfNeeded(\(variable))") +
+                   wrapLine("\(variable).\(method)()")
+        return call
     }
 
     func genVariableName(_ element: Element) -> String {
         updateVariableCounter()
-        return element.type.genElementName
-        + "_"
-        + "\(variableCounter)"
+        return element.type.genElementName + "_" + "\(variableCounter)"
     }
 }
 
 extension SwiftCodeGenerator_New {
 
     func tab() -> String {
-        String(repeating: " ", count: scopeLevel * indentation)
+        return String(repeating: " ", count: scopeLevel * indentation)
+    }
+
+    func wrapLine(_ line: String) -> String {
+        return tab() + line + "\n"
     }
 
     func resetVariableCounter() {
