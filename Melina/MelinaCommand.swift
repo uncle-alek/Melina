@@ -21,11 +21,14 @@ struct Melina: ParsableCommand {
     mutating func run() throws {
         let sourceCode = try FileService().content(at: path)
         let tecode = try Compiler(source: sourceCode, filePath: path).compileSwiftTeCode()
-        let serializedTecode = JSONSerializer.serialize(tecode)
         if let output {
-            try FileService().writeToFile(content: serializedTecode, at: output)
+            try tecode.files.forEach {
+                try FileService().writeToFile(content: $0.content, at: output)
+            }
         } else {
-            try FileService().writeToJsonFile(content: serializedTecode, at: path)
+            try tecode.files.forEach {
+                try FileService().writeToJsonFile(content: $0.content, at: path)
+            }
         }
     }
 }

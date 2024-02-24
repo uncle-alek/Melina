@@ -11,19 +11,21 @@ final class SwiftTeCodeGeneratorTests: BaseSwiftTeCodeGeneratorTests {
                         arguments:
                             "clearState" : "true"
                         end
-                        tap button[name: "Button_1"]
+                        tap button[name: "Ok"]
                     end
                 end
                 """,
-            produce:
+            fileName: "HomeScreenTeCode.json",
+            code:
                 SwiftTeCode(
                     commands: [
                         SwiftTeCode.Command(mnemonic: .suiteBegin, operands: ["Home Screen"]),
                         SwiftTeCode.Command(mnemonic: .scenarioBegin, operands: ["Open Home Screen"]),
                         SwiftTeCode.Command(mnemonic: .application, operands: []),
+                        SwiftTeCode.Command(mnemonic: .launchArgument, operands: ["RUNNING_UI_TESTS"]),
                         SwiftTeCode.Command(mnemonic: .launchEnvironment, operands: ["clearState", "true"]),
                         SwiftTeCode.Command(mnemonic: .launch, operands: []),
-                        SwiftTeCode.Command(mnemonic: .button, operands: ["Button_1"]),
+                        SwiftTeCode.Command(mnemonic: .button, operands: ["Ok"]),
                         SwiftTeCode.Command(mnemonic: .exists, operands: []),
                         SwiftTeCode.Command(mnemonic: .jumpIfTrue, operands: ["2"]),
                         SwiftTeCode.Command(mnemonic: .waitForExistence, operands: ["5"]),

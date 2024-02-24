@@ -1,18 +1,18 @@
 import Foundation
 
 struct Code: Equatable {
-    let testClasses: [TestClass]
+    let files: [File]
 }
 
-struct TestClass: Equatable {
+struct File: Equatable {
     let name: String
-    let generatedCode: String
-    
+    let content: String
+
     init(
-        _ name: String,
-        _ generatedCode: String
+        name: String,
+        content: String
     ) {
         self.name = name
-        self.generatedCode = generatedCode
+        self.content = content
     }
 }
