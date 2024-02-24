@@ -23,7 +23,7 @@ fileprivate final class Scope {
     }
 }
 
-final class SemanticAnalyzer: Visitor {
+final class SemanticAnalyzer {
     
     private let availableActions: [TokenType : [TokenType]] = [
         .tap : [.button],
@@ -39,52 +39,55 @@ final class SemanticAnalyzer: Visitor {
     ) {
         self.program = program
     }
-    
-    func visit(_ program: Program) {
+
+    func analyze() -> Result<Program, [Error]> {
+        analyzeProgram(program)
+        if errors.isEmpty {
+            return .success(program)
+        } else {
+            return .failure(errors)
+        }
+    }
+}
+
+private extension SemanticAnalyzer {
+
+    func analyzeProgram(_ program: Program) {
         scopes.append(Scope(name: "Global"))
-        program.suites.forEach { $0.accept(self) }
+        program.suites.forEach(analyzeSuite)
         _ = scopes.popLast()
     }
-    
-    func visit(_ suite: Suite) {
+
+    func analyzeSuite(_ suite: Suite) {
         let currentScope = scopes.last!
         if currentScope.isSymbolDeclared(name: suite.name.lexeme) {
             errors.append(.suiteNameCollision(suite: suite.name))
         } else {
             currentScope.declareSymbol(name: suite.name.lexeme)
         }
-        
+
         scopes.append(Scope(name: suite.name.lexeme))
-        suite.scenarios.forEach { $0.accept(self) }
+        suite.scenarios.forEach(analyzeScenario)
         _ = scopes.popLast()
     }
-    
-    func visit(_ scenario: Scenario) {
+
+    func analyzeScenario(_ scenario: Scenario) {
         let currentScope = scopes.last!
         if currentScope.isSymbolDeclared(name: scenario.name.lexeme) {
             errors.append(.scenarioNameCollision(scenario: scenario.name))
         } else {
             currentScope.declareSymbol(name: scenario.name.lexeme)
         }
-        
-        scenario.arguments.forEach { $0.accept(self) }
-        scenario.steps.forEach { $0.accept(self) }
+
+        scenario.arguments.forEach(analyzeArument)
+        scenario.steps.forEach(analyzeStep)
     }
-    
-    func visit(_ argument: Argument) {}
-    
-    func visit(_ step: Step) {
+
+    func analyzeArument(_ argument: Argument) {}
+
+    func analyzeStep(_ step: Step) {
         if !availableActions[step.action.type.type]!.contains(step.element.type.type) {
             errors.append(.incompatibleAction(action: step.action.type, element: step.element.type))
-        }
-    }
-    
-    func analyze() -> Result<Program, [Error]> {
-        program.accept(self)
-        if errors.isEmpty {
-            return .success(program)
-        } else {
-            return .failure(errors)
         }
     }
 }
