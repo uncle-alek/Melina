@@ -8,9 +8,14 @@ suite "Melina":
         end
 
         // Do some steps
+        verify label "Label_2" is not selected
         verify view "View_2" is not selected
-        verify view "View_2" contains label "Hello"
+        verify view "View_2" is selected
+        verify view "View_2" is exist
+        verify view "View_2" is not exist
+        verify view "View_2" contains value "Hello"
         tap button "Button 4"
+        edit textfield "Text 1" with text "Hello world"
         subscenario "Login"
     end
     
