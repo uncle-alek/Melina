@@ -39,8 +39,8 @@ final class SwiftTeCodeBuilder: CodeBuilder {
         buildAction(step)
     }
     
-    func fileName(_ suit: Suite) -> String {
-        return genFileName(suit.name.lexeme)
+    func fileName(_ suite: Suite) -> String {
+        return genFileName(suite.name.lexeme)
     }
     
     func code() -> String {

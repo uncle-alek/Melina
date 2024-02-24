@@ -10,7 +10,7 @@ protocol CodeBuilder {
     func buildForArgument(_ argument: Argument)
     func buildForArgumentsEnd(_ arguments: [Argument])
     func buildForStep(_ step: Step)
-    func fileName(_ suit: Suite) -> String
+    func fileName(_ suite: Suite) -> String
     func code() -> String
     func reset()
 
@@ -31,7 +31,7 @@ final class CodeGenerator {
 
     func generate() -> Result<Code, [Error]> {
         let files = program.suites.map {
-            suit($0)
+            suite($0)
             let file = File(
                 name: builder.fileName($0),
                 content: builder.code()
@@ -42,10 +42,10 @@ final class CodeGenerator {
         return .success(Code(files: files))
     }
 
-    func suit(_ suit: Suite) {
-        builder.buildForSuitBeginning(suit)
-        suit.scenarios.forEach(scenario)
-        builder.buildForSuitEnd((suit))
+    func suite(_ suite: Suite) {
+        builder.buildForSuitBeginning(suite)
+        suite.scenarios.forEach(scenario)
+        builder.buildForSuitEnd((suite))
     }
 
     func scenario(_ scenario: Scenario) {

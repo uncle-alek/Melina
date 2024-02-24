@@ -56,8 +56,8 @@ final class SwiftBuilder: CodeBuilder {
         generatedCode += genCallXCTestApi(step).map(wrapLine).joined()
     }
 
-    func fileName(_ suit: Suite) -> String {
-        return genClassName(suit.name.lexeme) + ".swift"
+    func fileName(_ suite: Suite) -> String {
+        return genClassName(suite.name.lexeme) + ".swift"
     }
 
     func code() -> String {
