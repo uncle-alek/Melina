@@ -1,7 +1,7 @@
 program = suites | subscenarioDefinitions | program
 subscenarioDefinitions = "subscenario" STRING ":" steps "end"
 suites = suite (suite)*
-suite = "suite" STRING ":" arguments scenarios "end"
+suite = "suite" STRING ":" arguments? scenarios "end"
 arguments = "arguments" ":" argumentsBody "end"
 argumentsBody = argument (argument)*
 argument = STRING "to" STRING

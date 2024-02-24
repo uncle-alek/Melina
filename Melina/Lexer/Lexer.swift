@@ -114,23 +114,22 @@ private extension Lexer {
     func scanKeyword() throws {
         while !isEndOfFile() {
             let currentChar = advance()
-            if !currentChar.isLetter && currentChar != " " {
-                undo()
-                break
+            if !currentChar.isLetter {
+                if keywords[lexemeWithSingleSpaces()] != nil {
+                    undo()
+                    break
+                } else if currentChar == " " {
+                    continue
+                }
             }
         }
-
-        let lexemeWithSingleSpaces = lexeme()
-            .components(separatedBy: .whitespacesAndNewlines)
-            .filter { !$0.isEmpty }
-            .joined(separator: " ")
-        if let tokenType = keywords[lexemeWithSingleSpaces] {
+        if let tokenType = keywords[lexemeWithSingleSpaces()] {
             addToken(tokenType, lexeme())
         } else {
             throw error(.unknownKeyword)
         }
     }
-    
+
     func scanNewLine() {
         line += 1
 
@@ -171,7 +170,7 @@ private extension Lexer {
     }
     
     func isEndOfFile() -> Bool {
-        currentIndex == source.endIndex
+        return currentIndex == source.endIndex
     }
     
     func undo() {
@@ -183,14 +182,21 @@ private extension Lexer {
     }
     
     func lexeme() -> String {
-        String(source[startIndex..<currentIndex])
+        return String(source[startIndex..<currentIndex])
     }
-    
+
+    func lexemeWithSingleSpaces() -> String {
+        return lexeme()
+            .components(separatedBy: .whitespacesAndNewlines)
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+    }
+
     func stringLexeme() -> String {
-        String(source[startIndex..<currentIndex].dropFirst().dropLast())
+        return String(source[startIndex..<currentIndex].dropFirst().dropLast())
     }
     
     func error(_ type: LexerError.`Type`) -> LexerError {
-        LexerError(type: type, line: line, index: source.index(before: currentIndex))
+        return LexerError(type: type, line: line, index: source.index(before: currentIndex))
     }
 }
