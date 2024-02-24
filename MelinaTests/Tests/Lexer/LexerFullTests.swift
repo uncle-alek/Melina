@@ -8,7 +8,7 @@ final class LexerFullTests: BaseLexerTests {
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        tap button[name: "Button_1"]
+                        tap button "Button_1"
                     end
                 end
                 """,
@@ -70,39 +70,11 @@ final class LexerFullTests: BaseLexerTests {
                                             endOffset: 71
                                         ),
                                         .init(
-                                            type: .leftSquareBrace,
-                                            lexeme: "",
-                                            line: 3,
-                                            startOffset: 71,
-                                            endOffset: 72
-                                        ),
-                                        .init(
-                                            type: .name,
-                                            lexeme: "name",
-                                            line: 3,
-                                            startOffset: 72,
-                                            endOffset: 76
-                                        ),
-                                        .init(
-                                            type: .colon,
-                                            lexeme: "",
-                                            line: 3,
-                                            startOffset: 76,
-                                            endOffset: 77
-                                        ),
-                                        .init(
                                             type: .string,
                                             lexeme: "Button_1",
                                             line: 3,
                                             startOffset: 78,
                                             endOffset: 88
-                                        ),
-                                        .init(
-                                            type: .rightSquareBrace,
-                                            lexeme: "",
-                                            line: 3,
-                                            startOffset: 88,
-                                            endOffset: 89
                                         ),
                             .init(
                                 type: .end,

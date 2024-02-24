@@ -27,7 +27,7 @@ final class SemanticAnalyzer: Visitor {
     
     private let availableActions: [TokenType : [TokenType]] = [
         .tap : [.button],
-        .verify : [.button, .searchField, .text],
+        .verify : [.button, .label, .textField, .view],
     ]
     
     private var program: Program

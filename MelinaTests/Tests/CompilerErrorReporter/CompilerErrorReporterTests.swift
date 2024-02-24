@@ -35,7 +35,7 @@ final class CompilerErrorReporterTests: BaseCompilerErrorReporterTests {
             end
             """,
             fileName: "MelinaTests.swift",
-            error: TestLexerError(type: .unknowKeyword, line: 1, offset: 15),
+            error: TestLexerError(type: .unknownKeyword, line: 1, offset: 15),
             errorMessage:
             """
             file: MelinaTests.swift line: 1 error: unknown keyword
@@ -52,14 +52,14 @@ final class CompilerErrorReporterTests: BaseCompilerErrorReporterTests {
             """
             suite "Melina":
                 scenario First scenario":
-                    tap "Button_2" text
+                    tap label "Button_2"
                 end
             end
             """,
             fileName: "MelinaTests.swift",
             error: TestSemanticAnalyzerError.incompatibleAction(
                 action: TestToken(type: .tap, lexeme: "tap", line: 3, startOffset: 54, endOffset: 57),
-                element: TestToken(type: .text, lexeme: "text", line: 3, startOffset: 70, endOffset: 74)
+                element: TestToken(type: .label, lexeme: "label", line: 3, startOffset: 70, endOffset: 74)
             ),
             errorMessage:
             """

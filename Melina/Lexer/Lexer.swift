@@ -9,7 +9,7 @@ struct LexerError: Error, Equatable {
     enum `Type`: Equatable {
         case unknownSymbol
         case secondSlashRequiredForComment
-        case unknowKeyword
+        case unknownKeyword
         case newLineInStringLiteral
     }
 }
@@ -17,22 +17,28 @@ struct LexerError: Error, Equatable {
 final class Lexer {
     
     let keywords: [String : TokenType] = [
-        "suite"       : .suite,
-        "scenario"    : .scenario,
-        "arguments"   : .arguments,
+        "suite"           : .suite,
+        "scenario"        : .scenario,
+        "arguments"       : .arguments,
 
-        "end"         : .end,
-        
-        "name"        : .name,
-        
-        "button"      : .button,
-        "text"        : .text,
-        "searchField" : .searchField,
+        "to"              : .to,
+        "end"             : .end,
 
-        "verify"      : .verify,
-        "tap"         : .tap,
-        "scrollUp"    : .scrollUp,
-        "scrollDown"  : .scrollDown
+        "button"          : .button,
+        "textfield"       : .textField,
+        "label"           : .label,
+        "view"            : .view,
+
+        "verify"          : .verify,
+        "tap"             : .tap,
+        "edit"            : .edit,
+
+        "is selected"     : .isSelected,
+        "is not selected" : .isNotSelected,
+        "is exist"        : .isExist,
+        "is not exist"    : .isNotExist,
+        "contains value"  : .containsValue,
+        "with text"       : .withText
     ]
     
     private let source: String
@@ -82,14 +88,8 @@ private extension Lexer {
             scanNewLine()
         case ":":
             scanColon()
-        case "[":
-            scanLeftSquareBrace()
-        case "]":
-            scanRightSquareBrace()
         case "/":
             try scanComment()
-        case _ where c.isNumber:
-            try scanNumber()
         case "\"":
             try scanString()
         case _ where c.isLetter:
@@ -113,16 +113,21 @@ private extension Lexer {
     
     func scanKeyword() throws {
         while !isEndOfFile() {
-            if !advance().isLetter {
+            let currentChar = advance()
+            if !currentChar.isLetter && currentChar != " " {
                 undo()
                 break
             }
         }
-        
-        if let tokenType = keywords[lexeme()] {
+
+        let lexemeWithSingleSpaces = lexeme()
+            .components(separatedBy: .whitespacesAndNewlines)
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+        if let tokenType = keywords[lexemeWithSingleSpaces] {
             addToken(tokenType, lexeme())
         } else {
-            throw error(.unknowKeyword)
+            throw error(.unknownKeyword)
         }
     }
     
@@ -141,25 +146,6 @@ private extension Lexer {
     
     func scanColon() {
         addToken(.colon)
-    }
-    
-    func scanLeftSquareBrace() {
-        addToken(.leftSquareBrace)
-    }
-    
-    func scanRightSquareBrace() {
-        addToken(.rightSquareBrace)
-    }
-    
-    func scanNumber() throws {
-        while !isEndOfFile() {
-            if !advance().isNumber {
-                undo()
-                break
-            }
-        }
-        
-        addToken(.number, lexeme())
     }
     
     func scanString() throws {

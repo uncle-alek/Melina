@@ -71,21 +71,21 @@ final class LexerTests: BaseLexerTests {
         )
 
         assert(
-            source: "scrollUp",
+            source: "edit",
             produce: [
                 .init(
-                    type: .scrollUp,
-                    lexeme: "scrollUp"
+                    type: .edit,
+                    lexeme: "edit"
                 )
             ]
         )
 
         assert(
-            source: "scrollDown",
+            source: "to",
             produce: [
                 .init(
-                    type: .scrollDown,
-                    lexeme: "scrollDown"
+                    type: .to,
+                    lexeme: "to"
                 )
             ]
         )
@@ -101,43 +101,103 @@ final class LexerTests: BaseLexerTests {
         )
 
         assert(
-            source: "text",
+            source: "textfield",
             produce: [
                 .init(
-                    type: .text,
-                    lexeme: "text"
+                    type: .textField,
+                    lexeme: "textfield"
                 )
             ]
         )
 
         assert(
-            source: "searchField",
+            source: "label",
             produce: [
                 .init(
-                    type: .searchField,
-                    lexeme: "searchField"
+                    type: .label,
+                    lexeme: "label"
                 )
             ]
         )
-        
+
         assert(
-            source: "name",
+            source: "view",
             produce: [
                 .init(
-                    type: .name,
-                    lexeme: "name"
+                    type: .view,
+                    lexeme: "view"
                 )
             ]
         )
     }
 
-    func test_number() {
+    func test_compound_tokens() {
         assert(
-            source: "12345",
+            source: "is selected",
             produce: [
                 .init(
-                    type: .number,
-                    lexeme: "12345"
+                    type: .isSelected,
+                    lexeme: "is selected"
+                )
+            ]
+        )
+
+        assert(
+            source: "is    selected",
+            produce: [
+                .init(
+                    type: .isSelected,
+                    lexeme: "is    selected"
+                )
+            ]
+        )
+
+        assert(
+            source: "is not selected",
+            produce: [
+                .init(
+                    type: .isNotSelected,
+                    lexeme: "is not selected"
+                )
+            ]
+        )
+
+        assert(
+            source: "is exist",
+            produce: [
+                .init(
+                    type: .isExist,
+                    lexeme: "is exist"
+                )
+            ]
+        )
+
+        assert(
+            source: "is not exist",
+            produce: [
+                .init(
+                    type: .isNotExist,
+                    lexeme: "is not exist"
+                )
+            ]
+        )
+
+        assert(
+            source: "contains value",
+            produce: [
+                .init(
+                    type: .containsValue,
+                    lexeme: "contains value"
+                )
+            ]
+        )
+
+        assert(
+            source: "with text",
+            produce: [
+                .init(
+                    type: .withText,
+                    lexeme: "with text"
                 )
             ]
         )
@@ -169,28 +229,6 @@ final class LexerTests: BaseLexerTests {
             produce: [
                 .init(
                     type: .colon,
-                    lexeme: "",
-                    endOffset: 1
-                )
-            ]
-        )
-        
-        assert(
-            source: "[",
-            produce: [
-                .init(
-                    type: .leftSquareBrace,
-                    lexeme: "",
-                    endOffset: 1
-                )
-            ]
-        )
-        
-        assert(
-            source: "]",
-            produce: [
-                .init(
-                    type: .rightSquareBrace,
                     lexeme: "",
                     endOffset: 1
                 )

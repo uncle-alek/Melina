@@ -99,14 +99,14 @@ final class SemanticAnalyzerTests: BaseSemanticAnalyzerTests {
                         "experiment" : "NewExperiment"
                     end
 
-                    tap text[name:"Button_1"]
+                    tap label "Hello world!"
                 end
             end
             """,
             errors: [
                 .incompatibleAction(
                     action: TestToken(type: .tap, lexeme: "tap", line: 7, startOffset: 130, endOffset:  133),
-                    element: TestToken(type: .text, lexeme: "text", line: 7, startOffset: 134, endOffset:  138)
+                    element: TestToken(type: .label, lexeme: "label", line: 7, startOffset: 134, endOffset:  138)
                 )
             ]
         )
@@ -120,14 +120,14 @@ final class SemanticAnalyzerTests: BaseSemanticAnalyzerTests {
                         "experiment" : "NewExperiment"
                     end
 
-                    tap searchField[name:"Button_1"]
+                    tap view "View_1"
                 end
             end
             """,
             errors: [
                 .incompatibleAction(
                     action: TestToken(type: .tap, lexeme: "tap", line: 7, startOffset: 130, endOffset:  133),
-                    element: TestToken(type: .searchField, lexeme: "searchField", line: 7, startOffset: 134, endOffset:  145)
+                    element: TestToken(type: .view, lexeme: "view", line: 7, startOffset: 134, endOffset:  145)
                 )
             ]
         )

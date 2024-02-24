@@ -173,8 +173,8 @@ extension Token {
 
     var genElementName: String {
         switch self.type {
-        case .text: return "text"
-        case .searchField: return "searchField"
+        case .textField: return "textField"
+        case .label: return "label"
         case .button: return "button"
         default: fatalError("Not supported element type: \(self)")
         }
@@ -183,8 +183,8 @@ extension Token {
 
     var genXCUIElementQuery: String {
         switch self.type {
-        case .text: return "staticTexts"
-        case .searchField: return "searchFields"
+        case .label: return "staticTexts"
+        case .textField: return "searchFields"
         case .button: return "buttons"
         default: fatalError("Not supported query type: \(self)")
         }
