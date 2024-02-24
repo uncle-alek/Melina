@@ -1,6 +1,6 @@
 import XCTest
 
-final class SwiftCodeGenerator_NewTests: BaseSwiftCodeGenerator_NewTests {
+final class SwiftCodeGeneratorTests: BaseSwiftCodeGeneratorTest {
 
     func test_name_generation() throws {
         try assertName(

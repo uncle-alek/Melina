@@ -21,11 +21,11 @@ final class Compiler {
         self.filePath = filePath
     }
     
-    func compileSwiftTeCode() throws -> SwiftTeCode {
+    func compileSwiftTeCode() throws -> Code {
         let result = Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
             .flatMap { SemanticAnalyzer(program: $0).analyze() }
-            .flatMap { SwiftTeCodeGenerator(program: $0).generate() }
+            .flatMap { CodeGenerator(program: $0, SwiftTeCodeBuilder()).generate() }
         switch result {
         case .success(let code):
             return code

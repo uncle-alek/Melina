@@ -5,16 +5,28 @@ open class BaseSwiftTeCodeGeneratorTests: XCTestCase {
 
     func assert(
         source: String,
-        produce code: SwiftTeCode,
+        fileName: String,
+        code: SwiftTeCode,
         file: StaticString = #file,
         line: UInt = #line
     ) {
         do {
             let result = try Lexer(source: source).tokenize()
                 .flatMap { Parser(tokens: $0).parse() }
-                .flatMap { SwiftTeCodeGenerator(program: $0).generate() }
+                .flatMap { CodeGenerator(program: $0, SwiftTeCodeBuilder()).generate() }
                 .get()
-            XCTAssertNoDifference(result, code, file: file, line: line)
+            XCTAssertNoDifference(
+                JSONSerializer.deserialize(result.files[0].content),
+                code.commands,
+                file: file,
+                line: line
+            )
+            XCTAssertNoDifference(
+                result.files[0].name,
+                fileName,
+                file: file,
+                line: line
+            )
         } catch {
             XCTFail("Unexpected error: \(error)", file: file, line: line)
         }

@@ -1,7 +1,7 @@
 import CustomDump
 import XCTest
 
-open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
+open class BaseSwiftCodeGeneratorTest: XCTestCase {
 
     func assertName(
         suiteName: String,
@@ -188,7 +188,7 @@ open class BaseSwiftCodeGenerator_NewTests: XCTestCase {
     }
 }
 
-extension BaseSwiftCodeGenerator_NewTests {
+extension BaseSwiftCodeGeneratorTest {
 
     func generateCode(
         suiteName: String = "Home Scenario",
