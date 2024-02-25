@@ -255,7 +255,7 @@ final class LexerTests: BaseLexerTests {
             produce: [
                 .init(
                     type: .colon,
-                    lexeme: "",
+                    lexeme: ":",
                     endOffset: 1
                 )
             ]
@@ -289,7 +289,7 @@ final class LexerTests: BaseLexerTests {
                 ),
                 .init(
                     type: .colon,
-                    lexeme: "",
+                    lexeme: ":",
                     line: 1,
                     startOffset: 18,
                     endOffset: 19
@@ -310,7 +310,7 @@ final class LexerTests: BaseLexerTests {
                             ),
                             .init(
                                 type: .colon,
-                                lexeme: "",
+                                lexeme: ":",
                                 line: 2,
                                 startOffset: 51,
                                 endOffset: 52

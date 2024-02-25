@@ -113,16 +113,12 @@ private extension Lexer {
     }
     
     func scanKeyword() throws {
-        while !isEndOfFile() {
-            let currentChar = advance()
-            if !currentChar.isLetter {
-                if keywords[lexemeWithSingleSpaces()] != nil {
-                    undo()
-                    break
-                } else if currentChar == " " {
-                    continue
-                }
+        var currentChar = advance()
+        while !isEndOfFile() && (currentChar.isLetter || currentChar == " ") {
+            if keywords[lexemeWithSingleSpaces()] != nil {
+                break
             }
+            currentChar = advance()
         }
         if let tokenType = keywords[lexemeWithSingleSpaces()] {
             addToken(tokenType, lexeme())
@@ -145,7 +141,7 @@ private extension Lexer {
     }
     
     func scanColon() {
-        addToken(.colon)
+        addToken(.colon, lexeme())
     }
     
     func scanString() throws {
@@ -157,7 +153,6 @@ private extension Lexer {
                 throw error(.newLineInStringLiteral)
             }
         }
-        
         addToken(.string, stringLexeme())
     }
 }
@@ -179,7 +174,15 @@ private extension Lexer {
     }
     
     func addToken(_ type: TokenType, _ lexeme: String = "") {
-        tokens.append(.init(type: type, lexeme: lexeme, line: line, startIndex: startIndex, endIndex: currentIndex))
+        tokens.append(
+            Token(
+                type: type,
+                lexeme: lexeme,
+                line: line,
+                startIndex: startIndex,
+                endIndex: currentIndex
+            )
+        )
     }
     
     func lexeme() -> String {

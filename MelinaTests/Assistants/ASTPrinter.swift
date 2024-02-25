@@ -39,24 +39,34 @@ private extension ASTPrinter {
     }
 
     func subscenarioToString(_ subscenario: Subscenario) {
-        
+        formattedText += "<Subscenario_beggining>:\(subscenario.name.lexeme)" + "\n"
+        stepsToString(subscenario.steps)
+        formattedText += "<Subscenario_end>" + "\n"
     }
 
     func scenarioToString(_ scenario: Scenario) {
         formattedText += "<Scenario_begging>:\(scenario.name.lexeme)" + "\n"
         if !scenario.arguments.isEmpty {
-            formattedText += "Arguments:["
-            scenario.arguments.forEach(argumentToString)
-            formattedText += "]" + "\n"
+            argumentsToString(scenario.arguments)
         }
-        formattedText += "Steps:["
-        scenario.steps.forEach(stepToString)
-        formattedText += "]" + "\n"
+        stepsToString(scenario.steps)
         formattedText += "<Scenario_end>" + "\n"
     }
 
+    func argumentsToString(_ arguments: [Argument]) {
+        formattedText += "Arguments:[" + "\n"
+        arguments.forEach(argumentToString)
+        formattedText += "]" + "\n"
+    }
+
     func argumentToString(_ argument: Argument) {
-        formattedText += "\(argument.key.lexeme):\(argument.value.lexeme),"
+        formattedText += "\(argument.key.lexeme):\(argument.value.lexeme)" + "," + "\n"
+    }
+
+    func stepsToString(_ steps: [Step]) {
+        formattedText += "Steps:[" + "\n"
+        steps.forEach(stepToString)
+        formattedText += "]" + "\n"
     }
 
     func stepToString(_ step: Step) {
@@ -67,10 +77,24 @@ private extension ASTPrinter {
     }
 
     func actionToString(_ action: Action) {
-        formattedText += "\(action.type.lexeme)-\(action.element.type.lexeme):\(action.element.name.lexeme),"
+        let actionType = action.type.lexeme
+        let elementType = action.element.type.lexeme
+        let elementName = action.element.name.lexeme
+        let conditionType = action.condition?.type.lexeme
+        let conditionParameter = action.condition?.parameter?.lexeme
+        var suffix = conditionType != nil
+            ? "=>" + conditionType!
+            : ""
+        suffix += conditionParameter != nil
+            ? ":" + conditionParameter!
+            : ""
+        formattedText += actionType 
+            + "-" + elementType
+            + ":" + elementName
+            + suffix + "," + "\n"
     }
 
     func subscenarioCallToString(_ subscenarioCall: SubscenarioCall) {
-
+        formattedText += "subscenario:\(subscenarioCall.name.lexeme)" + "," + "\n"
     }
 }

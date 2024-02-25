@@ -99,6 +99,7 @@ private extension Parser {
     func parseSubscenarioDefinition() throws -> Subscenario  {
         advance()
         let name = try match(tokenType: .string, error: .subscenarioName)
+        try match(tokenType: .colon, error: .colon)
         let steps = try parseSteps()
         try match(tokenType: .end, error: .end)
         return Subscenario(
@@ -253,8 +254,9 @@ private extension Parser {
     
     @discardableResult
     func match(tokenTypes: [TokenType], error: ParserError.Expected) throws -> Token {
-        if tokenTypes.contains(advance().type) {
-            return peek()
+        let token = advance()
+        if tokenTypes.contains(token.type) {
+            return token
         } else {
             throw parseError(expected: error)
         }
@@ -262,8 +264,9 @@ private extension Parser {
 
     @discardableResult
     func match(tokenType: TokenType, error: ParserError.Expected) throws -> Token {
-        if tokenType == advance().type {
-            return peek()
+        let token = advance()
+        if tokenType == token.type {
+            return token
         } else {
             throw parseError(expected: error)
         }
@@ -289,10 +292,12 @@ private extension Parser {
     }
 
     func parseError(expected: ParserError.Expected) -> ParserError {
+        let line = currentIndex != 0 ? tokens[currentIndex - 1].line : 0
+        let index = currentIndex != 0 ? tokens[currentIndex - 1].startIndex : "".startIndex
         return ParserError(
             expected: expected,
-            line: tokens[currentIndex - 1].line,
-            index: tokens[currentIndex - 1].startIndex
+            line: line,
+            index: index
         )
     }
 }

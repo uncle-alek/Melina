@@ -22,7 +22,7 @@ open class BaseParserTests: XCTestCase {
 
     func assert(
         source: String,
-        throws testError: TestParserError,
+        throws error: TestParserError,
         file: StaticString = #file,
         line: UInt = #line
     ) {
@@ -33,7 +33,13 @@ open class BaseParserTests: XCTestCase {
             XCTFail("Expected error")
         } catch let errors as [Error] {
             XCTAssertEqual(errors.count, 1, file: file, line: line)
-            XCTAssertNoDifference((errors.first as! ParserError).toTestParserError(source: source), testError, file: file, line: line)
+            let testError = (errors.first as! ParserError).toTestParserError(source: source)
+            XCTAssertNoDifference(
+                testError,
+                error,
+                file: file,
+                line: line
+            )
         } catch {
             XCTFail("Unexpected error type", file: file, line: line)
         }
