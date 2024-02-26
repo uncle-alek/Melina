@@ -55,3 +55,122 @@ Running the command without specifying the `--output` option:
 ```shell
 melina -p ./spec/test_spec.melina -l swift
 ```
+
+# Guide to writing test specs with Melina
+
+## Key components of the DSL
+
+Before you start, familiarize yourself with the key components:
+
+- **Suite**: A collection of scenarios (test cases) that are grouped together.
+- **Scenario**: An individual test case with a series of steps to execute.
+- **Subscenario**: A reusable set of steps that can be included in multiple scenarios.
+- **Arguments(Optional)**: Arguments are parameters for the application under test.
+- **Step**: A single action or check performed in the test.
+- **Action**: An interaction with an element (e.g., tap, edit).
+- **Element**: A part of the UI such as a button or text field.
+- **Condition**: A verification step to assert the state of an element (e.g., is visible, contains text).
+
+## Writing a test specification
+
+Start by defining the test suite, then the scenarios within it, and the steps for each scenario.
+
+### Define a suite
+
+A suite encapsulates several related scenarios:
+
+```
+suite "Name of Feature to Test":
+```
+
+### Define a scenario
+
+Each scenario represents a specific flow or case you want to test:
+
+```
+scenario "Descriptive Name of the Scenario":
+    ...
+end
+```
+
+### Using arguments
+
+Use arguments in the beggining of your scenario by providing key value pairs:
+
+```
+arguments:
+    "argument key" to "value"
+    "another argument key" to "another value"
+end
+```
+
+### Define steps in a scenario
+
+Steps are the actions or checks you want to perform:
+
+```
+tap button "LoginButton"
+verify label "WelcomeMessage" contains value "Welcome"
+```
+
+### Define subscenarios
+
+For common sequences of steps, define a subscenario once and reuse it:
+
+```
+subscenario "LoginProcess":
+    ...
+end
+```
+
+And call it within a scenario:
+
+```
+subscenario "LoginProcess"
+```
+
+### Conditions
+
+Assert the state of elements as part of your test steps like so:
+
+```
+verify button "Ok" is selected
+```
+
+## Example of a Complete Test Spec
+
+Here's how a complete test spec might look:
+
+```
+suite "User Authentication":
+
+    scenario "Valid User Login":
+        arguments:
+            "mock api" to "success"
+        end
+        // Reuse the subscenario
+        subscenario "Complete Login Process"
+        verify view "WelcomeMessage" contains value "Welcome, testuser!"
+    end
+
+    scenario "Invalid User Login":
+        arguments:
+            "mock api" to "fail"
+        end
+        // Reuse the subscenario
+        subscenario "Complete Login Process"
+        verify label "ErrorMessage" contains value "Invalid credentials"
+    end
+
+end
+
+subscenario "Complete Login Process":
+    tap button "LoginButton"
+    edit textfield "UsernameField" with text "providedUsername"
+    edit textfield "PasswordField" with text "providedPassword"
+end
+```
+
+## Conclusion
+
+Now that you know the basics, you can start writing your own test specifications. Remember, the key is to describe what you want to test in simple, logical steps.
