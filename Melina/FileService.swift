@@ -46,7 +46,7 @@ final class FileService {
         fileExtension: String,
         content: String,
         at path: String
-    ) throws {
+    ) throws -> String {
         let filePath = URL(string: path)!
         let fileNameWithSuffix = filePath.deletingPathExtension().lastPathComponent
         let newFilePath = filePath
@@ -56,13 +56,15 @@ final class FileService {
             .absoluteString
         let isFileCreated = fileManager.createFile(atPath: newFilePath, contents: Data(content.utf8))
         if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: path) }
+        return newFilePath
     }
 
     func writeToFile(
         content: String,
         at path: String
-    ) throws {
+    ) throws -> String {
         let isFileCreated = fileManager.createFile(atPath: path, contents: Data(content.utf8))
         if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: path) }
+        return path
     }
 }
