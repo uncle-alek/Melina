@@ -20,12 +20,15 @@ To install Melina, you will need to clone the repository from GitHub and compile
 3. Clone the repository with the following command:
 ```shell
 git clone git@github.com:uncle-alek/Melina.git
+```
 4. Once cloned, navigate into the Melina repository directory:
 ```shell
 cd ./Melina
+```
 5. Open the project in Xcode by double-clicking the project file, or using the following command:
 ```shell
 open -a Xcode Melina.xcodeproj
+```
 6. Compile the project in Xcode by clicking on the Build button or using the shortcut ⌘B.
 After successfully compiling the project, the Melina command-line tool will be ready to use on your system.
 
@@ -45,8 +48,10 @@ To generate Swift code from a test specification located at `./spec/test_spec.me
 
 ```shell
 melina -p ./spec/test_spec.melina -l swift -o ./GeneratedTests/UITest.swift
+```
 
 Running the command without specifying the `--output` option:
 
 ```shell
 melina -p ./spec/test_spec.melina -l swift
+```
