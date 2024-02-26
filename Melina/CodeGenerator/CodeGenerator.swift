@@ -15,7 +15,7 @@ protocol CodeBuilder {
     func buildForArgumentsEnd(_ arguments: [Argument])
     func buildForAction(_ action: Action)
     func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall)
-    func fileName(_ program: Program) -> String
+    func fileExtension() -> String
     func code() -> String
 
 }
@@ -37,7 +37,7 @@ final class CodeGenerator {
         builder.buildForProgramBeginning(program)
         program.definitions.forEach(definition)
         builder.buildForProgramEnd(program)
-        let file = File(name: builder.fileName(program), content: builder.code())
+        let file = File(fileExtension: builder.fileExtension(), content: builder.code())
         return .success(file)
     }
 

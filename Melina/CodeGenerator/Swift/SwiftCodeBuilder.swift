@@ -82,12 +82,8 @@ final class SwiftCodeBuilder: CodeBuilder {
         generatedCode += genCallXCTestApi(action).map(wrapLine).joined()
     }
 
-    func fileName(_ program: Program) -> String {
-        let name = switch program.definitions.first! {
-            case .subscenario(let value): value.name.lexeme
-            case .suite(let value): value.name.lexeme
-        }
-        return genClassName(name) + ".swift"
+    func fileExtension() -> String {
+        return "swift"
     }
 
     func code() -> String {

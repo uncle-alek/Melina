@@ -42,7 +42,7 @@ struct Melina: ParsableCommand {
         if let output {
             try FileService().writeToFile(content: file.content, at: output)
         } else {
-            try FileService().writeToJsonFile(content: file.content, at: path)
+            try FileService().writeToFile(fileExtension: file.fileExtension, content: file.content, at: path)
         }
     }
 }
