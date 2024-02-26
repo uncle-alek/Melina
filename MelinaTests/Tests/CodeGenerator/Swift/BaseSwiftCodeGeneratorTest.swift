@@ -63,20 +63,6 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
         )
     }
 
-    func assertPrivateMethodLaunchApp(
-        expect: String,
-        file: StaticString = #file,
-        line: UInt = #line
-    ) throws {
-        let result = try generateCode()
-        XCTAssertTrue(
-            result.content.contains(expect),
-            "No expected private method 'launchApp' found in the code: \n \"\(result.content)\"",
-            file: file,
-            line: line
-        )
-    }
-
     func assertCallLaunchApp(
         arguments: [String],
         expect: String,
@@ -109,7 +95,7 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
         }
     }
 
-    func assertPrivateMethodWaitForExistenceIfNeeded(
+    func assertPrivateMethod(
         expect: String,
         file: StaticString = #file,
         line: UInt = #line
@@ -117,7 +103,7 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
         let result = try generateCode()
         XCTAssertTrue(
             result.content.contains(expect),
-            "No expected private method 'waitForExistenceIfNeeded' found in the code: \n \"\(result.content)\"",
+            "No expected private method found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )

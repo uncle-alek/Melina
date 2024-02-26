@@ -39,10 +39,12 @@ struct Melina: ParsableCommand {
         case .swift       : try Compiler(source: sourceCode, filePath: path).compileSwiftCode()
         case .swiftTeCode : try Compiler(source: sourceCode, filePath: path).compileSwiftTeCode()
         }
-        if let output {
+        let filePath = if let output {
             try FileService().writeToFile(content: file.content, at: output)
         } else {
             try FileService().writeToFile(fileExtension: file.fileExtension, content: file.content, at: path)
         }
+        print("The file has been generated and is ready for use.\n" +
+              "You can find the file at path: \(filePath).\n")
     }
 }
