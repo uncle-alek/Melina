@@ -16,13 +16,13 @@ open class BaseSwiftTeCodeGeneratorTests: XCTestCase {
                 .flatMap { CodeGenerator(program: $0, SwiftTeCodeBuilder()).generate() }
                 .get()
             XCTAssertNoDifference(
-                JSONSerializer.deserialize(result.files[0].content),
+                JSONSerializer.deserialize(result.content),
                 code.commands,
                 file: file,
                 line: line
             )
             XCTAssertNoDifference(
-                result.files[0].name,
+                result.name,
                 fileName,
                 file: file,
                 line: line

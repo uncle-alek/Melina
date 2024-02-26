@@ -1,24 +1,6 @@
 import Foundation
 
-final class SwiftBuilder: CodeBuilder {
-    func buildForSubscenarioBeginning(_ subscenario: Subscenario) {
-
-    }
-    
-    func buildForSubscenarioEnd(_ subscenario: Subscenario) {
-
-    }
-
-    
-    func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
-
-    }
-    
-    func fileName(_ definition: Definition) -> String {
-        ""
-    }
-    
-
+final class SwiftCodeBuilder: CodeBuilder {
     private var generatedCode: String = ""
     private var variableId: Int = 0
     private var scopeLevel: Int = 0
@@ -30,17 +12,36 @@ final class SwiftBuilder: CodeBuilder {
         self.indentation = indentation
     }
 
-    func buildForSuitBeginning(_ suite: Suite) {
+    func buildForProgramBeginning(_ program: Program) {
         generatedCode += wrapLine2(genImports())
+    }
+
+    func buildForProgramEnd(_ program: Program) {
+        generatedCode += genPrivateMethodLaunchApp().map(wrapLine).joined()
+        generatedCode += genPrivateWaitForExistenceIfNeeded().map(wrapLine).joined()
+    }
+
+    func buildForSubscenarioBeginning(_ subscenario: Subscenario) {
+
+    }
+
+    func buildForSubscenarioEnd(_ subscenario: Subscenario) {
+
+    }
+
+
+    func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
+
+    }
+
+    func buildForSuitBeginning(_ suite: Suite) {
         generatedCode += wrapLine2(genClassDefinition(suite) + " {")
         scopeLevel += 1
     }
 
     func buildForSuitEnd(_ suite: Suite) {
-        generatedCode += genPrivateMethodLaunchApp().map(wrapLine).joined()
-        generatedCode += genPrivateWaitForExistenceIfNeeded().map(wrapLine).joined()
         scopeLevel -= 1
-        generatedCode += wrapLine("}")
+        generatedCode += wrapLine2("}")
     }
 
     func buildForScenarioBeginning(_ scenario: Scenario) {
@@ -73,40 +74,42 @@ final class SwiftBuilder: CodeBuilder {
         generatedCode += genCallXCTestApi(action).map(wrapLine).joined()
     }
 
-    func fileName(_ suite: Suite) -> String {
-        return genClassName(suite.name.lexeme) + ".swift"
+    func fileName(_ program: Program) -> String {
+        let name = switch program.definitions.first! {
+            case .subscenario(let value): value.name.lexeme
+            case .suite(let value): value.name.lexeme
+        }
+        return genClassName(name) + ".swift"
     }
 
     func code() -> String {
         return generatedCode
     }
-
-    func reset() {
-        generatedCode = ""
-        variableId = 0
-        scopeLevel = 0
-    }
 }
 
-extension SwiftBuilder {
+extension SwiftCodeBuilder {
 
     func genPrivateMethodLaunchApp() -> [String] {
         return [
-            "private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {",
-            "\(tab(1))continueAfterFailure = false",
-            "\(tab(1))let app = XCUIApplication()",
-            "\(tab(1))app.launchEnvironment = launchEnvironment",
-            "\(tab(1))app.launch()",
-            "\(tab(1))return app",
+            "fileprivate extension XCTestCase {",
+            "\(tab(1))func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {",
+            "\(tab(2))continueAfterFailure = false",
+            "\(tab(2))let app = XCUIApplication()",
+            "\(tab(2))app.launchEnvironment = launchEnvironment",
+            "\(tab(2))app.launch()",
+            "\(tab(2))return app",
+            "\(tab(1))}",
             "}"
         ]
     }
 
     func genPrivateWaitForExistenceIfNeeded() -> [String] {
         return [
-            "private func waitForExistenceIfNeeded(_ element: XCUIElement) {",
-            "\(tab(1))if !element.exists {",
-            "\(tab(2))XCTAssertTrue(element.waitForExistence(timeout: 5))",
+            "fileprivate extension XCTestCase {",
+            "\(tab(1))func waitForExistenceIfNeeded(_ element: XCUIElement) {",
+            "\(tab(2))if !element.exists {",
+            "\(tab(3))XCTAssertTrue(element.waitForExistence(timeout: 5))",
+            "\(tab(2))}",
             "\(tab(1))}",
             "}"
         ]

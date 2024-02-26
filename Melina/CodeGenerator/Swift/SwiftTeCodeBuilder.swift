@@ -4,6 +4,10 @@ final class SwiftTeCodeBuilder: CodeBuilder {
 
     private var commands: [SwiftTeCode.Command] = []
 
+    func buildForProgramBeginning(_ program: Program) {}
+
+    func buildForProgramEnd(_ program: Program) {}
+
     func buildForSuitBeginning(_ suite: Suite) {
         commands.append(SwiftTeCode.Command(mnemonic: .suiteBegin, operands: [suite.name.lexeme]))
     }
@@ -50,16 +54,12 @@ final class SwiftTeCodeBuilder: CodeBuilder {
 
     func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {}
 
-    func fileName(_ definition: Definition) -> String {
+    func fileName(_ program: Program) -> String {
         ""
     }
     
     func code() -> String {
         return JSONSerializer.serialize(SwiftTeCode(commands: commands))
-    }
-    
-    func reset() {
-        commands = []
     }
 }
 

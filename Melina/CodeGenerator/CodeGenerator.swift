@@ -2,6 +2,8 @@ import Foundation
 
 protocol CodeBuilder {
 
+    func buildForProgramBeginning(_ program: Program)
+    func buildForProgramEnd(_ program: Program)
     func buildForSuitBeginning(_ suite: Suite)
     func buildForSuitEnd(_ suite: Suite)
     func buildForSubscenarioBeginning(_ subscenario: Subscenario)
@@ -13,9 +15,8 @@ protocol CodeBuilder {
     func buildForArgumentsEnd(_ arguments: [Argument])
     func buildForAction(_ action: Action)
     func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall)
-    func fileName(_ definition: Definition) -> String
+    func fileName(_ program: Program) -> String
     func code() -> String
-    func reset()
 
 }
 
@@ -32,14 +33,12 @@ final class CodeGenerator {
         self.builder = builder
     }
 
-    func generate() -> Result<Code, [Error]> {
-        let files = program.definitions.map {
-            definition($0)
-            let file = File(name: builder.fileName($0), content: builder.code())
-            builder.reset()
-            return file
-        }
-        return .success(Code(files: files))
+    func generate() -> Result<File, [Error]> {
+        builder.buildForProgramBeginning(program)
+        program.definitions.forEach(definition)
+        builder.buildForProgramEnd(program)
+        let file = File(name: builder.fileName(program), content: builder.code())
+        return .success(file)
     }
 
     func definition(_ definition: Definition) {
