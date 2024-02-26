@@ -41,20 +41,21 @@ final class FileService {
         }
         return String(decoding: data, as: UTF8.self)
     }
-    
-    func writeToJsonFile(
+
+    func writeToFile(
+        fileExtension: String,
         content: String,
         at path: String
     ) throws {
         let filePath = URL(string: path)!
-        let fileNameWithSuffix = filePath.deletingPathExtension().lastPathComponent + "Generated.tecode"
+        let fileNameWithSuffix = filePath.deletingPathExtension().lastPathComponent
         let newFilePath = filePath
             .deletingLastPathComponent()
             .appendingPathComponent(fileNameWithSuffix)
-            .appendingPathExtension("json")
+            .appendingPathExtension(fileExtension)
             .absoluteString
         let isFileCreated = fileManager.createFile(atPath: newFilePath, contents: Data(content.utf8))
-        if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: newFilePath) }
+        if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: path) }
     }
 
     func writeToFile(

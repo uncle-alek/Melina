@@ -5,7 +5,7 @@ open class BaseSwiftTeCodeGeneratorTests: XCTestCase {
 
     func assert(
         source: String,
-        fileName: String,
+        fileExtension: String,
         code: SwiftTeCode,
         file: StaticString = #file,
         line: UInt = #line
@@ -22,8 +22,8 @@ open class BaseSwiftTeCodeGeneratorTests: XCTestCase {
                 line: line
             )
             XCTAssertNoDifference(
-                result.name,
-                fileName,
+                result.fileExtension,
+                fileExtension,
                 file: file,
                 line: line
             )

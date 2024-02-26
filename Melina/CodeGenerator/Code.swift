@@ -1,14 +1,14 @@
 import Foundation
 
 struct File: Equatable {
-    let name: String
+    let fileExtension: String
     let content: String
 
     init(
-        name: String,
+        fileExtension: String,
         content: String
     ) {
-        self.name = name
+        self.fileExtension = fileExtension
         self.content = content
     }
 }
