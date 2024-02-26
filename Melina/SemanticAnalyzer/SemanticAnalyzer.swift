@@ -1,39 +1,27 @@
-enum SemanticAnalyzerError: Error, Equatable {
-    case incompatibleAction(action: Token, element: Token)
-    case suiteNameCollision(suite: Token)
-    case scenarioNameCollision(scenario: Token)
-}
-
-fileprivate final class Scope {
-    let name: String
-    private var symbols: [String] = []
-    
-    init(
-        name: String
-    ) {
-        self.name = name
-    }
-    
-    func declareSymbol(name: String) {
-        symbols.append(name)
-    }
-    
-    func isSymbolDeclared(name: String) -> Bool {
-        symbols.contains { $0 == name }
-    }
-}
-
 final class SemanticAnalyzer {
     
-    private let availableActions: [TokenType : [TokenType]] = [
-        .tap : [.button],
+    private let compatibleElements: [TokenType : [TokenType]] = [
+        .tap    : [.button],
         .verify : [.button, .label, .textField, .view],
+        .edit   : [.textField]
     ]
-    
+
+    private let compatibleConditions: [TokenType : [TokenType]] = [
+        .tap    : [],
+        .verify : [.isExist, .isNotExist, .isSelected, .isNotSelected, .containsValue],
+        .edit   : [.withText]
+    ]
+
+    private let conditionsWithParameters: [TokenType] = [
+        .containsValue,
+        .withText
+    ]
+
     private var program: Program
     private var errors: [SemanticAnalyzerError] = []
-    private var scopes: [Scope] = []
-    
+    private var scopeStack: [Scope] = []
+    private var globalScope: Scope!
+
     init(
         program: Program
     ) {
@@ -41,6 +29,7 @@ final class SemanticAnalyzer {
     }
 
     func analyze() -> Result<Program, [Error]> {
+        registerSymbols(program)
         analyzeProgram(program)
         if errors.isEmpty {
             return .success(program)
@@ -52,41 +41,72 @@ final class SemanticAnalyzer {
 
 private extension SemanticAnalyzer {
 
-    func analyzeProgram(_ program: Program) {
-        scopes.append(Scope(name: "Global"))
-        program.definitions.forEach(analyzeDefinition)
-        _ = scopes.popLast()
+    func registerSymbols(_ program: Program) {
+        self.globalScope = Scope(parentScope: nil, type: .global, name: "Global")
+        program.definitions.forEach { registerDefinition($0, parentScope: self.globalScope) }
     }
 
-    func analyzeDefinition(_ definition: Definition) {
+    func registerDefinition(_ definition: Definition, parentScope: Scope) {
         switch definition {
-        case .subscenario(let value): analyzeSubscenario(value)
-        case .suite(let value): analyzeSuite(value)
+        case .subscenario(let value): registerSubscenario(value, parentScope: self.globalScope)
+        case .suite(let value): registerSuite(value, parentScope: self.globalScope)
         }
     }
 
-    func analyzeSubscenario(_ subscenario: Subscenario) {}
+    func registerSubscenario(_ subscenario: Subscenario, parentScope: Scope) {
+        parentScope.declareSymbol(Symbol(type: .subscenario, name: subscenario.name))
+        let newScope = Scope(parentScope: parentScope, type: .subscenario, name: subscenario.name.lexeme)
+        parentScope.childScopes.append(newScope)
+    }
 
-    func analyzeSuite(_ suite: Suite) {
-        let currentScope = scopes.last!
-        if currentScope.isSymbolDeclared(name: suite.name.lexeme) {
-            errors.append(.suiteNameCollision(suite: suite.name))
-        } else {
-            currentScope.declareSymbol(name: suite.name.lexeme)
+    func registerSuite(_ suite: Suite, parentScope: Scope) {
+        parentScope.declareSymbol(Symbol(type: .suite, name: suite.name))
+        let newScope = Scope(parentScope: parentScope, type: .suite, name: suite.name.lexeme)
+        suite.scenarios.forEach { registerScenario($0, parentScope: newScope) }
+        parentScope.childScopes.append(newScope)
+    }
+
+    func registerScenario(_ scenario: Scenario, parentScope: Scope) {
+        parentScope.declareSymbol(Symbol(type: .scenario, name: scenario.name))
+    }
+}
+
+private extension SemanticAnalyzer {
+
+    func analyzeProgram(_ program: Program) {
+        scopeStack.append(self.globalScope)
+        for (index, definition) in program.definitions.enumerated() {
+            analyzeDefinition(definition, scope: scopeStack.last!.childScopes[index])
         }
+        _ = scopeStack.popLast()
+    }
 
-        scopes.append(Scope(name: suite.name.lexeme))
+    func analyzeDefinition(_ definition: Definition, scope: Scope) {
+        switch definition {
+        case .subscenario(let value): analyzeSubscenario(value, scope: scope)
+        case .suite(let value): analyzeSuite(value, scope: scope)
+        }
+    }
+
+    func analyzeSubscenario(_ subscenario: Subscenario, scope: Scope) {
+        analyzeSubscenarioForRecursion(subscenario)
+        analyzeSubscenarioForNameCollision(subscenario)
+
+        scopeStack.append(scope)
+        subscenario.steps.forEach(analyzeStep)
+        _ = scopeStack.popLast()
+    }
+
+    func analyzeSuite(_ suite: Suite, scope: Scope) {
+        analyzeSuiteForNameCollision(suite)
+
+        scopeStack.append(scope)
         suite.scenarios.forEach(analyzeScenario)
-        _ = scopes.popLast()
+        _ = scopeStack.popLast()
     }
 
     func analyzeScenario(_ scenario: Scenario) {
-        let currentScope = scopes.last!
-        if currentScope.isSymbolDeclared(name: scenario.name.lexeme) {
-            errors.append(.scenarioNameCollision(scenario: scenario.name))
-        } else {
-            currentScope.declareSymbol(name: scenario.name.lexeme)
-        }
+        analyzeScenarioForNameCollision(scenario)
 
         scenario.arguments.forEach(analyzeArument)
         scenario.steps.forEach(analyzeStep)
@@ -102,10 +122,111 @@ private extension SemanticAnalyzer {
     }
 
     func analyzeAction(_ action: Action) {
-        if !availableActions[action.type.type]!.contains(action.element.type.type) {
-            errors.append(.incompatibleAction(action: action.type, element: action.element.type))
+        analyzeCompatilityWithElement(action)
+        analyzeCompatibilityWithCondition(action)
+        analyzeMissingCondition(action)
+    }
+
+    func analyzeSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
+        analyzeForSubscenarioDefinition(subscenarioCall)
+    }
+}
+
+private extension SemanticAnalyzer {
+
+    func analyzeSubscenarioForNameCollision(_ subscenario: Subscenario) {
+        if scopeStack.last!.isSymbolCollided(Symbol(type: .subscenario, name: subscenario.name)) {
+            errors.append(.subscenarioNameCollision(definition: subscenario.name))
         }
     }
 
-    func analyzeSubscenarioCall(_ subscenarioCall: SubscenarioCall) {}
+    func analyzeScenarioForNameCollision(_ scenario: Scenario) {
+        if scopeStack.last!.isSymbolCollided(Symbol(type: .scenario, name: scenario.name)) {
+            errors.append(.scenarioNameCollision(scenario: scenario.name))
+        }
+    }
+
+    func analyzeSuiteForNameCollision(_ suite: Suite) {
+        if scopeStack.last!.isSymbolCollided(Symbol(type: .suite, name: suite.name)) {
+            errors.append(.suiteNameCollision(suite: suite.name))
+        }
+    }
+
+    func analyzeCompatilityWithElement(_ action: Action) {
+        guard let elements = compatibleElements[action.type.type] else {
+            fatalError("All actions should be register in compatible elements table")
+        }
+        if !elements.contains(action.element.type.type) {
+            errors.append(
+                .incompatibleElement(
+                    action: action.type,
+                    element: action.element.type
+                )
+            )
+        }
+    }
+
+    func analyzeCompatibilityWithCondition(_ action: Action) {
+        guard let conditions = compatibleConditions[action.type.type] else {
+            fatalError("All actions should be register in compatible conditions table")
+        }
+        guard !conditions.isEmpty else { return }
+
+        if let condition = action.condition {
+            if !conditions.contains(condition.type.type) {
+                errors.append(
+                    .incompatibleCondition(
+                        action: action.type,
+                        condition: condition.type
+                    )
+                )
+            }
+        }
+    }
+
+    func analyzeMissingCondition(_ action: Action) {
+        guard let conditions = compatibleConditions[action.type.type] else {
+            fatalError("All actions should be register in compatible conditions table")
+        }
+        guard !conditions.isEmpty else { return }
+
+        if action.condition == nil {
+            errors.append(
+                .missingCondition(
+                    action: action.type
+                )
+            )
+        }
+    }
+
+    func analyzeSubscenarioForRecursion(_ subscenario: Subscenario) {
+        for step in subscenario.steps {
+            switch step {
+            case .action(_): continue
+            case .subscenarioCall(let value):
+                if value.name.lexeme == subscenario.name.lexeme {
+                    errors.append(
+                        .subscenarioRecursion(
+                            definition: subscenario.name,
+                            call: value.name
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    func analyzeForSubscenarioDefinition(_ subscenarioCall: SubscenarioCall) {
+        var isDefinitionFound = false
+        var currentScope = scopeStack.last
+        while currentScope != nil {
+            if currentScope!.isSymbolDeclared(type: .subscenario, name: subscenarioCall.name.lexeme) {
+                isDefinitionFound = true
+            }
+            currentScope = currentScope?.parentScope
+        }
+        if isDefinitionFound == false {
+            errors.append(.subscenarioDefinitionNotFound(call: subscenarioCall.name))
+        }
+    }
 }

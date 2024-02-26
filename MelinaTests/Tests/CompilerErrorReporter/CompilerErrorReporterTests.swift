@@ -47,19 +47,31 @@ final class CompilerErrorReporterTests: BaseCompilerErrorReporterTests {
     }
     
     func test_semantic_analyzer_error() {
-        assert(
-            source:
-            """
+          let source = """
             suite "Melina":
                 scenario First scenario":
                     tap label "Button_2"
                 end
             end
-            """,
+            """
+        assert(
+            source: source,
             fileName: "MelinaTests.swift",
-            error: TestSemanticAnalyzerError.incompatibleAction(
-                action: TestToken(type: .tap, lexeme: "tap", line: 3, startOffset: 54, endOffset: 57),
-                element: TestToken(type: .label, lexeme: "label", line: 3, startOffset: 70, endOffset: 74)
+            error: .incompatibleElement(
+                action: Token(
+                    type: .tap,
+                    lexeme: "tap",
+                    line: 3,
+                    startIndex: source.index(source.startIndex, offsetBy: 54),
+                    endIndex: source.index(source.startIndex, offsetBy: 57)
+                ),
+                element: Token(
+                    type: .label,
+                    lexeme: "label",
+                    line: 3,
+                    startIndex: source.index(source.startIndex, offsetBy: 70),
+                    endIndex: source.index(source.startIndex, offsetBy: 74)
+                )
             ),
             errorMessage:
             """

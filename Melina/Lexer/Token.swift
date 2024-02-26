@@ -1,6 +1,6 @@
 import Foundation
 
-struct Token: Equatable {
+struct Token: Equatable, Hashable {
     
     let type: TokenType
     let lexeme: String

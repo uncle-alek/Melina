@@ -42,7 +42,7 @@ open class BaseCompilerErrorReporterTests: XCTestCase {
     func assert(
         source: String,
         fileName: String,
-        error: TestSemanticAnalyzerError,
+        error: SemanticAnalyzerError,
         errorMessage: String,
         file: StaticString = #file,
         line: UInt = #line
@@ -50,7 +50,7 @@ open class BaseCompilerErrorReporterTests: XCTestCase {
         assert(
             source: source,
             fileName: fileName,
-            errors: [error.toSemanticAnalyzerError(source: source)],
+            errors: [error],
             errorMessage: errorMessage,
             file: file,
             line: line
