@@ -70,6 +70,7 @@ Before you start, familiarize yourself with the key components:
 - **Action**: An interaction with an element (e.g., tap, edit).
 - **Element**: A part of the UI such as a button or text field.
 - **Condition**: A verification step to assert the state of an element (e.g., is visible, contains text).
+- **Comments**: Can be used to add descriptive text to test specifications.
 
 ## Writing a test specification
 
@@ -81,6 +82,8 @@ A suite encapsulates several related scenarios:
 
 ```
 suite "Name of Feature to Test":
+    ...
+end
 ```
 
 ### Define a scenario
@@ -170,6 +173,30 @@ subscenario "Complete Login Process":
     edit textfield "PasswordField" with text "providedPassword"
 end
 ```
+
+### Using comments
+
+In Melina used only single-line comments:
+
+```
+// This comment explaining the following action
+tap button "LoginButton"
+```
+
+# Actions, Elements, and Conditions
+
+The following table outlines the available elements and conditions that can be used in combination with each action.
+
+| Action  |  Elements                      | Conditions Without Parameters  | Conditions With Parameters |
+|---------|--------------------------------|--------------------------------|----------------------------|
+| tap     | button                         | -                              | -                          |
+| verify  | button, label, textfield, view | is exist, is not exist,<br>is selected, is not selected<br>| contains value  {parameter} |
+| edit    | textField                      | -                              | with text {parameter}      |
+
+Note:
+- 'Conditions Without Parameters' are conditions that do not require an additional parameter.
+- 'Conditions With Parameters' are conditions that require an additional parameter.
+- 'parameter' is a expected text.
 
 ## Conclusion
 
