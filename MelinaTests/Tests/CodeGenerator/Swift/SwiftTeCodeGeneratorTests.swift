@@ -15,7 +15,7 @@ final class SwiftTeCodeGeneratorTests: BaseSwiftTeCodeGeneratorTests {
                     end
                 end
                 """,
-            fileName: "HomeScreenTeCode.json",
+            fileExtension: "json",
             code:
                 SwiftTeCode(
                     commands: [

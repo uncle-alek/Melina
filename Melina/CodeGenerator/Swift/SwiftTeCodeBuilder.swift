@@ -54,8 +54,8 @@ final class SwiftTeCodeBuilder: CodeBuilder {
 
     func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {}
 
-    func fileName(_ program: Program) -> String {
-        ""
+    func fileExtension() -> String {
+        "json"
     }
     
     func code() -> String {

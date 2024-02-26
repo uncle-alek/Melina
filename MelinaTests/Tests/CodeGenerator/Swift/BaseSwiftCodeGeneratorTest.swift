@@ -3,16 +3,15 @@ import XCTest
 
 open class BaseSwiftCodeGeneratorTest: XCTestCase {
 
-    func assertName(
-        suiteName: String,
-        expect name: String,
+    func assertFileExtension(
+        expect: String,
         file: StaticString = #file,
         line: UInt = #line
     ) throws {
-        let result = try generateCode(suiteName: suiteName)
+        let result = try generateCode()
         XCTAssertNoDifference(
-            result.name,
-            name,
+            result.fileExtension,
+            expect,
             file: file,
             line: line
         )
