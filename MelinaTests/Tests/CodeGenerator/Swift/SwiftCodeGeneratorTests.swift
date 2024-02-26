@@ -140,7 +140,7 @@ let app = launchApp([
             step: "verify view \"View_1\" is not exist",
             expect: [
                 "let view_1 = app.otherElements[\"View_1\"].firstMatch",
-                "XCTAssertFalse(view_1.isExist)"
+                "XCTAssertFalse(view_1.exists)"
             ]
         )
     }

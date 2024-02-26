@@ -62,7 +62,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-p &quot;/Users/ayakimenko/Documents/Projects/Swift/Melina/Melina/UITests.melina&quot;"
+            argument = "-p &quot;/Users/ayakimenko/Documents/Projects/Swift/Melina/Melina/UITests.melina&quot; -l  swift"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

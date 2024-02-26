@@ -224,7 +224,7 @@ extension SwiftCodeBuilder {
     func genVerifyEffect(_ action: Action, variable: String) -> [String] {
         return switch action.condition!.type.type {
         case .isExist       : []
-        case .isNotExist    : ["XCTAssertFalse(\(variable).isExist)"]
+        case .isNotExist    : ["XCTAssertFalse(\(variable).exists)"]
         case .isSelected    : ["XCTAssertTrue(\(variable).isSelected)"]
         case .isNotSelected : ["XCTAssertFalse(\(variable).isSelected)"]
         case .containsValue : ["XCTAssertEqual(\(variable).value as? String, \"\(action.condition!.parameter!.lexeme)\")"]
