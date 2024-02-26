@@ -186,6 +186,40 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
             line: line
         )
     }
+
+    func assertMethodDefinition(
+        subscenarioName: String,
+        expect defenition: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws {
+        let result = try generateCode(subscenarioName: subscenarioName)
+        XCTAssertTrue(
+            result.content.contains(defenition),
+            "No expected method defenition found in the code: \n \"\(result.content)\"",
+            file: file,
+            line: line
+        )
+    }
+
+    func assertFullTestMethod(
+        subscenarioName: String,
+        steps: [String],
+        expect: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws {
+        let result = try generateCode(
+            subscenarioName: subscenarioName,
+            steps: steps
+        )
+        XCTAssertTrue(
+            result.content.contains(expect),
+            "No expected test method found in the code: \n \"\(result.content)\"",
+            file: file,
+            line: line
+        )
+    }
 }
 
 extension BaseSwiftCodeGeneratorTest {
@@ -204,6 +238,23 @@ extension BaseSwiftCodeGeneratorTest {
                         \(generateArguments(arguments))
                         \(generateSteps(steps))
                     end
+                end
+                """
+        return try Lexer(source: source).tokenize()
+            .flatMap { Parser(tokens: $0).parse() }
+            .flatMap { CodeGenerator(program: $0, SwiftCodeBuilder(indentation: indentation)).generate() }
+            .get()
+    }
+
+    func generateCode(
+        subscenarioName: String = "Open Home Screen",
+        steps: [String] = ["tap button \"Button_1\""],
+        indentation: Int = 0
+    ) throws -> File {
+        let source =
+                """
+                subscenario "\(subscenarioName)":
+                    \(generateSteps(steps))
                 end
                 """
         return try Lexer(source: source).tokenize()
