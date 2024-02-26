@@ -25,7 +25,7 @@ final class SwiftCodeBuilder: CodeBuilder {
         resetVariableId()
         generatedCode += wrapLine(genFilePrivateExtension())
         scopeLevel += 1
-        generatedCode += wrapLine(genMethodDefinition(subscenario.name) + " {")
+        generatedCode += wrapLine(genMethodDefinitionForSubscenario(subscenario.name) + " {")
         scopeLevel += 1
     }
 
@@ -38,7 +38,7 @@ final class SwiftCodeBuilder: CodeBuilder {
 
 
     func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
-        generatedCode += wrapLine(genMethodCall(subscenarioCall))
+        generatedCode += wrapLine(genMethodCallForSubscenario(subscenarioCall.name))
     }
 
     func buildForSuitBeginning(_ suite: Suite) {
@@ -147,14 +147,14 @@ extension SwiftCodeBuilder {
         return "func \(methodName)()"
     }
 
-    func genMethodDefinition(_ name: Token) -> String {
+    func genMethodDefinitionForSubscenario(_ name: Token) -> String {
         let methodName = genMethodName(name.lexeme)
-        return "func \(methodName)()"
+        return "func \(methodName)(_ app: XCUIApplication)"
     }
 
-    func genMethodCall(_ subscenarioCall: SubscenarioCall) -> String {
-        let methodName = genMethodName(subscenarioCall.name.lexeme)
-        return "self.\(methodName)()"
+    func genMethodCallForSubscenario(_ name: Token) -> String {
+        let methodName = genMethodName(name.lexeme)
+        return "self.\(methodName)(app)"
     }
 
     func genTestMethodName(_ lexeme: String) -> String {

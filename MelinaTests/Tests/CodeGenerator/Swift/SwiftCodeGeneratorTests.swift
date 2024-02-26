@@ -194,7 +194,7 @@ let app = launchApp([
         try assertCallXCtestApi(
             step: "subscenario \"Open home screen\"",
             expect: [
-                "self.openHomeScreen()",
+                "self.openHomeScreen(app)",
             ]
         )
     }
@@ -367,14 +367,14 @@ fileprivate extension XCTestCase {
     func test_method_definition_for_subscenario() throws {
         try assertMethodDefinition(
             subscenarioName: "Open Home Screen",
-            expect: "func openHomeScreen()"
+            expect: "func openHomeScreen(_ app: XCUIApplication)"
         )
     }
 
     func test_method_definition_for_subscenario_with_single_word_name() throws {
         try assertMethodDefinition(
             subscenarioName: "Open",
-            expect: "func open()"
+            expect: "func open(_ app: XCUIApplication)"
         )
     }
 
@@ -388,7 +388,7 @@ fileprivate extension XCTestCase {
             expect:
 """
 fileprivate extension XCTestCase {
-func openHomeScreen() {
+func openHomeScreen(_ app: XCUIApplication) {
 let button_1 = app.buttons["Log in"].firstMatch
 waitForExistenceIfNeeded(button_1)
 button_1.tap()
@@ -421,7 +421,7 @@ end
 import XCTest
 
 fileprivate extension XCTestCase {
-    func openHomeScreen() {
+    func openHomeScreen(_ app: XCUIApplication) {
         let button_1 = app.buttons["Ok"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
@@ -429,7 +429,7 @@ fileprivate extension XCTestCase {
 }
 
 fileprivate extension XCTestCase {
-    func leaveHomeScreen() {
+    func leaveHomeScreen(_ app: XCUIApplication) {
         let button_1 = app.buttons["Close"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()
