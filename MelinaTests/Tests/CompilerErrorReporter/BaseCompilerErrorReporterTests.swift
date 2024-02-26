@@ -6,7 +6,7 @@ open class BaseCompilerErrorReporterTests: XCTestCase {
     func assert(
         source: String,
         fileName: String,
-        error: TestLexerError,
+        error: LexerError,
         errorMessage: String,
         file: StaticString = #file,
         line: UInt = #line
@@ -14,7 +14,7 @@ open class BaseCompilerErrorReporterTests: XCTestCase {
         assert(
             source: source,
             fileName: fileName,
-            errors: [error.toLexerError(source: source)],
+            errors: [error],
             errorMessage: errorMessage,
             file: file,
             line: line
@@ -24,7 +24,7 @@ open class BaseCompilerErrorReporterTests: XCTestCase {
     func assert(
         source: String,
         fileName: String,
-        error: TestParserError,
+        error: ParserError,
         errorMessage: String,
         file: StaticString = #file,
         line: UInt = #line
@@ -32,7 +32,7 @@ open class BaseCompilerErrorReporterTests: XCTestCase {
         assert(
             source: source,
             fileName: fileName,
-            errors: [error.toParserError(source: source)],
+            errors: [error],
             errorMessage: errorMessage,
             file: file,
             line: line

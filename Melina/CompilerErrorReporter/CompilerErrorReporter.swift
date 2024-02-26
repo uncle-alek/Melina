@@ -35,23 +35,21 @@ private extension CompilerErrorReporter {
     }
     
     func report(lexerError: LexerError) {
-        print(
-            lemb()
-                .fullMessage(line: lexerError.line, error: lexerError)
-                .errorLine(index: lexerError.index)
-                .marker(index: lexerError.index)
-                .build()
-        )
+        let message = lemb()
+            .fullMessage(line: lexerError.line, error: lexerError)
+            .errorLine(index: lexerError.index)
+            .marker(index: lexerError.index)
+            .build()
+        print(message)
     }
     
     func report(parserError: ParserError) {
-        print(
-            pemb()
-                .fullMessage(line: parserError.line, error: parserError)
-                .errorLine(index: parserError.index)
-                .marker(index: parserError.index)
-                .build()
-        )
+        let message = pemb()
+            .fullMessage(line: parserError.line, error: parserError)
+            .errorLine(index: parserError.index)
+            .marker(index: parserError.index)
+            .build()
+        print(message)
     }
     
     func report(_ error: SemanticAnalyzerError) {

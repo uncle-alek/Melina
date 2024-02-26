@@ -6,11 +6,7 @@ final class ParserErrorTests: BaseParserTests {
     func test_definition_error() {
         assert(
             source: "",
-            throws: TestParserError(
-                expected: .definition,
-                line: 0,
-                offset: 0
-            )
+            throws: .definition
         )
 
         assert(
@@ -22,11 +18,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .definition,
-                line: 0,
-                offset: 0
-            )
+            throws: .definition
         )
     }
 
@@ -39,11 +31,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .step,
-                line: 2,
-                offset: 51
-            )
+            throws: .step
         )
 
         assert(
@@ -55,11 +43,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .step,
-                line: 2,
-                offset: 51
-            )
+            throws: .step
         )
     }
 
@@ -73,11 +57,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .subscenarioName,
-                line: 4,
-                offset: 77
-            )
+            throws: .subscenarioName
         )
     }
 
@@ -91,11 +71,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws:  TestParserError(
-                expected: .suiteName,
-                line: 1,
-                offset: 6
-            )
+            throws: .suiteName
         )
     }
 
@@ -106,11 +82,7 @@ final class ParserErrorTests: BaseParserTests {
                 suite "HomeScreen":
                 end
                 """,
-            throws: TestParserError(
-                expected: .scenario,
-                line: 2,
-                offset: 20
-            )
+            throws: .scenario
         )
         assert(
             source:
@@ -121,11 +93,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .scenario,
-                line: 2,
-                offset: 24
-            )
+            throws: .scenario
         )
     }
 
@@ -139,11 +107,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .scenarioName,
-                line: 2,
-                offset: 33
-            )
+            throws: .scenarioName
         )
     }
 
@@ -160,11 +124,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .argumentKey,
-                line: 4,
-                offset: 85
-            )
+            throws: .argumentKey
         )
         assert(
             source:
@@ -177,11 +137,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .argumentKey,
-                line: 4,
-                offset: 80
-            )
+            throws: .argumentKey
         )
         assert(
             source:
@@ -194,11 +150,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .argumentKey,
-                line: 5,
-                offset: 110
-            )
+            throws: .argumentKey
         )
     }
 
@@ -215,11 +167,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .argumentTo,
-                line: 4,
-                offset: 92
-            )
+            throws: .argumentTo
         )
     }
 
@@ -236,11 +184,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .argumentValue,
-                line: 5,
-                offset: 103
-            )
+            throws: .argumentValue
         )
     }
 
@@ -254,11 +198,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .elementType,
-                line: 3,
-                offset: 65
-            )
+            throws: .elementType
         )
     }
 
@@ -272,11 +212,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .elementName,
-                line: 4,
-                offset: 76
-            )
+            throws: .elementName
         )
     }
 
@@ -293,11 +229,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .colon,
-                line: 2,
-                offset: 23
-            )
+            throws: .colon
         )
 
         assert(
@@ -312,11 +244,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .colon,
-                line: 3,
-                offset: 60
-            )
+            throws: .colon
         )
 
         assert(
@@ -331,11 +259,7 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: TestParserError(
-                expected: .colon,
-                line: 4,
-                offset: 83
-            )
+            throws:.colon
         )
 
         assert(
@@ -345,11 +269,7 @@ final class ParserErrorTests: BaseParserTests {
                     verify view "homeScreenIdentifier"
                 end
                 """,
-            throws: TestParserError(
-                expected: .colon,
-                line: 2,
-                offset: 29
-            )
+            throws: .colon
         )
     }
 
@@ -365,11 +285,7 @@ final class ParserErrorTests: BaseParserTests {
                         verify view "homeScreenIdentifier"
                     end
                 """,
-            throws: TestParserError(
-                expected: .end,
-                line: 7,
-                offset: 161
-            )
+            throws: .end
         )
 
         assert(
@@ -378,11 +294,7 @@ final class ParserErrorTests: BaseParserTests {
                 subscenario "HomeScreen":
                     verify view "homeScreenIdentifier"
                 """,
-            throws: TestParserError(
-                expected: .end,
-                line: 2,
-                offset: 42
-            )
+            throws: .end
         )
     }
 }

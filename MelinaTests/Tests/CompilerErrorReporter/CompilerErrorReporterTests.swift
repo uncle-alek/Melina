@@ -1,22 +1,22 @@
 import XCTest
 
 final class CompilerErrorReporterTests: BaseCompilerErrorReporterTests {
-    
+
     func test_parser_error() {
-        assert(
-            source:
-            """
+        let source = """
             suite "Melina":
                 scenario First scenario":
                     tap "Button_2" button
                 end
             end
-            """,
+            """
+        assert(
+            source: source,
             fileName: "MelinaTests.swift",
-            error: TestParserError(expected: .scenarioName, line: 2, offset: 29),
+            error: ParserError(expected: .scenarioName, line: 2, index: source.index(source.startIndex, offsetBy: 29)),
             errorMessage:
             """
-            file: MelinaTests.swift line: 2 error: expected name in scenario declaration
+            file: MelinaTests.swift line: 2 error: Scenario name missing. Specify the name for the scenario definition.
                 scenario First scenario":
                          ^
             
@@ -25,20 +25,20 @@ final class CompilerErrorReporterTests: BaseCompilerErrorReporterTests {
     }
     
     func test_lexer_error() {
-        assert(
-            source:
-            """
+        let source = """
             suite "Melina" ~
                 scenario First scenario":
                     tap "Button_2" button
                 end
             end
-            """,
+            """
+        assert(
+            source: source,
             fileName: "MelinaTests.swift",
-            error: TestLexerError(type: .unknownKeyword, line: 1, offset: 15),
+            error: LexerError(type: .unknownKeyword, line: 1, index: source.index(source.startIndex, offsetBy: 15)),
             errorMessage:
             """
-            file: MelinaTests.swift line: 1 error: unknown keyword
+            file: MelinaTests.swift line: 1 error: Unknown keyword.
             suite "Melina" ~
                            ^
             
@@ -75,8 +75,8 @@ final class CompilerErrorReporterTests: BaseCompilerErrorReporterTests {
             ),
             errorMessage:
             """
-            file: MelinaTests.swift line: 3 error: action `tap` can't be applied to the element `text`
-                    tap "Button_2" text
+            file: MelinaTests.swift line: 3 error: Action `tap` can't be applied to the element `label`.
+                    tap label "Button_2"
                     ^
             
             """
