@@ -20,12 +20,23 @@ final class Compiler {
         self.source = source
         self.filePath = filePath
     }
-    
+
+    func compileSwiftCode() throws -> File {
+        try compileCodeWithBuilder(SwiftCodeBuilder())
+    }
+
     func compileSwiftTeCode() throws -> File {
+        try compileCodeWithBuilder(SwiftTeCodeBuilder())
+    }
+}
+
+private extension Compiler {
+
+    func compileCodeWithBuilder(_ codeBuilder: CodeBuilder) throws -> File {
         let result = Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
             .flatMap { SemanticAnalyzer(program: $0).analyze() }
-            .flatMap { CodeGenerator(program: $0, SwiftTeCodeBuilder()).generate() }
+            .flatMap { CodeGenerator(program: $0, codeBuilder).generate() }
         switch result {
         case .success(let file):
             return file

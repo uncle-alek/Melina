@@ -1,4 +1,4 @@
-include "Subscenarios.melina"
+// include "Subscenarios.melina"
 
 suite "Melina":
 
@@ -26,5 +26,5 @@ end
 
 subscenario "Login":
     tap button "Button 1"
-    verify view "View_2" contains label "Hello"
+    verify view "View_2" contains value "Hello"
 end
