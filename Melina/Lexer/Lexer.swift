@@ -9,7 +9,7 @@ struct LexerError: Error, Equatable {
     enum `Type`: Equatable {
         case unknownSymbol
         case secondSlashRequiredForComment
-        case unknowKeyword
+        case unknownKeyword
         case newLineInStringLiteral
     }
 }
@@ -17,22 +17,29 @@ struct LexerError: Error, Equatable {
 final class Lexer {
     
     let keywords: [String : TokenType] = [
-        "suite"       : .suite,
-        "scenario"    : .scenario,
-        "arguments"   : .arguments,
+        "suite"           : .suite,
+        "scenario"        : .scenario,
+        "subscenario"     : .subscenario,
+        "arguments"       : .arguments,
 
-        "end"         : .end,
-        
-        "name"        : .name,
-        
-        "button"      : .button,
-        "text"        : .text,
-        "searchField" : .searchField,
+        "to"              : .to,
+        "end"             : .end,
 
-        "verify"      : .verify,
-        "tap"         : .tap,
-        "scrollUp"    : .scrollUp,
-        "scrollDown"  : .scrollDown
+        "button"          : .button,
+        "textfield"       : .textField,
+        "label"           : .label,
+        "view"            : .view,
+
+        "verify"          : .verify,
+        "tap"             : .tap,
+        "edit"            : .edit,
+
+        "is selected"     : .isSelected,
+        "is not selected" : .isNotSelected,
+        "is exist"        : .isExist,
+        "is not exist"    : .isNotExist,
+        "contains value"  : .containsValue,
+        "with text"       : .withText
     ]
     
     private let source: String
@@ -82,14 +89,8 @@ private extension Lexer {
             scanNewLine()
         case ":":
             scanColon()
-        case "[":
-            scanLeftSquareBrace()
-        case "]":
-            scanRightSquareBrace()
         case "/":
             try scanComment()
-        case _ where c.isNumber:
-            try scanNumber()
         case "\"":
             try scanString()
         case _ where c.isLetter:
@@ -112,20 +113,20 @@ private extension Lexer {
     }
     
     func scanKeyword() throws {
-        while !isEndOfFile() {
-            if !advance().isLetter {
-                undo()
+        var currentChar = advance()
+        while !isEndOfFile() && (currentChar.isLetter || currentChar == " ") {
+            if keywords[lexemeWithSingleSpaces()] != nil {
                 break
             }
+            currentChar = advance()
         }
-        
-        if let tokenType = keywords[lexeme()] {
+        if let tokenType = keywords[lexemeWithSingleSpaces()] {
             addToken(tokenType, lexeme())
         } else {
-            throw error(.unknowKeyword)
+            throw error(.unknownKeyword)
         }
     }
-    
+
     func scanNewLine() {
         line += 1
 
@@ -140,26 +141,7 @@ private extension Lexer {
     }
     
     func scanColon() {
-        addToken(.colon)
-    }
-    
-    func scanLeftSquareBrace() {
-        addToken(.leftSquareBrace)
-    }
-    
-    func scanRightSquareBrace() {
-        addToken(.rightSquareBrace)
-    }
-    
-    func scanNumber() throws {
-        while !isEndOfFile() {
-            if !advance().isNumber {
-                undo()
-                break
-            }
-        }
-        
-        addToken(.number, lexeme())
+        addToken(.colon, lexeme())
     }
     
     func scanString() throws {
@@ -171,7 +153,6 @@ private extension Lexer {
                 throw error(.newLineInStringLiteral)
             }
         }
-        
         addToken(.string, stringLexeme())
     }
 }
@@ -185,7 +166,7 @@ private extension Lexer {
     }
     
     func isEndOfFile() -> Bool {
-        currentIndex == source.endIndex
+        return currentIndex == source.endIndex
     }
     
     func undo() {
@@ -193,18 +174,33 @@ private extension Lexer {
     }
     
     func addToken(_ type: TokenType, _ lexeme: String = "") {
-        tokens.append(.init(type: type, lexeme: lexeme, line: line, startIndex: startIndex, endIndex: currentIndex))
+        tokens.append(
+            Token(
+                type: type,
+                lexeme: lexeme,
+                line: line,
+                startIndex: startIndex,
+                endIndex: currentIndex
+            )
+        )
     }
     
     func lexeme() -> String {
-        String(source[startIndex..<currentIndex])
+        return String(source[startIndex..<currentIndex])
     }
-    
+
+    func lexemeWithSingleSpaces() -> String {
+        return lexeme()
+            .components(separatedBy: .whitespacesAndNewlines)
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+    }
+
     func stringLexeme() -> String {
-        String(source[startIndex..<currentIndex].dropFirst().dropLast())
+        return String(source[startIndex..<currentIndex].dropFirst().dropLast())
     }
     
     func error(_ type: LexerError.`Type`) -> LexerError {
-        LexerError(type: type, line: line, index: source.index(before: currentIndex))
+        return LexerError(type: type, line: line, index: source.index(before: currentIndex))
     }
 }

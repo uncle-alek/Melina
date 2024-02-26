@@ -2,204 +2,159 @@ import Foundation
 import XCTest
 
 final class ParserErrorTests: BaseParserTests {
-    
-    func test_missing_suite() {
+
+    func test_definition_error() {
+        assert(
+            source: "",
+            throws: .definition
+        )
+
         assert(
             source:
                 """
                 "HomeScreen":
                     scenario "Open Home Screen":
-                        tap button[name: "Button_1"]
+                        tap button "Button_1"
                     end
                 end
                 """,
-            throws: .init(expected: .suiteKeyword, line: 1, offset: 0)
+            throws: .definition
         )
-        
+    }
+
+    func test_step_error() {
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                    end
+                end
+                """,
+            throws: .step
+        )
+
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                        button "Button_1"
+                    end
+                end
+                """,
+            throws: .step
+        )
+    }
+
+    func test_subscenario_name_error() {
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                        subscenario
+                    end
+                end
+                """,
+            throws: .subscenarioName
+        )
+    }
+
+    func test_suite_name_error() {
         assert(
             source:
                 """
                 suite :
                     scenario "Open Home Screen":
-                        tap button[name: "Button_1"]
+                        tap button "Button_1"
                     end
                 end
                 """,
-            throws:  .init(expected: .suiteName, line: 1, offset: 6)
+            throws: .suiteName
         )
-        
+    }
+
+    func test_scenario_error() {
         assert(
             source:
                 """
                 suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[name: "Button_1"]
-                    end
-                
-                """,
-            throws:  .init(expected: .suiteEnd, line: 5, offset: 97)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen"
-                    scenario "Open Home Screen":
-                        tap button[name: "Button_1"]
-                    end
                 end
                 """,
-            throws:  .init(expected: .suiteColon, line: 2, offset: 23)
+            throws: .scenario
         )
-    }
-    
-    func test_missing_scenario() {
         assert(
             source:
                 """
                 suite "HomeScreen":
                     "Open Home Screen":
-                        tap button[name: "Button_1"]
+                        tap button "Button_1"
                     end
                 end
                 """,
-            throws: .init(expected: .scenarioKeyword, line: 2, offset: 24)
+            throws: .scenario
         )
-        
+    }
+
+    func test_scenario_name() {
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario :
-                        tap button[name: "Button_1"]
+                        tap button "Button_1"
                     end
                 end
                 """,
-            throws: .init(expected: .scenarioName, line: 2, offset: 33)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[name: "Button_1"]
-                """,
-            throws: .init(expected: .scenarioEnd, line: 3, offset: 88)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen"
-                        tap button[name: "Button_1"]
-                    end
-                end
-                """,
-            throws: .init(expected: .scenarioColon, line: 3, offset: 60)
+            throws: .scenarioName
         )
     }
-    
-    func test_missing_step() {
+
+    func test_argument_key_error() {
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        button[name: "Button_1"]
+                        arguments:
+                             to "true"
+                        end
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
-            throws: .init(expected: .stepAction, line: 3, offset: 61)
+            throws: .argumentKey
         )
-        
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        tap [name: "Button_1"]
+                        arguments:
+                        end
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
-            throws: .init(expected: .stepElement, line: 3, offset: 65)
+            throws: .argumentKey
         )
-        
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        tap button name: "Button_1"]
+                        arguments:
+                            "clear" to "true"
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
-            throws: .init(expected: .stepLeftSquareBrace, line: 3, offset: 72)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[: "Button_1"]
-                    end
-                end
-                """,
-            throws: .init(expected: .stepElementNameKeyword, line: 3, offset: 72)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[name "Button_1"]
-                    end
-                end
-                """,
-            throws: .init(expected: .stepElementColon, line: 3, offset: 77)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[name: ]
-                    end
-                end
-                """,
-            throws: .init(expected: .stepElementName, line: 3, offset: 78)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                        tap button[name: "Button_1"
-                    end
-                end
-                """,
-            throws: .init(expected: .stepRightSquareBrace, line: 4, offset: 93)
-        )
-        
-        assert(
-            source:
-                """
-                suite "HomeScreen":
-                    scenario "Open Home Screen":
-                    end
-                end
-                """,
-            throws: .init(expected: .stepAction, line: 3, offset: 57)
+            throws: .argumentKey
         )
     }
-    
-    func test_missing_arguments() {
-      
+
+    func test_argument_to_error() {
         assert(
             source:
                 """
@@ -208,69 +163,138 @@ final class ParserErrorTests: BaseParserTests {
                         arguments:
                             "clear" "true"
                         end
-                        verify "homeScreenIdentifier" text
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
-            throws: .init(expected: .argumentColon, line: 4, offset: 92)
+            throws: .argumentTo
         )
-        
+    }
+
+    func test_argument_value_error() {
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
                         arguments:
-                            "clear" :
+                            "clear" to
                         end
-                        verify "homeScreenIdentifier" text
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
-            throws: .init(expected: .argumentValue, line: 5, offset: 102)
+            throws: .argumentValue
         )
-        
+    }
+
+    func test_element_type_error() {
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
-                        arguments:
-                            "clear" : "true"
-                        verify "homeScreenIdentifier" text
+                        tap "Button_1"
                     end
                 end
                 """,
-            throws: .init(expected: .argumentKey, line: 5, offset: 109)
+            throws: .elementType
         )
-        
+    }
+
+    func test_element_name_error() {
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                        tap button
+                    end
+                end
+                """,
+            throws: .elementName
+        )
+    }
+
+    func test_colon_error() {
+        assert(
+            source:
+                """
+                suite "HomeScreen"
+                    scenario "Open Home Screen":
+                        arguments:
+                            "clear" to "true"
+                        end
+                        verify view "homeScreenIdentifier"
+                    end
+                end
+                """,
+            throws: .colon
+        )
+
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen"
+                        arguments:
+                            "clear" to "true"
+                        end
+                        verify view "homeScreenIdentifier"
+                    end
+                end
+                """,
+            throws: .colon
+        )
+
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
                         arguments
-                            "clear" : "true"
+                            "clear" to "true"
                         end
-                        verify "homeScreenIdentifier" text
+                        verify view "homeScreenIdentifier"
                     end
                 end
                 """,
-            throws: .init(expected: .argumentsColon, line: 4, offset: 83)
+            throws:.colon
         )
-        
+
+        assert(
+            source:
+                """
+                subscenario "HomeScreen"
+                    verify view "homeScreenIdentifier"
+                end
+                """,
+            throws: .colon
+        )
+    }
+
+    func test_end() {
         assert(
             source:
                 """
                 suite "HomeScreen":
                     scenario "Open Home Screen":
                         arguments:
+                            "clear" to "true"
                         end
-                        verify "homeScreenIdentifier" text
+                        verify view "homeScreenIdentifier"
                     end
-                end
                 """,
-            throws: .init(expected: .argumentKey, line: 4, offset: 80)
+            throws: .end
+        )
+
+        assert(
+            source:
+                """
+                subscenario "HomeScreen":
+                    verify view "homeScreenIdentifier"
+                """,
+            throws: .end
         )
     }
 }

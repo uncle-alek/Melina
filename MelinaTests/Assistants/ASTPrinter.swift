@@ -1,6 +1,6 @@
 import Foundation
 
-final class ASTPrinter: Visitor {
+final class ASTPrinter {
     
     private var formattedText: String = ""
     private let program: Program
@@ -10,54 +10,91 @@ final class ASTPrinter: Visitor {
     ) {
         self.program = program
     }
-    
-    func visit(_ program: Program) {
+
+    func toString() -> String {
+        programToString(program)
+        return formattedText
+    }
+}
+
+private extension ASTPrinter {
+
+    func programToString(_ program: Program) {
         formattedText += "<Program_beggining>" + "\n"
-        program.suites.forEach { suite in
-            suite.accept(self)
-        }
+        program.definitions.forEach(definitionToString)
         formattedText += "<Program_end>"
     }
-    
-    func visit(_ suite: Suite) {
+
+    func definitionToString(_ definition: Definition) {
+        switch definition {
+        case .suite(let value): suiteToString(value)
+        case .subscenario(let value): subscenarioToString(value)
+        }
+    }
+
+    func suiteToString(_ suite: Suite) {
         formattedText += "<Suite_beggining>:\(suite.name.lexeme)" + "\n"
-        suite.scenarios.forEach { $0.accept(self) }
+        suite.scenarios.forEach(scenarioToString)
         formattedText += "<Suite_end>" + "\n"
     }
-    
-    func visit(_ scenario: Scenario) {
+
+    func subscenarioToString(_ subscenario: Subscenario) {
+        formattedText += "<Subscenario_beggining>:\(subscenario.name.lexeme)" + "\n"
+        stepsToString(subscenario.steps)
+        formattedText += "<Subscenario_end>" + "\n"
+    }
+
+    func scenarioToString(_ scenario: Scenario) {
         formattedText += "<Scenario_begging>:\(scenario.name.lexeme)" + "\n"
         if !scenario.arguments.isEmpty {
-            formattedText += "Arguments:["
-            scenario.arguments.forEach { arg in
-                arg.accept(self)
-                if arg != scenario.arguments.last {
-                    formattedText += ","
-                }
-            }
-            formattedText += "]" + "\n"
+            argumentsToString(scenario.arguments)
         }
-        formattedText += "Steps:["
-        scenario.steps.forEach { step in
-            step.accept(self)
-            if step != scenario.steps.last {
-                formattedText += ","
-            }
-        }
-        formattedText += "]" + "\n"
+        stepsToString(scenario.steps)
         formattedText += "<Scenario_end>" + "\n"
     }
-    
-    func visit(_ argument: Argument) {
-        formattedText += "\(argument.key.lexeme):\(argument.value.lexeme)"
+
+    func argumentsToString(_ arguments: [Argument]) {
+        formattedText += "Arguments:[" + "\n"
+        arguments.forEach(argumentToString)
+        formattedText += "]" + "\n"
     }
-    
-    func visit(_ step: Step) {
-        formattedText += "\(step.action.type.lexeme)-\(step.element.type.lexeme)[name:\(step.element.name.lexeme)]"
+
+    func argumentToString(_ argument: Argument) {
+        formattedText += "\(argument.key.lexeme):\(argument.value.lexeme)" + "," + "\n"
     }
-    
-    func toString() -> String {
-        program.accept(self)
-        return formattedText
+
+    func stepsToString(_ steps: [Step]) {
+        formattedText += "Steps:[" + "\n"
+        steps.forEach(stepToString)
+        formattedText += "]" + "\n"
+    }
+
+    func stepToString(_ step: Step) {
+        switch step {
+        case .action(let value): actionToString(value)
+        case .subscenarioCall(let value): subscenarioCallToString(value)
+        }
+    }
+
+    func actionToString(_ action: Action) {
+        let actionType = action.type.lexeme
+        let elementType = action.element.type.lexeme
+        let elementName = action.element.name.lexeme
+        let conditionType = action.condition?.type.lexeme
+        let conditionParameter = action.condition?.parameter?.lexeme
+        var suffix = conditionType != nil
+            ? "=>" + conditionType!
+            : ""
+        suffix += conditionParameter != nil
+            ? ":" + conditionParameter!
+            : ""
+        formattedText += actionType 
+            + "-" + elementType
+            + ":" + elementName
+            + suffix + "," + "\n"
+    }
+
+    func subscenarioCallToString(_ subscenarioCall: SubscenarioCall) {
+        formattedText += "subscenario:\(subscenarioCall.name.lexeme)" + "," + "\n"
     }
 }

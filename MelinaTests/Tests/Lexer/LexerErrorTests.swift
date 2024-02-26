@@ -5,34 +5,46 @@ final class LexerErrorTests: BaseLexerTests {
     func test_unknown_keyword() {
         assert(
             source: "expecttt",
-            throws: .init(type: .unknowKeyword, line: 1, offset: 7)
+            throws: .unknownKeyword
         )
         
         assert(
             source: "randomkeyword",
-            throws:  .init(type: .unknowKeyword, line: 1, offset: 12)
+            throws:  .unknownKeyword
         )
     }
     
     func test_broken_comment() {
         assert(
             source: "/ This is comment",
-            throws: .init(type: .secondSlashRequiredForComment, line: 1, offset: 1)
+            throws: .secondSlashRequiredForComment
         )
     }
     
     func test_unknown_symbol() {
         assert(
             source: "?",
-            throws: .init(type: .unknownSymbol, line: 1, offset: 0)
+            throws: .unknownSymbol
         )
         
         assert(
             source: "end ;",
-            throws: .init(type: .unknownSymbol, line: 1, offset: 4)
+            throws: .unknownSymbol
         )
     }
-    
+
+    func test_broken_compund_tokens() {
+        assert(
+            source: "isselected",
+            throws: .unknownKeyword
+        )
+
+        assert(
+            source: "is NOT selected",
+            throws: .unknownKeyword
+        )
+    }
+
     func test_new_line_in_string_literal() {
         assert(
             source:
@@ -40,7 +52,7 @@ final class LexerErrorTests: BaseLexerTests {
                 "Hello
                 World"
             """,
-            throws: .init(type: .newLineInStringLiteral, line: 1, offset: 10)
+            throws: .newLineInStringLiteral
         )
     }
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Token: Equatable {
+struct Token: Equatable, Hashable {
     
     let type: TokenType
     let lexeme: String
@@ -12,25 +12,30 @@ struct Token: Equatable {
 enum TokenType: Equatable {
     case eof,
          colon,
-         leftSquareBrace,
-         rightSquareBrace
-    
-    case number,
-         string
-    
+         to,
+         end
+
+    case string
+
     case suite,
          scenario,
-         arguments,
-         end
-    
-    case name
-    
+         arguments
+
     case button,
-         text,
-         searchField
-    
+         textField,
+         label,
+         view
+
     case verify,
          tap,
-         scrollUp,
-         scrollDown
+         edit
+
+    case isSelected,
+         isNotSelected,
+         isExist,
+         isNotExist,
+         containsValue,
+         withText
+
+    case subscenario
 }

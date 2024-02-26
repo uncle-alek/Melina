@@ -11,7 +11,7 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
     ) throws {
         let result = try generateCode(suiteName: suiteName)
         XCTAssertNoDifference(
-            result.files[0].name,
+            result.name,
             name,
             file: file,
             line: line
@@ -26,8 +26,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
         let result = try generateCode()
         imports.forEach {
             XCTAssertTrue(
-                result.files[0].content.contains($0),
-                "No expected imports found in the code: \n \"\(result.files[0].content)\"",
+                result.content.contains($0),
+                "No expected imports found in the code: \n \"\(result.content)\"",
                 file: file,
                 line: line
             )
@@ -42,8 +42,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
     ) throws {
         let result = try generateCode(suiteName: suiteName)
         XCTAssertTrue(
-            result.files[0].content.contains(defenition),
-            "No expected class defenition found in the code: \n \"\(result.files[0].content)\"",
+            result.content.contains(defenition),
+            "No expected class defenition found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )
@@ -57,8 +57,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
     ) throws {
         let result = try generateCode(scenarioName: scenarioName)
         XCTAssertTrue(
-            result.files[0].content.contains(defenition),
-            "No expected method defenition found in the code: \n \"\(result.files[0].content)\"",
+            result.content.contains(defenition),
+            "No expected method defenition found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )
@@ -71,8 +71,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
     ) throws {
         let result = try generateCode()
         XCTAssertTrue(
-            result.files[0].content.contains(expect),
-            "No expected private method 'launchApp' found in the code: \n \"\(result.files[0].content)\"",
+            result.content.contains(expect),
+            "No expected private method 'launchApp' found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )
@@ -86,8 +86,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
     ) throws {
         let result = try generateCode(arguments: arguments)
         XCTAssertTrue(
-            result.files[0].content.contains(expect),
-            "No expected 'launchApp' call found in the code: \n \"\(result.files[0].content)\"",
+            result.content.contains(expect),
+            "No expected 'launchApp' call found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )
@@ -102,8 +102,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
         let result = try generateCode(steps: [step])
         expect.forEach {
             XCTAssertTrue(
-                result.files[0].content.contains($0),
-                "No expected line \($0) of XCtest api call found in the code: \n \"\(result.files[0].content)\"",
+                result.content.contains($0),
+                "No expected line \($0) of XCtest api call found in the code: \n \"\(result.content)\"",
                 file: file,
                 line: line
             )
@@ -117,8 +117,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
     ) throws {
         let result = try generateCode()
         XCTAssertTrue(
-            result.files[0].content.contains(expect),
-            "No expected private method 'waitForExistenceIfNeeded' found in the code: \n \"\(result.files[0].content)\"",
+            result.content.contains(expect),
+            "No expected private method 'waitForExistenceIfNeeded' found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )
@@ -138,8 +138,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
             steps: steps
         )
         XCTAssertTrue(
-            result.files[0].content.contains(expect),
-            "No expected test method found in the code: \n \"\(result.files[0].content)\"",
+            result.content.contains(expect),
+            "No expected test method found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )
@@ -162,8 +162,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
             indentation: 4
         )
         XCTAssertTrue(
-            result.files[0].content.contains(expect),
-            "No expected class found in the code: \n \"\(result.files[0].content)\"",
+            result.content.contains(expect),
+            "No expected class found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )
@@ -171,17 +171,51 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
 
     func assertFullFile(
         source: String,
-        expect: Code,
+        expect: File,
         file: StaticString = #file,
         line: UInt = #line
     ) throws {
         let result = try Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
-            .flatMap { CodeGenerator(program: $0, SwiftBuilder()).generate() }
+            .flatMap { CodeGenerator(program: $0, SwiftCodeBuilder()).generate() }
             .get()
         XCTAssertNoDifference(
             result,
             expect,
+            file: file,
+            line: line
+        )
+    }
+
+    func assertMethodDefinition(
+        subscenarioName: String,
+        expect defenition: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws {
+        let result = try generateCode(subscenarioName: subscenarioName)
+        XCTAssertTrue(
+            result.content.contains(defenition),
+            "No expected method defenition found in the code: \n \"\(result.content)\"",
+            file: file,
+            line: line
+        )
+    }
+
+    func assertFullTestMethod(
+        subscenarioName: String,
+        steps: [String],
+        expect: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws {
+        let result = try generateCode(
+            subscenarioName: subscenarioName,
+            steps: steps
+        )
+        XCTAssertTrue(
+            result.content.contains(expect),
+            "No expected test method found in the code: \n \"\(result.content)\"",
             file: file,
             line: line
         )
@@ -194,9 +228,9 @@ extension BaseSwiftCodeGeneratorTest {
         suiteName: String = "Home Scenario",
         scenarioName: String = "Open Home Screen",
         arguments: [String] = [],
-        steps: [String] = ["tap button[name: \"Button_1\"]"],
+        steps: [String] = ["tap button \"Button_1\""],
         indentation: Int = 0
-    ) throws -> Code {
+    ) throws -> File {
         let source =
                 """
                 suite "\(suiteName)":
@@ -208,7 +242,24 @@ extension BaseSwiftCodeGeneratorTest {
                 """
         return try Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
-            .flatMap { CodeGenerator(program: $0, SwiftBuilder(indentation: indentation)).generate() }
+            .flatMap { CodeGenerator(program: $0, SwiftCodeBuilder(indentation: indentation)).generate() }
+            .get()
+    }
+
+    func generateCode(
+        subscenarioName: String = "Open Home Screen",
+        steps: [String] = ["tap button \"Button_1\""],
+        indentation: Int = 0
+    ) throws -> File {
+        let source =
+                """
+                subscenario "\(subscenarioName)":
+                    \(generateSteps(steps))
+                end
+                """
+        return try Lexer(source: source).tokenize()
+            .flatMap { Parser(tokens: $0).parse() }
+            .flatMap { CodeGenerator(program: $0, SwiftCodeBuilder(indentation: indentation)).generate() }
             .get()
     }
 

@@ -1,49 +1,57 @@
 import Foundation
 
-protocol Node {
-    func accept(_ v: Visitor)
+
+struct Program: Equatable {
+    let definitions: [Definition]
 }
 
-struct Program: Node, Equatable {
-    let suites: [Suite]
-    
-    func accept(_ v: Visitor) { v.visit(self) }
+enum Definition: Equatable {
+    case suite(Suite)
+    case subscenario(Subscenario)
 }
 
-struct Suite: Node, Equatable {
+struct Subscenario: Equatable {
+    let name: Token
+    let steps: [Step]
+}
+
+struct Suite: Equatable {
     let name: Token
     let scenarios: [Scenario]
-    
-    func accept(_ v: Visitor) { v.visit(self) }
 }
 
-struct Scenario: Node, Equatable {
+struct Scenario: Equatable {
     let name: Token
     let arguments: [Argument]
     let steps: [Step]
-    
-    func accept(_ v: Visitor) { v.visit(self) }
 }
 
-struct Argument: Node, Equatable {
+struct Argument: Equatable {
     let key: Token
     let value: Token
-    
-    func accept(_ v: Visitor) { v.visit(self) }
 }
 
-struct Step: Node, Equatable {
-    let action: Action
-    let element: Element
-    
-    func accept(_ v: Visitor) { v.visit(self) }
+enum Step: Equatable {
+    case action(Action)
+    case subscenarioCall(SubscenarioCall)
 }
 
 struct Action: Equatable {
     let type: Token
+    let element: Element
+    let condition: Condition?
+}
+
+struct SubscenarioCall: Equatable {
+    let name: Token
 }
 
 struct Element: Equatable {
     let type: Token
     let name: Token
+}
+
+struct Condition: Equatable {
+    let type: Token
+    let parameter: Token?
 }

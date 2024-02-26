@@ -2,17 +2,21 @@ import Foundation
 
 protocol CodeBuilder {
 
+    func buildForProgramBeginning(_ program: Program)
+    func buildForProgramEnd(_ program: Program)
     func buildForSuitBeginning(_ suite: Suite)
     func buildForSuitEnd(_ suite: Suite)
+    func buildForSubscenarioBeginning(_ subscenario: Subscenario)
+    func buildForSubscenarioEnd(_ subscenario: Subscenario)
     func buildForScenarioBeginning(_ scenario: Scenario)
     func buildForScenarioEnd(_ scenario: Scenario)
     func buildForArgumentsBeginning(_ arguments: [Argument])
     func buildForArgument(_ argument: Argument)
     func buildForArgumentsEnd(_ arguments: [Argument])
-    func buildForStep(_ step: Step)
-    func fileName(_ suite: Suite) -> String
+    func buildForAction(_ action: Action)
+    func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall)
+    func fileName(_ program: Program) -> String
     func code() -> String
-    func reset()
 
 }
 
@@ -29,17 +33,25 @@ final class CodeGenerator {
         self.builder = builder
     }
 
-    func generate() -> Result<Code, [Error]> {
-        let files = program.suites.map {
-            suite($0)
-            let file = File(
-                name: builder.fileName($0),
-                content: builder.code()
-            )
-            builder.reset()
-            return file
+    func generate() -> Result<File, [Error]> {
+        builder.buildForProgramBeginning(program)
+        program.definitions.forEach(definition)
+        builder.buildForProgramEnd(program)
+        let file = File(name: builder.fileName(program), content: builder.code())
+        return .success(file)
+    }
+
+    func definition(_ definition: Definition) {
+        switch definition {
+            case .subscenario(let value): subscenario(value)
+            case .suite(let value): suite(value)
         }
-        return .success(Code(files: files))
+    }
+
+    func subscenario(_ subscenario: Subscenario) {
+        builder.buildForSubscenarioBeginning(subscenario)
+        subscenario.steps.forEach(step)
+        builder.buildForSubscenarioEnd(subscenario)
     }
 
     func suite(_ suite: Suite) {
@@ -62,6 +74,17 @@ final class CodeGenerator {
     }
 
     func step(_ step: Step) {
-        builder.buildForStep(step)
+        switch step {
+            case .action(let value): action(value)
+            case .subscenarioCall(let value): subscenarioCall(value)
+        }
+    }
+
+    func action(_ action: Action) {
+        builder.buildForAction(action)
+    }
+
+    func subscenarioCall(_ subscenarioCall: SubscenarioCall) {
+        builder.buildForSubscenarioCall(subscenarioCall)
     }
 }

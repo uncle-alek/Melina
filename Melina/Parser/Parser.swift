@@ -7,41 +7,54 @@ struct ParserError: Error, Equatable {
     let index: String.Index
     
     enum Expected: Equatable {
-        case suiteKeyword,
-             suiteName,
-             suiteColon,
-             suiteEnd
-        
-        case scenarioKeyword,
-             scenarioName,
-             scenarioColon,
-             scenarioEnd
-        
-        case stepAction,
-             stepElement,
-             stepLeftSquareBrace,
-             stepElementNameKeyword,
-             stepElementColon,
-             stepElementName,
-             stepRightSquareBrace
-        
-        case argumentsKeyword,
-             argumentsColon,
-             argumentsEnd
-        
+        case definition,
+             step
+
+        case subscenarioName
+
+        case suiteName
+
+        case scenario,
+             scenarioName
+
         case argumentKey,
-             argumentValue,
-             argumentColon
+             argumentTo,
+             argumentValue
+
+        case elementType,
+             elementName
+
+        case colon,
+             end
     }
 }
+
+private var actionTypes: [TokenType] = [
+    .tap,
+    .verify,
+    .edit
+]
+private var elementTypes: [TokenType] = [
+    .button,
+    .view,
+    .textField,
+    .label
+]
+private var conditionTypes: [TokenType] = [
+    .isSelected,
+    .isNotSelected,
+    .isExist,
+    .isNotExist,
+    .containsValue,
+    .withText
+]
 
 final class Parser {
     
     private let tokens: [Token]
     private var currentIndex: Int = 0
     private var suites: [Suite] = []
-    private var errors: [Error] = []
-    
+
     init(
         tokens: [Token]
     ) {
@@ -49,41 +62,69 @@ final class Parser {
     }
     
     func parse() -> Result<Program, [Error]> {
-        var suites: [Suite] = []
-        while !isAtEnd() {
-            do {
-                let suite = try parseSuite()
-                suites.append(suite)
-            } catch {
-                errors.append(error)
-                break
-            }
+        do {
+            return .success(try parseProgram())
+        } catch {
+            return .failure([error])
         }
-        if errors.isEmpty {
-            return .success(Program(suites: suites))
-        } else {
-            return .failure(errors)
-        }
-        
     }
 }
 
 private extension Parser {
-    
-    func parseSuite() throws -> Suite  {
-        try match(tokenTypes: .suite, error: .suiteKeyword)
-        let suiteNameToken = try match(tokenTypes: .string, error: .suiteName)
-        try match(tokenTypes: .colon, error: .suiteColon)
+
+    func parseProgram() throws -> Program {
+        var definitions: [Definition] = []
+        let mandatoryDefinition = try parseDefinition()
+        definitions.append(mandatoryDefinition)
+
+        while !isAtEnd() {
+            let definition = try parseDefinition()
+            definitions.append(definition)
+        }
+        return Program(
+            definitions: definitions
+        )
+    }
+
+    func parseDefinition() throws -> Definition {
+        if check(tokenType: .suite) {
+            return .suite(try parseSuiteDefinition())
+        } else if check(tokenType: .subscenario)  {
+            return .subscenario(try parseSubscenarioDefinition())
+        } else {
+            throw parseError(expected: .definition)
+        }
+    }
+
+    func parseSubscenarioDefinition() throws -> Subscenario  {
+        advance()
+        let name = try match(tokenType: .string, error: .subscenarioName)
+        try match(tokenType: .colon, error: .colon)
+        let steps = try parseSteps()
+        try match(tokenType: .end, error: .end)
+        return Subscenario(
+            name: name,
+            steps: steps
+        )
+    }
+
+    func parseSuiteDefinition() throws -> Suite  {
+        advance()
+        let suiteName = try match(tokenType: .string, error: .suiteName)
+        try match(tokenType: .colon, error: .colon)
         let scenarios = try parseScenarios()
-        try match(tokenTypes: .end, error: .suiteEnd)
+        try match(tokenType: .end, error: .end)
         return Suite(
-            name: suiteNameToken,
+            name: suiteName,
             scenarios: scenarios
         )
     }
     
     func parseScenarios() throws -> [Scenario] {
         var scenarios: [Scenario] = []
+        let mandatoryScenario = try parseScenario()
+        scenarios.append(mandatoryScenario)
+
         while !isAtScopeEnd() {
             let scenario = try parseScenario()
             scenarios.append(scenario)
@@ -92,31 +133,34 @@ private extension Parser {
     }
     
     func parseScenario() throws -> Scenario {
-        try match(tokenTypes: .scenario, error: .scenarioKeyword)
-        let scenarioNameToken = try match(tokenTypes: .string, error: .scenarioName)
-        try match(tokenTypes: .colon, error: .scenarioColon)
-        let arguments = check(tokenTypes: .arguments) ? try parseArguments() : []
+        try match(tokenType: .scenario, error: .scenario)
+        let scenarioName = try match(tokenType: .string, error: .scenarioName)
+        try match(tokenType: .colon, error: .colon)
+        let arguments = check(tokenTypes: [.arguments])
+            ? try parseArguments()
+            : []
         let steps = try parseSteps()
-        try match(tokenTypes: .end, error: .scenarioEnd)
+        try match(tokenType: .end, error: .end)
         return Scenario(
-            name: scenarioNameToken,
+            name: scenarioName,
             arguments: arguments,
             steps: steps
         )
     }
     
     func parseArguments() throws -> [Argument] {
-        try match(tokenTypes: .arguments, error: .argumentsKeyword)
-        try match(tokenTypes: .colon, error: .argumentsColon)
+        advance()
+        try match(tokenType: .colon, error: .colon)
         let argumentsBody = try parseArgumentsBody()
-        try match(tokenTypes: .end, error: .argumentsEnd)
+        try match(tokenType: .end, error: .end)
         return argumentsBody
     }
     
     func parseArgumentsBody() throws -> [Argument] {
         var arguments: [Argument] = []
-        let argument = try parseArgument()
-        arguments.append(argument)
+        let mandatoryArgument = try parseArgument()
+        arguments.append(mandatoryArgument)
+
         while !isAtScopeEnd() {
             let argument = try parseArgument()
             arguments.append(argument)
@@ -125,19 +169,20 @@ private extension Parser {
     }
     
     func parseArgument() throws -> Argument {
-        let keyToken = try match(tokenTypes: .string, error: .argumentKey)
-        try match(tokenTypes: .colon, error: .argumentColon)
-        let valueToken = try match(tokenTypes: .string, error: .argumentValue)
+        let key = try match(tokenType: .string, error: .argumentKey)
+        try match(tokenType: .to, error: .argumentTo)
+        let value = try match(tokenType: .string, error: .argumentValue)
         return Argument(
-            key: keyToken,
-            value: valueToken
+            key: key,
+            value: value
         )
     }
     
     func parseSteps() throws -> [Step] {
         var steps: [Step] = []
-        let step = try parseStep()
-        steps.append(step)
+        let mandatoryStep = try parseStep()
+        steps.append(mandatoryStep)
+
         while !isAtScopeEnd() {
             let step = try parseStep()
             steps.append(step)
@@ -146,63 +191,113 @@ private extension Parser {
     }
     
     func parseStep() throws -> Step {
-        let action = try parseAction()
-        let element = try parseElement()
-        return Step(action: action, element: element)
+        if check(tokenType: .subscenario) {
+            return .subscenarioCall(try parseSubscenarioCall())
+        } else if check(tokenTypes: actionTypes) {
+            return .action(try parseAction())
+        } else {
+            throw parseError(expected: .step)
+        }
     }
-    
+
+    func parseSubscenarioCall() throws -> SubscenarioCall {
+        advance()
+        let name = try match(tokenType: .string, error: .subscenarioName)
+        return SubscenarioCall(
+            name: name
+        )
+    }
+
     func parseAction() throws -> Action {
-        let typeToken = try match(tokenTypes: .tap, .verify, .scrollUp, .scrollDown, error: .stepAction)
-        return Action(type: typeToken)
+        let type = advance()
+        let element = try parseElement()
+        let condition = check(tokenTypes: conditionTypes)
+            ? try parseCondition()
+            : nil
+        return Action(
+            type: type,
+            element: element,
+            condition: condition
+        )
     }
     
     func parseElement() throws -> Element {
-        let typeToken = try match(tokenTypes: .button, .text, .searchField, error: .stepElement)
-        try match(tokenTypes: .leftSquareBrace, error: .stepLeftSquareBrace)
-        try match(tokenTypes: .name, error: .stepElementNameKeyword)
-        try match(tokenTypes: .colon, error: .stepElementColon)
-        let nameToken = try match(tokenTypes: .string, error: .stepElementName)
-        try match(tokenTypes: .rightSquareBrace, error: .stepRightSquareBrace)
-        return Element(type: typeToken, name: nameToken)
+        let type = try match(tokenTypes: elementTypes, error: .elementType)
+        let name = try match(tokenType: .string, error: .elementName)
+        return Element(
+            type: type,
+            name: name
+        )
+    }
+
+    func parseCondition() throws -> Condition {
+        let type = advance()
+        let parameter = check(tokenType: .string)
+            ? advance()
+            : nil
+        return Condition(
+            type: type,
+            parameter: parameter
+        )
     }
 }
 
 private extension Parser {
     
     func isAtScopeEnd() -> Bool {
-        isAtEnd() || peek().type == .end
+        return isAtEnd() || peek().type == .end
     }
     
     func isAtEnd() -> Bool {
-        tokens[currentIndex].type == .eof
+        return tokens[currentIndex].type == .eof
     }
     
     @discardableResult
-    func match(tokenTypes: TokenType..., error: ParserError.Expected) throws -> Token {
+    func match(tokenTypes: [TokenType], error: ParserError.Expected) throws -> Token {
         let token = advance()
         if tokenTypes.contains(token.type) {
             return token
         } else {
-            throw ParserError(
-                expected: error,
-                line: tokens[currentIndex - 1].line,
-                index: tokens[currentIndex - 1].startIndex
-            )
+            throw parseError(expected: error)
         }
     }
-    
+
+    @discardableResult
+    func match(tokenType: TokenType, error: ParserError.Expected) throws -> Token {
+        let token = advance()
+        if tokenType == token.type {
+            return token
+        } else {
+            throw parseError(expected: error)
+        }
+    }
+
     @discardableResult
     func advance() -> Token {
         let token = tokens[currentIndex]
         currentIndex += 1
         return token
     }
-    
-    func check(tokenTypes: TokenType...) -> Bool {
-        tokenTypes.contains(peek().type)
+
+    func check(tokenType: TokenType) -> Bool {
+        return tokenType == peek().type
+    }
+
+    func check(tokenTypes: [TokenType]) -> Bool {
+        return tokenTypes.contains(peek().type)
     }
     
     func peek() -> Token {
-        tokens[currentIndex]
+        return tokens[currentIndex]
+    }
+
+    func parseError(expected: ParserError.Expected) -> ParserError {
+        let line = currentIndex != 0 ? tokens[currentIndex - 1].line : 0
+        let index = currentIndex != 0 ? tokens[currentIndex - 1].startIndex : "".startIndex
+        return ParserError(
+            expected: expected,
+            line: line,
+            index: index
+        )
     }
 }

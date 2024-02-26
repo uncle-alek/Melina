@@ -50,21 +50,21 @@ final class SwiftCodeGeneratorTests: BaseSwiftCodeGeneratorTest {
         )
     }
 
-    func test_method_definition() throws {
+    func test_method_definition_for_scenario() throws {
         try assertMethodDefinition(
             scenarioName: "Open Home Screen",
             expect: "func testOpenHomeScreen()"
         )
     }
 
-    func test_method_definition_with_lower_cased_suite_name() throws {
+    func test_method_definition_for_scenario_with_lower_cased_suite_name() throws {
         try assertMethodDefinition(
             scenarioName: "open home screen",
             expect: "func testOpenHomeScreen()"
         )
     }
 
-    func test_method_definition_with_multiple_spaces_in_suite_name() throws {
+    func test_method_definition_for_scenario_with_multiple_spaces_in_suite_name() throws {
         try assertMethodDefinition(
             scenarioName: "Open      Home    Screen",
             expect: "func testOpenHomeScreen()"
@@ -73,14 +73,16 @@ final class SwiftCodeGeneratorTests: BaseSwiftCodeGeneratorTest {
 
     func test_private_method_launch_app() throws {
         try assertPrivateMethodLaunchApp(
-            expect: 
+            expect:
 """
-private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
+fileprivate extension XCTestCase {
+func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
 continueAfterFailure = false
 let app = XCUIApplication()
 app.launchEnvironment = launchEnvironment
 app.launch()
 return app
+}
 }
 """
         )
@@ -99,8 +101,8 @@ let app = launchApp([:])
     func test_call_launch_app_with_arguments() throws {
         try assertCallLaunchApp(
             arguments: [
-                "\"clear_state\": \"true\"",
-                "\"use_mock_api\": \"false\""
+                "\"clear_state\" to \"true\"",
+                "\"use_mock_api\" to \"false\""
             ],
             expect:
 """
@@ -114,7 +116,7 @@ let app = launchApp([
 
     func test_call_xctest_api_with_tap_button() throws {
         try assertCallXCtestApi(
-            step: "tap button[name:\"Cancel\"]",
+            step: "tap button \"Cancel\"",
             expect: [
                 "let button_1 = app.buttons[\"Cancel\"].firstMatch",
                 "waitForExistenceIfNeeded(button_1)",
@@ -123,29 +125,105 @@ let app = launchApp([
         )
     }
 
+    func test_call_xctest_api_with_verify_view_is_exist() throws {
+        try assertCallXCtestApi(
+            step: "verify view \"View_1\" is exist",
+            expect: [
+                "let view_1 = app.otherElements[\"View_1\"].firstMatch",
+                "waitForExistenceIfNeeded(view_1)"
+            ]
+        )
+    }
+
+    func test_call_xctest_api_with_verify_view_is_not_exist() throws {
+        try assertCallXCtestApi(
+            step: "verify view \"View_1\" is not exist",
+            expect: [
+                "let view_1 = app.otherElements[\"View_1\"].firstMatch",
+                "XCTAssertFalse(view_1.isExist)"
+            ]
+        )
+    }
+
+    func test_call_xctest_api_with_verify_button_is_selected() throws {
+        try assertCallXCtestApi(
+            step: "verify button \"Ok\" is selected",
+            expect: [
+                "let button_1 = app.buttons[\"Ok\"].firstMatch",
+                "waitForExistenceIfNeeded(button_1)",
+                "XCTAssertTrue(button_1.isSelected)"
+            ]
+        )
+    }
+
+    func test_call_xctest_api_with_verify_button_is_not_selected() throws {
+        try assertCallXCtestApi(
+            step: "verify button \"Ok\" is not selected",
+            expect: [
+                "let button_1 = app.buttons[\"Ok\"].firstMatch",
+                "waitForExistenceIfNeeded(button_1)",
+                "XCTAssertFalse(button_1.isSelected)"
+            ]
+        )
+    }
+
+    func test_call_xctest_api_with_verify_label_contains_value() throws {
+        try assertCallXCtestApi(
+            step: "verify label \"Label_1\" contains value \"Hello\"",
+            expect: [
+                "let label_1 = app.staticTexts[\"Label_1\"].firstMatch",
+                "waitForExistenceIfNeeded(label_1)",
+                "XCTAssertEqual(label_1.value as? String, \"Hello\")"
+            ]
+        )
+    }
+
+    func test_call_xctest_api_with_edit_text_field_with_text() throws {
+        try assertCallXCtestApi(
+            step: "edit textfield \"Text_1\" with text \"Hello\"",
+            expect: [
+                "let textField_1 = app.textFields[\"Text_1\"].firstMatch",
+                "waitForExistenceIfNeeded(textField_1)",
+                "textField_1.tap()",
+                "textField_1.typeText(\"Hello\")"
+            ]
+        )
+    }
+
+    func test_call_xctest_api_with_subscenario_call() throws {
+        try assertCallXCtestApi(
+            step: "subscenario \"Open home screen\"",
+            expect: [
+                "self.openHomeScreen()",
+            ]
+        )
+    }
+
     func test_private_method_wait_for_existence_if_needed() throws {
         try assertPrivateMethodWaitForExistenceIfNeeded(
             expect:
 """
-private func waitForExistenceIfNeeded(_ element: XCUIElement) {
+fileprivate extension XCTestCase {
+func waitForExistenceIfNeeded(_ element: XCUIElement) {
 if !element.exists {
 XCTAssertTrue(element.waitForExistence(timeout: 5))
+}
 }
 }
 """
         )
     }
 
-    func test_full_test_method() throws {
+    func test_full_test_method_for_scenario() throws {
         try assertFullTestMethod(
             scenarioName: "Login user",
             arguments: [
-                "\"clear_state\": \"true\"",
-                "\"use_mock_api\": \"false\""
+                "\"clear_state\" to \"true\"",
+                "\"use_mock_api\" to \"false\""
             ],
             steps: [
-                "tap button[name: \"Log in\"]",
-                "tap button[name: \"Ok\"]"
+                "tap button \"Log in\"",
+                "tap button \"Ok\""
             ],
             expect:
 """
@@ -170,10 +248,10 @@ button_2.tap()
             suiteName: "Home page",
             scenarioName: "Login user",
             arguments: [
-                "\"clear_state\": \"true\"",
+                "\"clear_state\" to \"true\"",
             ],
             steps: [
-                "tap button[name: \"Log in\"]",
+                "tap button \"Log in\"",
             ],
             expect:
 """
@@ -188,58 +266,44 @@ final class HomePageUITests: XCTestCase {
         button_1.tap()
     }
 
-    private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
-        continueAfterFailure = false
-        let app = XCUIApplication()
-        app.launchEnvironment = launchEnvironment
-        app.launch()
-        return app
-    }
-    private func waitForExistenceIfNeeded(_ element: XCUIElement) {
-        if !element.exists {
-            XCTAssertTrue(element.waitForExistence(timeout: 5))
-        }
-    }
 }
 """
         )
     }
 
-    func test_full_file() throws {
+    func test_full_file_with_few_suites() throws {
         try assertFullFile(
             source:
 """
 suite "Home screen":
    scenario "Open Home Screen":
        arguments:
-           "clear_state" : "true"
+           "clear_state" to "true"
        end
-       tap button[name: "Ok"]
+       tap button "Ok"
    end
 
    scenario "Leave Home Screen":
        arguments:
-           "clear_state" : "true"
+           "clear_state" to "true"
        end
-       tap button[name: "Close"]
+       tap button "Close"
    end
 end
 
 suite "Login screen":
    scenario "Login successfully":
        arguments:
-           "clear_state" : "false"
+           "clear_state" to "false"
        end
-       tap button[name: "Log in"]
+       tap button "Log in"
    end
 end
 """,
             expect:
-                Code(
-                    files: [
-                        File(
-                            name: "HomeScreenUITests.swift",
-                            content:
+                File(
+                    name: "HomeScreenUITests.swift",
+                    content:
 """
 import XCTest
 
@@ -263,27 +327,7 @@ final class HomeScreenUITests: XCTestCase {
         button_1.tap()
     }
 
-    private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
-        continueAfterFailure = false
-        let app = XCUIApplication()
-        app.launchEnvironment = launchEnvironment
-        app.launch()
-        return app
-    }
-    private func waitForExistenceIfNeeded(_ element: XCUIElement) {
-        if !element.exists {
-            XCTAssertTrue(element.waitForExistence(timeout: 5))
-        }
-    }
 }
-
-"""
-                        ),
-                        File(
-                            name: "LoginScreenUITests.swift",
-                            content:
-"""
-import XCTest
 
 final class LoginScreenUITests: XCTestCase {
 
@@ -296,14 +340,19 @@ final class LoginScreenUITests: XCTestCase {
         button_1.tap()
     }
 
-    private func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
+}
+
+fileprivate extension XCTestCase {
+    func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchEnvironment = launchEnvironment
         app.launch()
         return app
     }
-    private func waitForExistenceIfNeeded(_ element: XCUIElement) {
+}
+fileprivate extension XCTestCase {
+    func waitForExistenceIfNeeded(_ element: XCUIElement) {
         if !element.exists {
             XCTAssertTrue(element.waitForExistence(timeout: 5))
         }
@@ -311,8 +360,100 @@ final class LoginScreenUITests: XCTestCase {
 }
 
 """
-                        )
-                    ]
+                )
+        )
+    }
+
+    func test_method_definition_for_subscenario() throws {
+        try assertMethodDefinition(
+            subscenarioName: "Open Home Screen",
+            expect: "func openHomeScreen()"
+        )
+    }
+
+    func test_method_definition_for_subscenario_with_single_word_name() throws {
+        try assertMethodDefinition(
+            subscenarioName: "Open",
+            expect: "func open()"
+        )
+    }
+
+    func test_full_test_method_for_subscenario() throws {
+        try assertFullTestMethod(
+            subscenarioName: "Open Home Screen",
+            steps: [
+                "tap button \"Log in\"",
+                "tap button \"Ok\""
+            ],
+            expect:
+"""
+fileprivate extension XCTestCase {
+func openHomeScreen() {
+let button_1 = app.buttons["Log in"].firstMatch
+waitForExistenceIfNeeded(button_1)
+button_1.tap()
+let button_2 = app.buttons["Ok"].firstMatch
+waitForExistenceIfNeeded(button_2)
+button_2.tap()
+}
+}
+"""
+        )
+    }
+
+    func test_full_file_few_subscenarios() throws {
+        try assertFullFile(
+            source:
+"""
+subscenario "Open Home screen":
+    tap button "Ok"
+end
+
+subscenario "Leave Home Screen":
+    tap button "Close"
+end
+""",
+            expect:
+                File(
+                    name: "OpenHomeScreenUITests.swift",
+                    content:
+"""
+import XCTest
+
+fileprivate extension XCTestCase {
+    func openHomeScreen() {
+        let button_1 = app.buttons["Ok"].firstMatch
+        waitForExistenceIfNeeded(button_1)
+        button_1.tap()
+    }
+}
+
+fileprivate extension XCTestCase {
+    func leaveHomeScreen() {
+        let button_1 = app.buttons["Close"].firstMatch
+        waitForExistenceIfNeeded(button_1)
+        button_1.tap()
+    }
+}
+
+fileprivate extension XCTestCase {
+    func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchEnvironment = launchEnvironment
+        app.launch()
+        return app
+    }
+}
+fileprivate extension XCTestCase {
+    func waitForExistenceIfNeeded(_ element: XCUIElement) {
+        if !element.exists {
+            XCTAssertTrue(element.waitForExistence(timeout: 5))
+        }
+    }
+}
+
+"""
                 )
         )
     }

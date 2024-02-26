@@ -21,14 +21,14 @@ final class Compiler {
         self.filePath = filePath
     }
     
-    func compileSwiftTeCode() throws -> Code {
+    func compileSwiftTeCode() throws -> File {
         let result = Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
             .flatMap { SemanticAnalyzer(program: $0).analyze() }
             .flatMap { CodeGenerator(program: $0, SwiftTeCodeBuilder()).generate() }
         switch result {
-        case .success(let code):
-            return code
+        case .success(let file):
+            return file
         case .failure(let errors):
             CompilerErrorReporter(filePath: filePath, source: source).report(errors: errors)
             throw CompilerError.failToCompile

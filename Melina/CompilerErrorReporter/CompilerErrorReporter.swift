@@ -29,52 +29,72 @@ private extension CompilerErrorReporter {
         switch error {
         case is LexerError: report(lexerError: error as! LexerError)
         case is ParserError: report(parserError: error as! ParserError)
-        case is SemanticAnalyzerError: report(semanticAnalyzerError: error as! SemanticAnalyzerError)
+        case is SemanticAnalyzerError: report(error as! SemanticAnalyzerError)
         default: fatalError("Unknown error")
         }
     }
     
     func report(lexerError: LexerError) {
-        print(
-            lemb().fullMessage(line: lexerError.line, error: lexerError)
-                .errorLine(index: lexerError.index)
-                .marker(index: lexerError.index)
-                .build()
-        )
+        let message = lemb()
+            .fullMessage(line: lexerError.line, error: lexerError)
+            .errorLine(index: lexerError.index)
+            .marker(index: lexerError.index)
+            .build()
+        print(message)
     }
     
     func report(parserError: ParserError) {
-        print(
-            pemb().fullMessage(line: parserError.line, error: parserError)
-                .errorLine(index: parserError.index)
-                .marker(index: parserError.index)
-                .build()
-        )
+        let message = pemb()
+            .fullMessage(line: parserError.line, error: parserError)
+            .errorLine(index: parserError.index)
+            .marker(index: parserError.index)
+            .build()
+        print(message)
     }
     
-    func report(semanticAnalyzerError: SemanticAnalyzerError) {
-        switch semanticAnalyzerError {
-        case .incompatibleAction(let action, _):
-            print(
-                saemb().fullMessage(line: action.line, error: semanticAnalyzerError)
-                    .errorLine(index: action.startIndex)
-                    .marker(index: action.startIndex)
-                    .build()
-            )
-        case .suiteNameCollision(let suite):
-            print(
-                saemb().fullMessage(line: suite.line, error: semanticAnalyzerError)
-                    .errorLine(index: suite.startIndex)
-                    .marker(index: suite.startIndex)
-                    .build()
-            )
-        case .scenarioNameCollision(let scenario):
-            print(
-                saemb().fullMessage(line: scenario.line, error: semanticAnalyzerError)
-                    .errorLine(index: scenario.startIndex)
-                    .marker(index: scenario.startIndex)
-                    .build()
-            )
+    func report(_ error: SemanticAnalyzerError) {
+        var line: Int!
+        var lineIndex: String.Index!
+        var markerIndex: String.Index!
+        switch error.type {
+        case .incompatibleElement:
+            line = error.action!.line
+            lineIndex = error.action!.startIndex
+            markerIndex = error.action!.startIndex
+        case .suiteNameCollision:
+            line = error.suite!.line
+            lineIndex = error.suite!.startIndex
+            markerIndex = error.suite!.startIndex
+        case .scenarioNameCollision:
+            line = error.scenario!.line
+            lineIndex = error.scenario!.startIndex
+            markerIndex = error.scenario!.startIndex
+        case .missingCondition:
+            line = error.action!.line
+            lineIndex = error.action!.startIndex
+            markerIndex = error.action!.startIndex
+        case .incompatibleCondition:
+            line = error.action!.line
+            lineIndex = error.action!.startIndex
+            markerIndex = error.action!.startIndex
+        case .subscenarioRecursion:
+            line = error.subscenarioCall!.line
+            lineIndex = error.subscenarioCall!.startIndex
+            markerIndex = error.subscenarioCall!.startIndex
+        case .subscenarioNameCollision:
+            line = error.subscenarioDefinition!.line
+            lineIndex = error.subscenarioDefinition!.startIndex
+            markerIndex = error.subscenarioDefinition!.startIndex
+        case .subscenarioDefinitionNotFound:
+            line = error.subscenarioCall!.line
+            lineIndex = error.subscenarioCall!.startIndex
+            markerIndex = error.subscenarioCall!.startIndex
         }
+        let message = saemb()
+            .fullMessage(line: line, error: error)
+            .errorLine(index: lineIndex)
+            .marker(index: markerIndex)
+            .build()
+        print(message)
     }
 }
