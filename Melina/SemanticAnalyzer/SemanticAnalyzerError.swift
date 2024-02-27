@@ -3,6 +3,7 @@ struct SemanticAnalyzerError: Error, Equatable {
         case incompatibleElement
         case incompatibleCondition
         case missingCondition
+        case redundantCondition
         case suiteNameCollision
         case scenarioNameCollision
         case subscenarioRecursion
@@ -49,6 +50,10 @@ struct SemanticAnalyzerError: Error, Equatable {
 
     static func missingCondition(action: Token) -> Self {
         return SemanticAnalyzerError(type: .missingCondition, action: action)
+    }
+
+    static func redundantCondition(action: Token, condition: Token) -> Self {
+        return SemanticAnalyzerError(type: .redundantCondition, action: action, condition: condition)
     }
 
     static func suiteNameCollision(suite: Token) -> Self {
