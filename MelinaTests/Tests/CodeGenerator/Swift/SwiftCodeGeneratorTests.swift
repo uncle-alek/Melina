@@ -57,7 +57,7 @@ final class SwiftCodeGeneratorTests: BaseSwiftCodeGeneratorTest {
     }
 
     func test_private_method_launch_app() throws {
-        try assertPrivateMethodLaunchApp(
+        try assertPrivateMethod(
             expect:
 """
 fileprivate extension XCTestCase {
@@ -125,7 +125,7 @@ let app = launchApp([
             step: "verify view \"View_1\" is not exist",
             expect: [
                 "let view_1 = app.otherElements[\"View_1\"].firstMatch",
-                "XCTAssertFalse(view_1.exists)"
+                "waitForDisappear(view_1)"
             ]
         )
     }
@@ -185,13 +185,32 @@ let app = launchApp([
     }
 
     func test_private_method_wait_for_existence_if_needed() throws {
-        try assertPrivateMethodWaitForExistenceIfNeeded(
+        try assertPrivateMethod(
             expect:
 """
 fileprivate extension XCTestCase {
 func waitForExistenceIfNeeded(_ element: XCUIElement) {
 if !element.exists {
 XCTAssertTrue(element.waitForExistence(timeout: 5))
+}
+}
+}
+"""
+        )
+    }
+
+    func test_private_method_wait_for_disappear() throws {
+        try assertPrivateMethod(
+            expect:
+"""
+fileprivate extension XCTestCase {
+func waitForDisappear(_ element: XCUIElement) {
+let doesNotExistPredicate = NSPredicate(format: "exists == false")
+expectation(for: doesNotExistPredicate, evaluatedWith: element, handler: nil)
+waitForExpectations(timeout: 5) { error in
+if error != nil {
+XCTFail("The element did not disappear")
+}
 }
 }
 }
@@ -345,6 +364,17 @@ fileprivate extension XCTestCase {
         }
     }
 }
+fileprivate extension XCTestCase {
+    func waitForDisappear(_ element: XCUIElement) {
+        let doesNotExistPredicate = NSPredicate(format: "exists == false")
+        expectation(for: doesNotExistPredicate, evaluatedWith: element, handler: nil)
+        waitForExpectations(timeout: 5) { error in
+            if error != nil {
+                XCTFail("The element did not disappear")
+            }
+        }
+    }
+}
 
 """
                 )
@@ -438,6 +468,17 @@ fileprivate extension XCTestCase {
     func waitForExistenceIfNeeded(_ element: XCUIElement) {
         if !element.exists {
             XCTAssertTrue(element.waitForExistence(timeout: 5))
+        }
+    }
+}
+fileprivate extension XCTestCase {
+    func waitForDisappear(_ element: XCUIElement) {
+        let doesNotExistPredicate = NSPredicate(format: "exists == false")
+        expectation(for: doesNotExistPredicate, evaluatedWith: element, handler: nil)
+        waitForExpectations(timeout: 5) { error in
+            if error != nil {
+                XCTFail("The element did not disappear")
+            }
         }
     }
 }

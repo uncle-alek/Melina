@@ -5,6 +5,7 @@ final class SwiftCodeBuilder: CodeBuilder {
     private var variableId: Int = 0
     private var scopeLevel: Int = 0
     private let indentation: Int
+    private let waitForTimeout = 5
 
     init(
         indentation: Int = 4
@@ -20,6 +21,7 @@ final class SwiftCodeBuilder: CodeBuilder {
     func buildForProgramEnd(_ program: Program) {
         generatedCode += genPrivateMethodLaunchApp().map(wrapLine).joined()
         generatedCode += genPrivateWaitForExistenceIfNeeded().map(wrapLine).joined()
+        generatedCode += genPrivateWaitDisappear().map(wrapLine).joined()
     }
 
     func buildForSubscenarioBeginning(_ subscenario: Subscenario) {
@@ -112,7 +114,23 @@ extension SwiftCodeBuilder {
             genFilePrivateExtension(),
             "\(tab(1))func waitForExistenceIfNeeded(_ element: XCUIElement) {",
             "\(tab(2))if !element.exists {",
-            "\(tab(3))XCTAssertTrue(element.waitForExistence(timeout: 5))",
+            "\(tab(3))XCTAssertTrue(element.waitForExistence(timeout: \(waitForTimeout)))",
+            "\(tab(2))}",
+            "\(tab(1))}",
+            "}"
+        ]
+    }
+
+    func genPrivateWaitDisappear() -> [String] {
+        return [
+            genFilePrivateExtension(),
+            "\(tab(1))func waitForDisappear(_ element: XCUIElement) {",
+            "\(tab(2))let doesNotExistPredicate = NSPredicate(format: \"exists == false\")",
+            "\(tab(2))expectation(for: doesNotExistPredicate, evaluatedWith: element, handler: nil)",
+            "\(tab(2))waitForExpectations(timeout: \(waitForTimeout)) { error in",
+            "\(tab(3))if error != nil {",
+            "\(tab(4))XCTFail(\"The element did not disappear\")",
+            "\(tab(3))}",
             "\(tab(2))}",
             "\(tab(1))}",
             "}"
@@ -185,7 +203,7 @@ extension SwiftCodeBuilder {
         let variable = genVariableName(action.element)
         return [
             genElementQuery(action, variable: variable),
-            genWaitForExistenceIfNeededCall(action, variable: variable),
+            genWaitFor(action, variable: variable),
             genEffectOnElement(action, variable: variable)
         ].flatMap { $0 }
     }
@@ -203,9 +221,11 @@ extension SwiftCodeBuilder {
         ]
     }
 
-    func genWaitForExistenceIfNeededCall(_ action: Action, variable: String) -> [String] {
+    func genWaitFor(_ action: Action, variable: String) -> [String] {
         if action.condition?.type.type == .isNotExist {
-            return []
+            return [
+                "waitForDisappear(\(variable))"
+            ]
         } else {
             return [
                 "waitForExistenceIfNeeded(\(variable))"
@@ -225,7 +245,7 @@ extension SwiftCodeBuilder {
     func genVerifyEffect(_ action: Action, variable: String) -> [String] {
         return switch action.condition!.type.type {
         case .isExist       : []
-        case .isNotExist    : ["XCTAssertFalse(\(variable).exists)"]
+        case .isNotExist    : []
         case .isSelected    : ["XCTAssertTrue(\(variable).isSelected)"]
         case .isNotSelected : ["XCTAssertFalse(\(variable).isSelected)"]
         case .containsValue : ["XCTAssertEqual(\(variable).value as? String, \"\(action.condition!.parameter!.lexeme)\")"]
