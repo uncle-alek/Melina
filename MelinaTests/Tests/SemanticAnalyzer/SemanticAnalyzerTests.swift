@@ -165,6 +165,23 @@ final class SemanticAnalyzerTests: BaseSemanticAnalyzerTests {
         )
     }
 
+    func test_redundant_condition() {
+        assert(
+            source:
+            """
+            suite "Melina":
+                scenario "First scenario":
+
+                    tap button "Ok" contains value "Hello"
+                end
+            end
+            """,
+            errors: [
+                .redundantCondition
+            ]
+        )
+    }
+
     func test_missing_condition() {
 
         assert(

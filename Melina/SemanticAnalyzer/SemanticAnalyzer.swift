@@ -125,6 +125,7 @@ private extension SemanticAnalyzer {
         analyzeCompatilityWithElement(action)
         analyzeCompatibilityWithCondition(action)
         analyzeMissingCondition(action)
+        analyzeRedundantCondition(action)
     }
 
     func analyzeSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
@@ -194,6 +195,20 @@ private extension SemanticAnalyzer {
             errors.append(
                 .missingCondition(
                     action: action.type
+                )
+            )
+        }
+    }
+
+    func analyzeRedundantCondition(_ action: Action) {
+        guard let conditions = compatibleConditions[action.type.type] else {
+            fatalError("All actions should be register in compatible conditions table")
+        }
+        if action.condition != nil && conditions.isEmpty {
+            errors.append(
+                .redundantCondition(
+                    action: action.type,
+                    condition: action.condition!.type
                 )
             )
         }

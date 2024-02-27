@@ -89,6 +89,10 @@ private extension CompilerErrorReporter {
             line = error.subscenarioCall!.line
             lineIndex = error.subscenarioCall!.startIndex
             markerIndex = error.subscenarioCall!.startIndex
+        case .redundantCondition:
+            line = error.action!.line
+            lineIndex = error.action!.startIndex
+            markerIndex = error.action!.startIndex
         }
         let message = saemb()
             .fullMessage(line: line, error: error)

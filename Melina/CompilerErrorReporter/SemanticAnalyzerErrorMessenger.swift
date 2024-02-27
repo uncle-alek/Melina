@@ -18,6 +18,8 @@ struct SemanticAnalyzerErrorMessenger: ErrorMessenger {
             return "A subscenario with the name `\(error.subscenarioDefinition!.lexeme)` is already defined."
         case .subscenarioDefinitionNotFound:
             return "The definition for the subscenario `\(error.subscenarioCall!.lexeme)` was not found."
+        case .redundantCondition:
+            return "The condition `\(error.condition!.lexeme)` is redundant and must be removed from the action `\(error.action!.lexeme)`."
         }
     }
 }
