@@ -10,7 +10,13 @@ struct ParserError: Error, Equatable {
         case definition,
              step
 
-        case subscenarioName
+        case subscenarioDefinitionName,
+             subscenarioCallName
+
+        case jsonDefinitionName,
+             jsonFile,
+             jsonFilePath,
+             jsonReferenceName
 
         case suiteName
 
@@ -89,23 +95,13 @@ private extension Parser {
     func parseDefinition() throws -> Definition {
         if check(tokenType: .suite) {
             return .suite(try parseSuiteDefinition())
-        } else if check(tokenType: .subscenario)  {
+        } else if check(tokenType: .subscenario) {
             return .subscenario(try parseSubscenarioDefinition())
+        } else if check(tokenType: .json) {
+            return .json(try parseJsonDefinition())
         } else {
             throw parseError(expected: .definition)
         }
-    }
-
-    func parseSubscenarioDefinition() throws -> Subscenario  {
-        advance()
-        let name = try match(tokenType: .string, error: .subscenarioName)
-        try match(tokenType: .colon, error: .colon)
-        let steps = try parseSteps()
-        try match(tokenType: .end, error: .end)
-        return Subscenario(
-            name: name,
-            steps: steps
-        )
     }
 
     func parseSuiteDefinition() throws -> Suite  {
@@ -119,7 +115,32 @@ private extension Parser {
             scenarios: scenarios
         )
     }
-    
+
+    func parseSubscenarioDefinition() throws -> Subscenario  {
+        advance()
+        let name = try match(tokenType: .string, error: .subscenarioDefinitionName)
+        try match(tokenType: .colon, error: .colon)
+        let steps = try parseSteps()
+        try match(tokenType: .end, error: .end)
+        return Subscenario(
+            name: name,
+            steps: steps
+        )
+    }
+
+    func parseJsonDefinition() throws -> JsonDefinition {
+        advance()
+        let name = try match(tokenType: .string, error: .jsonDefinitionName)
+        try match(tokenType: .colon, error: .colon)
+        try match(tokenType: .file, error: .jsonFile)
+        let filePath = try match(tokenType: .string, error: .jsonFilePath)
+        try match(tokenType: .end, error: .end)
+        return JsonDefinition(
+            name: name,
+            filePath: filePath
+        )
+    }
+
     func parseScenarios() throws -> [Scenario] {
         var scenarios: [Scenario] = []
         let mandatoryScenario = try parseScenario()
@@ -171,13 +192,31 @@ private extension Parser {
     func parseArgument() throws -> Argument {
         let key = try match(tokenType: .string, error: .argumentKey)
         try match(tokenType: .to, error: .argumentTo)
-        let value = try match(tokenType: .string, error: .argumentValue)
+        let value = try parseArgumentValue()
         return Argument(
             key: key,
             value: value
         )
     }
-    
+
+    func parseArgumentValue() throws -> ArgumentValue {
+        if check(tokenType: .string) {
+            return .value(advance())
+        } else if check(tokenType: .json) {
+            return .jsonReference(try parseJsonReference())
+        } else {
+            throw parseError(expected: .argumentValue)
+        }
+    }
+
+    func parseJsonReference() throws -> JsonReference {
+        advance()
+        let name = try match(tokenType: .string, error: .jsonReferenceName)
+        return JsonReference(
+            name: name
+        )
+    }
+
     func parseSteps() throws -> [Step] {
         var steps: [Step] = []
         let mandatoryStep = try parseStep()
@@ -202,7 +241,7 @@ private extension Parser {
 
     func parseSubscenarioCall() throws -> SubscenarioCall {
         advance()
-        let name = try match(tokenType: .string, error: .subscenarioName)
+        let name = try match(tokenType: .string, error: .subscenarioCallName)
         return SubscenarioCall(
             name: name
         )

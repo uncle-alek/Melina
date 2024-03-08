@@ -1,12 +1,15 @@
 program = definition (definition)*
-definition = suiteDefinition | subscenarioDefinition
+definition = suiteDefinition | subscenarioDefinition | jsonDefinition
+jsonDefinition = "json" STRING ":" "file" STRING "end"
 subscenarioDefinition = "subscenario" STRING ":" steps "end"
 suiteDefinition = "suite" STRING ":" scenarios "end"
 scenarios = scenario (scenario)*
 scenario = "scenario" STRING ":" arguments? steps "end"
 arguments = "arguments" ":" argumentsBody "end"
 argumentsBody = argument (argument)*
-argument = STRING "to" STRING
+argument = STRING "to" argumentValue
+argumentValue = STRING | jsonReference
+jsonReference = "json" STRING
 steps = step (steps)*
 step = action | subscenarioCall
 action = actionType element condition?

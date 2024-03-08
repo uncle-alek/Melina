@@ -5,6 +5,7 @@ suite "Melina":
     scenario "First scenario":
         arguments:
             "experiment" to "NewExperiment"
+            "endpoint" to json "Hello"
         end
 
         // Do some steps
@@ -28,3 +29,26 @@ subscenario "Login":
     tap button "Button 1"
     verify view "View_2" contains value "Hello"
 end
+
+json "Hello":
+    file "../File.json"
+end
+
+// const 'experimet UCS home widge' is 'MAPPTRIP-MARK-IOS'
+// const 'experimet key' is 'experiment'
+// const 'JSON' is json 'Hello ddd' with 'First parameter' and 'Second parameter'
+
+// json "Hello" with param "Server name", param "Server time" begin
+//     "errors": [],
+//     "resultStatus": {
+//         "category": 1,
+//         "serverStatus": 1000,
+//         "message": "",
+//         "serverMessage": "",
+//         "severity": 1,
+//         "isSuccess": true
+//     },
+//     "serverTime": param "Server time",
+//     "serverName": param "Server name",
+//     "processTime": null
+// end

@@ -45,6 +45,7 @@ final class CodeGenerator {
         switch definition {
             case .subscenario(let value): subscenario(value)
             case .suite(let value): suite(value)
+            case .json(_): break
         }
     }
 

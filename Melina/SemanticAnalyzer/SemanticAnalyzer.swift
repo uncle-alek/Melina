@@ -50,6 +50,7 @@ private extension SemanticAnalyzer {
         switch definition {
         case .subscenario(let value): registerSubscenario(value, parentScope: self.globalScope)
         case .suite(let value): registerSuite(value, parentScope: self.globalScope)
+        case .json(_): break
         }
     }
 
@@ -85,6 +86,7 @@ private extension SemanticAnalyzer {
         switch definition {
         case .subscenario(let value): analyzeSubscenario(value, scope: scope)
         case .suite(let value): analyzeSuite(value, scope: scope)
+        case .json(_): break
         }
     }
 

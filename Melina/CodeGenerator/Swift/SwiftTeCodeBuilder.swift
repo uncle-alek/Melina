@@ -37,7 +37,7 @@ final class SwiftTeCodeBuilder: CodeBuilder {
     }
     
     func buildForArgument(_ argument: Argument) {
-        commands.append(SwiftTeCode.Command(mnemonic: .launchEnvironment, operands: [argument.key.lexeme, argument.value.lexeme]))
+//        commands.append(SwiftTeCode.Command(mnemonic: .launchEnvironment, operands: [argument.key.lexeme, argument.value.lexeme]))
     }
     
     func buildForArgumentsEnd(_ arguments: [Argument]) {

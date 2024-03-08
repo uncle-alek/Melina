@@ -196,7 +196,15 @@ extension SwiftCodeBuilder {
     }
 
     func genArgument(_ argument: Argument) -> String {
-        return "\"\(argument.key.lexeme)\"" + ":" + "\"\(argument.value.lexeme)\""
+        let value = genArgumentValue(argument.value)
+        return "\"\(argument.key.lexeme)\"" + ":" + "\"\(value)\""
+    }
+
+    func genArgumentValue(_ argumentValue: ArgumentValue) -> String {
+        switch argumentValue {
+        case .value(let v): return v.lexeme
+        case .jsonReference(let v): fatalError()
+        }
     }
 
     func genCallXCTestApi(_ action: Action) -> [String] {

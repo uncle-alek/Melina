@@ -27,21 +27,28 @@ private extension ASTPrinter {
 
     func definitionToString(_ definition: Definition) {
         switch definition {
-        case .suite(let value): suiteToString(value)
-        case .subscenario(let value): subscenarioToString(value)
+        case .suite(let value): suiteDefinitionToString(value)
+        case .subscenario(let value): subscenarioDefinitionToString(value)
+        case .json(let value): jsonDefinitionToString(value)
         }
     }
 
-    func suiteToString(_ suite: Suite) {
+    func suiteDefinitionToString(_ suite: Suite) {
         formattedText += "<Suite_beggining>:\(suite.name.lexeme)" + "\n"
         suite.scenarios.forEach(scenarioToString)
         formattedText += "<Suite_end>" + "\n"
     }
 
-    func subscenarioToString(_ subscenario: Subscenario) {
+    func subscenarioDefinitionToString(_ subscenario: Subscenario) {
         formattedText += "<Subscenario_beggining>:\(subscenario.name.lexeme)" + "\n"
         stepsToString(subscenario.steps)
         formattedText += "<Subscenario_end>" + "\n"
+    }
+
+    func jsonDefinitionToString(_ json: JsonDefinition) {
+        formattedText += "<Json_beggining>:\(json.name.lexeme)" + "\n"
+        formattedText += "file:\(json.filePath.lexeme)" + "\n"
+        formattedText += "<Json_end>" + "\n"
     }
 
     func scenarioToString(_ scenario: Scenario) {
@@ -60,7 +67,18 @@ private extension ASTPrinter {
     }
 
     func argumentToString(_ argument: Argument) {
-        formattedText += "\(argument.key.lexeme):\(argument.value.lexeme)" + "," + "\n"
+        formattedText += "\(argument.key.lexeme):"
+        argumentValueToString(argument.value)
+    }
+
+    func argumentValueToString(_ argumentValue: ArgumentValue) {
+        switch argumentValue {
+        case .value(let v):
+            formattedText += v.lexeme
+        case .jsonReference(let v):
+            formattedText += "json_reference:" + v.name.lexeme
+        }
+        formattedText += "," + "\n"
     }
 
     func stepsToString(_ steps: [Step]) {

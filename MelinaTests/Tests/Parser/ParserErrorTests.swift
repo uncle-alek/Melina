@@ -47,7 +47,7 @@ final class ParserErrorTests: BaseParserTests {
         )
     }
 
-    func test_subscenario_name_error() {
+    func test_subscenario_call_name_error() {
         assert(
             source:
                 """
@@ -57,7 +57,72 @@ final class ParserErrorTests: BaseParserTests {
                     end
                 end
                 """,
-            throws: .subscenarioName
+            throws: .subscenarioCallName
+        )
+    }
+
+    func test_subscenario_definition_name_error() {
+        assert(
+            source:
+                """
+                subscenario:
+                    tap button "Ok"
+                end
+                """,
+            throws: .subscenarioDefinitionName
+        )
+    }
+
+    func test_json_definition_name_error() {
+        assert(
+            source:
+                """
+                json:
+                    file "./Mock.json"
+                end
+                """,
+            throws: .jsonDefinitionName
+        )
+    }
+
+    func test_json_file_error() {
+        assert(
+            source:
+                """
+                json "Mock":
+                    "./Mock.json"
+                end
+                """,
+            throws: .jsonFile
+        )
+    }
+
+    func test_json_path_error() {
+        assert(
+            source:
+                """
+                json "Mock":
+                    file
+                end
+                """,
+            throws: .jsonFilePath
+        )
+    }
+
+    func test_json_reference_name_error() {
+        assert(
+            source:
+                """
+                suite "HomeScreen":
+                    scenario "Open Home Screen":
+                        arguments:
+                            "endpoint" to json
+                        end
+                        verify view "homeScreenIdentifier"
+                    end
+                end
+                """,
+            throws: .jsonReferenceName
         )
     }
 
