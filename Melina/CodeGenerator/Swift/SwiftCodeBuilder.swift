@@ -69,7 +69,7 @@ final class SwiftCodeBuilder: CodeBuilder {
     }
 
     func buildForJsonDefinition(_ jsonDefinition: JsonDefinition) {
-        generatedCode += wrapLine2(generateJsonVariableAssignment(jsonDefinition))
+        generatedCode += generateJsonVariableAssignment(jsonDefinition).map(wrapLine).joined()
     }
 
     func buildForArgumentsBeginning(_ arguments: [Argument]) {
@@ -222,10 +222,12 @@ extension SwiftCodeBuilder {
         return "\"\(value.lexeme)\""
     }
 
-    func generateJsonVariableAssignment(_ jsonDefinition: JsonDefinition) -> String {
-        return "fileprivate let " + genJsonVariableName(jsonDefinition.name)
-                      + " = "
-                      + "\"\"\"\(jsonTable.get(jsonDefinition.name.lexeme)!)\"\"\""
+    func generateJsonVariableAssignment(_ jsonDefinition: JsonDefinition) -> [String] {
+        return [
+            "fileprivate let " + genJsonVariableName(jsonDefinition.name) + " = " + "\"\"\"",
+           jsonTable.get(jsonDefinition.name.lexeme)!,
+           "\"\"\""
+        ]
     }
 
     func genJsonVariableName(_ name: Token) -> String {

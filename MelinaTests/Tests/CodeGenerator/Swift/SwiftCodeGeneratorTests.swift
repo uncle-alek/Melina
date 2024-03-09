@@ -411,7 +411,11 @@ fileprivate extension XCTestCase {
         try assertJsonDefinition(
             jsonName: "Login Mock",
             jsonTableEntries: ["Login Mock": "{}"],
-            expect: "fileprivate let loginMockJson = \"\"\"{}\"\"\""
+            expect: [
+                "fileprivate let loginMockJson = \"\"\"",
+                "{}",
+                "\"\"\""
+            ]
         )
     }
 
@@ -526,8 +530,9 @@ end
 
 import XCTest
 
-fileprivate let openHomeScreenMockJson = \"\"\"{}\"\"\"
-
+fileprivate let openHomeScreenMockJson = \"\"\"
+{}
+\"\"\"
 fileprivate extension XCTestCase {
     func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
         continueAfterFailure = false

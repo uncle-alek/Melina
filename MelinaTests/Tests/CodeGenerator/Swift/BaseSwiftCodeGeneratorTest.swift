@@ -218,7 +218,7 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
     func assertJsonDefinition(
         jsonName: String,
         jsonTableEntries: [String:String],
-        expect defenition: String,
+        expect defenition: [String],
         file: StaticString = #file,
         line: UInt = #line
     ) throws {
@@ -226,12 +226,14 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
             jsonName: jsonName,
             jsonTableEntries: jsonTableEntries
         )
-        XCTAssertTrue(
-            result.content.contains(defenition),
-            "No expected json defenition found in the code: \n \"\(result.content)\"",
-            file: file,
-            line: line
-        )
+        defenition.forEach {
+            XCTAssertTrue(
+                result.content.contains($0),
+                "No expected json defenition found in the code: \n \"\(result.content)\"",
+                file: file,
+                line: line
+            )
+        }
     }
 }
 
