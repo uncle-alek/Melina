@@ -8,8 +8,10 @@ struct ParserErrorMessenger: ErrorMessenger {
             return "Missing definition. Include a subscenario or suite definition, typically starting with a keyword `subscenario` or `suite`."
         case .step:
             return "Action type not found. Start step with an action type like `verify`, `tap`, `edit`, etc., or call a subscenario."
-        case .subscenarioName:
-            return "Subscenario name missing. Specify the name for the subscenario."
+        case .subscenarioDefinitionName:
+            return "Subscenario name missing. Specify the name for the subscenario definition."
+        case .subscenarioCallName:
+            return "Subscenario name missing. Specify the name for the subscenario call."
         case .suiteName:
             return "Suite name missing. Specify the name for the suite definition."
         case .scenario:
@@ -27,9 +29,17 @@ struct ParserErrorMessenger: ErrorMessenger {
         case .elementName:
             return "Element name not provided. Specify the name of the element."
         case .colon:
-            return "Colon `:` missing. Begin the scope with a colon."
+            return "Missing `:` symbol. Begin the scope with a colon."
         case .end:
-            return "'end' keyword absent. Conclude the scope with 'end'."
+            return "Missing 'end' keyword. Conclude the scope with 'end'."
+        case .jsonDefinitionName:
+            return "Json name missing. Specify the name for the json definition."
+        case .jsonReferenceName:
+            return "Json name missing. Specify the name for the json reference."
+        case .jsonFile:
+            return "Missing 'file'. Specify 'file' before the file path."
+        case .jsonFilePath:
+            return "File path not provided. Specify the path of the file."
         }
     }
 }

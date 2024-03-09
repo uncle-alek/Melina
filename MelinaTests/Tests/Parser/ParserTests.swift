@@ -82,6 +82,37 @@ final class ParserTests: BaseParserTests {
         )
     }
 
+    func test_arguments_with_json_reference_parsing() {
+        assert(
+            source:
+                """
+                    suite "HomeScreen":
+                        scenario "Open Home Screen":
+                            arguments:
+                                "endpoint" to json "Mock"
+                            end
+                            tap button "Button_1"
+                        end
+                    end
+                """,
+            produce:
+                """
+                <Program_beggining>
+                <Suite_beggining>:HomeScreen
+                <Scenario_begging>:Open Home Screen
+                Arguments:[
+                endpoint:json_reference:Mock,
+                ]
+                Steps:[
+                tap-button:Button_1,
+                ]
+                <Scenario_end>
+                <Suite_end>
+                <Program_end>
+                """
+        )
+    }
+
     func test_actions_parsing() {
         assert(
             source:
@@ -234,6 +265,25 @@ final class ParserTests: BaseParserTests {
                 tap-button:Login,
                 ]
                 <Subscenario_end>
+                <Program_end>
+                """
+        )
+    }
+
+    func test_json_definition_parsing() {
+        assert(
+            source:
+                """
+                    json "Login":
+                        file "../Login.json"
+                    end
+                """,
+            produce:
+                """
+                <Program_beggining>
+                <Json_beggining>:Login
+                file:../Login.json
+                <Json_end>
                 <Program_end>
                 """
         )

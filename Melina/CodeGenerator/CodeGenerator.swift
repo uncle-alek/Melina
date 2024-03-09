@@ -8,10 +8,14 @@ protocol CodeBuilder {
     func buildForSuitEnd(_ suite: Suite)
     func buildForSubscenarioBeginning(_ subscenario: Subscenario)
     func buildForSubscenarioEnd(_ subscenario: Subscenario)
+    func buildForJsonDefinition(_ jsonDefinition: JsonDefinition)
     func buildForScenarioBeginning(_ scenario: Scenario)
     func buildForScenarioEnd(_ scenario: Scenario)
     func buildForArgumentsBeginning(_ arguments: [Argument])
-    func buildForArgument(_ argument: Argument)
+    func buildForArgumentBeginning(_ argument: Argument)
+    func buildForArgumentValue(_ value: Token)
+    func buildForJsonReference(_ jsonReference: JsonReference)
+    func buildForArgumentEnd(_ argument: Argument)
     func buildForArgumentsEnd(_ arguments: [Argument])
     func buildForAction(_ action: Action)
     func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall)
@@ -43,8 +47,9 @@ final class CodeGenerator {
 
     func definition(_ definition: Definition) {
         switch definition {
-            case .subscenario(let value): subscenario(value)
-            case .suite(let value): suite(value)
+            case .subscenario(let v): subscenario(v)
+            case .suite(let v)      : suite(v)
+            case .json(let v)       : jsonDefinition(v)
         }
     }
 
@@ -60,6 +65,10 @@ final class CodeGenerator {
         builder.buildForSuitEnd((suite))
     }
 
+    func jsonDefinition(_ jsonDefinition: JsonDefinition) {
+        builder.buildForJsonDefinition(jsonDefinition)
+    }
+
     func scenario(_ scenario: Scenario) {
         builder.buildForScenarioBeginning(scenario)
         builder.buildForArgumentsBeginning(scenario.arguments)
@@ -70,12 +79,18 @@ final class CodeGenerator {
     }
 
     func argument(_ argument: Argument) {
-        builder.buildForArgument(argument)
+        builder.buildForArgumentBeginning(argument)
+        switch argument.value {
+        case .value(let v)        : builder.buildForArgumentValue(v)
+        case .jsonReference(let v): builder.buildForJsonReference(v)
+        }
+        builder.buildForArgumentEnd(argument)
+
     }
 
     func step(_ step: Step) {
         switch step {
-            case .action(let value): action(value)
+            case .action(let value)         : action(value)
             case .subscenarioCall(let value): subscenarioCall(value)
         }
     }

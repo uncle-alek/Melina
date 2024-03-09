@@ -21,6 +21,9 @@ final class Lexer {
         "scenario"        : .scenario,
         "subscenario"     : .subscenario,
         "arguments"       : .arguments,
+        "json"            : .json,
+
+        "file"            : .file,
 
         "to"              : .to,
         "end"             : .end,

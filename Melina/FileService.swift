@@ -23,7 +23,7 @@ struct FileServiceError: Error, LocalizedError {
 final class FileService {
     
     private let fileManager: FileManager
-    
+
     init(
         fileManager: FileManager = .default
     ) {
@@ -66,5 +66,40 @@ final class FileService {
         let isFileCreated = fileManager.createFile(atPath: path, contents: Data(content.utf8))
         if !isFileCreated { throw FileServiceError(type: .failToCreateFile, filePath: path) }
         return path
+    }
+}
+
+final class DefaultSemanticAnalyzerFileService: SemanticAnalyzerFileService {
+
+    private let fileManager: FileManager
+    private let sourcePath: String
+
+    init(
+        fileManager: FileManager = .default,
+        sourcePath: String
+    ) {
+        self.fileManager = fileManager
+        self.sourcePath = sourcePath
+    }
+
+    func fileExists(at path: String) -> Bool {
+        fileManager.fileExists(atPath: absolutePath(path))
+    }
+
+    func isAbsolutePath(_ path: String) -> Bool {
+        path.hasPrefix("/")
+    }
+
+    func loadContent(from path: String) -> String? {
+        if let content = fileManager.contents(atPath: absolutePath(path)) {
+            return String(decoding: content, as: UTF8.self)
+        }
+        return nil
+    }
+
+    private func absolutePath(_ path: String) -> String {
+        let sourceURL = URL(fileURLWithPath: sourcePath)
+        let directoryPath = sourceURL.deletingLastPathComponent().path
+        return URL(fileURLWithPath: directoryPath).appendingPathComponent(path).standardized.path
     }
 }

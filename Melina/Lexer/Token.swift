@@ -19,7 +19,11 @@ enum TokenType: Equatable {
 
     case suite,
          scenario,
-         arguments
+         arguments,
+         subscenario,
+         json
+
+    case file
 
     case button,
          textField,
@@ -36,6 +40,4 @@ enum TokenType: Equatable {
          isNotExist,
          containsValue,
          withText
-
-    case subscenario
 }

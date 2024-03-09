@@ -8,6 +8,12 @@ struct Program: Equatable {
 enum Definition: Equatable {
     case suite(Suite)
     case subscenario(Subscenario)
+    case json(JsonDefinition)
+}
+
+struct JsonDefinition: Equatable {
+    let name: Token
+    let filePath: Token
 }
 
 struct Subscenario: Equatable {
@@ -28,7 +34,16 @@ struct Scenario: Equatable {
 
 struct Argument: Equatable {
     let key: Token
-    let value: Token
+    let value: ArgumentValue
+}
+
+enum ArgumentValue: Equatable {
+    case value(Token)
+    case jsonReference(JsonReference)
+}
+
+struct JsonReference: Equatable {
+    let name: Token
 }
 
 enum Step: Equatable {

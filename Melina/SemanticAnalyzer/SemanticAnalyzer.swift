@@ -1,5 +1,14 @@
+import Foundation
+
+protocol SemanticAnalyzerFileService {
+
+    func fileExists(at path: String) -> Bool
+    func isAbsolutePath(_ path: String) -> Bool
+    func loadContent(from path: String) -> String?
+}
+
 final class SemanticAnalyzer {
-    
+
     private let compatibleElements: [TokenType : [TokenType]] = [
         .tap    : [.button],
         .verify : [.button, .label, .textField, .view],
@@ -21,11 +30,17 @@ final class SemanticAnalyzer {
     private var errors: [SemanticAnalyzerError] = []
     private var scopeStack: [Scope] = []
     private var globalScope: Scope!
+    private var jsonTable: JsonTable
+    private var fileService: SemanticAnalyzerFileService
 
     init(
-        program: Program
+        program: Program,
+        _ jsonTable: JsonTable,
+        _ fileService: SemanticAnalyzerFileService
     ) {
         self.program = program
+        self.jsonTable = jsonTable
+        self.fileService = fileService
     }
 
     func analyze() -> Result<Program, [Error]> {
@@ -50,6 +65,7 @@ private extension SemanticAnalyzer {
         switch definition {
         case .subscenario(let value): registerSubscenario(value, parentScope: self.globalScope)
         case .suite(let value): registerSuite(value, parentScope: self.globalScope)
+        case .json(let value): registerJson(value, parentScope: self.globalScope)
         }
     }
 
@@ -63,6 +79,12 @@ private extension SemanticAnalyzer {
         parentScope.declareSymbol(Symbol(type: .suite, name: suite.name))
         let newScope = Scope(parentScope: parentScope, type: .suite, name: suite.name.lexeme)
         suite.scenarios.forEach { registerScenario($0, parentScope: newScope) }
+        parentScope.childScopes.append(newScope)
+    }
+
+    func registerJson(_ json: JsonDefinition, parentScope: Scope) {
+        let newScope = Scope(parentScope: parentScope, type: .dummy, name: json.name.lexeme)
+        parentScope.declareSymbol(Symbol(type: .json, name: json.name))
         parentScope.childScopes.append(newScope)
     }
 
@@ -85,6 +107,7 @@ private extension SemanticAnalyzer {
         switch definition {
         case .subscenario(let value): analyzeSubscenario(value, scope: scope)
         case .suite(let value): analyzeSuite(value, scope: scope)
+        case .json(let value): analyzeJson(value, scope: scope)
         }
     }
 
@@ -105,6 +128,11 @@ private extension SemanticAnalyzer {
         _ = scopeStack.popLast()
     }
 
+    func analyzeJson(_ json: JsonDefinition, scope: Scope) {
+        analyzeJsonForNameCollision(json)
+        fillOutJsonTable(json)
+    }
+
     func analyzeScenario(_ scenario: Scenario) {
         analyzeScenarioForNameCollision(scenario)
 
@@ -112,7 +140,12 @@ private extension SemanticAnalyzer {
         scenario.steps.forEach(analyzeStep)
     }
 
-    func analyzeArument(_ argument: Argument) {}
+    func analyzeArument(_ argument: Argument) {
+        switch argument.value {
+        case .value(_): break
+        case .jsonReference(let v): analyzeJsonReference(v)
+        }
+    }
 
     func analyzeStep(_ step: Step) {
         switch step {
@@ -130,6 +163,41 @@ private extension SemanticAnalyzer {
 
     func analyzeSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
         analyzeForSubscenarioDefinition(subscenarioCall)
+    }
+
+    func analyzeJsonReference(_ jsonReference: JsonReference) {
+        analyzeForJsonDefinition(jsonReference)
+    }
+}
+
+private extension SemanticAnalyzer {
+
+    func fillOutJsonTable(_ json: JsonDefinition) {
+        guard fileService.fileExists(at: json.filePath.lexeme) else {
+            errors.append(.jsonFileNotFound(filePath: json.filePath))
+            return
+        }
+        if fileService.isAbsolutePath(json.filePath.lexeme) {
+            errors.append(.jsonFileAbsolutePath(filePath: json.filePath))
+        }
+        if let fileContent = fileService.loadContent(from: json.filePath.lexeme),
+           isJsonFormat(fileContent) {
+            jsonTable.put(json.name.lexeme, json: fileContent)
+        } else {
+            errors.append(.jsonFileContentHasIncorrectFormat(filePath: json.filePath))
+        }
+    }
+
+    func isJsonFormat(_ string: String) -> Bool {
+        guard let data = string.data(using: .utf8) else {
+            return false
+        }
+        do {
+            let _ = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+            return true
+        } catch {
+            return false
+        }
     }
 }
 
@@ -150,6 +218,12 @@ private extension SemanticAnalyzer {
     func analyzeSuiteForNameCollision(_ suite: Suite) {
         if scopeStack.last!.isSymbolCollided(Symbol(type: .suite, name: suite.name)) {
             errors.append(.suiteNameCollision(suite: suite.name))
+        }
+    }
+
+    func analyzeJsonForNameCollision(_ json: JsonDefinition) {
+        if scopeStack.last!.isSymbolCollided(Symbol(type: .json, name: json.name)) {
+            errors.append(.jsonNameCollision(definition: json.name))
         }
     }
 
@@ -242,6 +316,20 @@ private extension SemanticAnalyzer {
         }
         if isDefinitionFound == false {
             errors.append(.subscenarioDefinitionNotFound(call: subscenarioCall.name))
+        }
+    }
+
+    func analyzeForJsonDefinition(_ jsonReference: JsonReference) {
+        var isDefinitionFound = false
+        var currentScope = scopeStack.last
+        while currentScope != nil {
+            if currentScope!.isSymbolDeclared(type: .json, name: jsonReference.name.lexeme) {
+                isDefinitionFound = true
+            }
+            currentScope = currentScope?.parentScope
+        }
+        if isDefinitionFound == false {
+            errors.append(.jsonDefinitionNotFound(reference: jsonReference.name))
         }
     }
 }

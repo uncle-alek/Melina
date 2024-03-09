@@ -20,6 +20,16 @@ struct SemanticAnalyzerErrorMessenger: ErrorMessenger {
             return "The definition for the subscenario `\(error.subscenarioCall!.lexeme)` was not found."
         case .redundantCondition:
             return "The condition `\(error.condition!.lexeme)` is redundant and must be removed from the action `\(error.action!.lexeme)`."
+        case .jsonNameCollision:
+            return "A json with the name `\(error.jsonDefinition!.lexeme)` is already defined."
+        case .jsonDefinitionNotFound:
+            return "The definition for the json `\(error.jsonReference!.lexeme)` was not found."
+        case .jsonFileNotFound:
+            return "The file at the path `\(error.jsonFilePath!.lexeme)` was not found."
+        case .jsonFileContentHasIncorrectFormat:
+            return "The content of the file at path '\(error.jsonFilePath!.lexeme)' has an incorrect format. JSON expected."
+        case .jsonFileAbsolutePath:
+            return "Absolute paths are not allowed for json file path. Please use a relative path like ./mocks/Mock.json."
         }
     }
 }

@@ -6,11 +6,14 @@ final class SwiftCodeBuilder: CodeBuilder {
     private var scopeLevel: Int = 0
     private let indentation: Int
     private let waitForTimeout = 5
+    private let jsonTable: JsonTable
 
     init(
-        indentation: Int = 4
+        indentation: Int = 4,
+        _ jsonTable: JsonTable
     ) {
         self.indentation = indentation
+        self.jsonTable = jsonTable
     }
 
     func buildForProgramBeginning(_ program: Program) {
@@ -65,14 +68,30 @@ final class SwiftCodeBuilder: CodeBuilder {
         generatedCode += wrapLine2("}")
     }
 
+    func buildForJsonDefinition(_ jsonDefinition: JsonDefinition) {
+        generatedCode += generateJsonVariableAssignment(jsonDefinition).map(wrapLine).joined()
+    }
+
     func buildForArgumentsBeginning(_ arguments: [Argument]) {
         let suffix = arguments.isEmpty ? ":])" : ""
         generatedCode += wrapLine(genLaunchApp() + "([" + suffix)
         scopeLevel += 1
     }
 
-    func buildForArgument(_ argument: Argument) {
-        generatedCode += wrapLine(genArgument(argument) + ",")
+    func buildForArgumentBeginning(_ argument: Argument) {
+        generatedCode += wrapLine0(genArgumentKey(argument))
+    }
+
+    func buildForArgumentValue(_ value: Token) {
+        generatedCode += genArgumentValue(value)
+    }
+
+    func buildForJsonReference(_ jsonReference: JsonReference) {
+        generatedCode += genJsonVariableName(jsonReference.name)
+    }
+
+    func buildForArgumentEnd(_ argument: Argument) {
+        generatedCode += "," + "\n"
     }
 
     func buildForArgumentsEnd(_ arguments: [Argument]) {
@@ -167,12 +186,12 @@ extension SwiftCodeBuilder {
     }
 
     func genMethodDefinitionForSubscenario(_ name: Token) -> String {
-        let methodName = genMethodName(name.lexeme)
+        let methodName = genCamelCaseName(name.lexeme)
         return "func \(methodName)(_ app: XCUIApplication)"
     }
 
     func genMethodCallForSubscenario(_ name: Token) -> String {
-        let methodName = genMethodName(name.lexeme)
+        let methodName = genCamelCaseName(name.lexeme)
         return "self.\(methodName)(app)"
     }
 
@@ -183,7 +202,7 @@ extension SwiftCodeBuilder {
             .joined()
     }
 
-    func genMethodName(_ lexeme: String) -> String {
+    func genCamelCaseName(_ lexeme: String) -> String {
         let components = lexeme.split(separator: " ").map(String.init)
         return components.first!.lowercased() + components
               .dropFirst()
@@ -195,8 +214,24 @@ extension SwiftCodeBuilder {
         return "let app = launchApp"
     }
 
-    func genArgument(_ argument: Argument) -> String {
-        return "\"\(argument.key.lexeme)\"" + ":" + "\"\(argument.value.lexeme)\""
+    func genArgumentKey(_ argument: Argument) -> String {
+        return "\"\(argument.key.lexeme)\"" + ":"
+    }
+
+    func genArgumentValue(_ value: Token) -> String {
+        return "\"\(value.lexeme)\""
+    }
+
+    func generateJsonVariableAssignment(_ jsonDefinition: JsonDefinition) -> [String] {
+        return [
+            "fileprivate let " + genJsonVariableName(jsonDefinition.name) + " = " + "\"\"\"",
+           jsonTable.get(jsonDefinition.name.lexeme)!,
+           "\"\"\""
+        ]
+    }
+
+    func genJsonVariableName(_ name: Token) -> String {
+        return genCamelCaseName(name.lexeme) + "Json"
     }
 
     func genCallXCTestApi(_ action: Action) -> [String] {
@@ -280,6 +315,10 @@ extension SwiftCodeBuilder {
 
     func tab(_ count: Int) -> String {
         return String(repeating: " ", count: indentation * count)
+    }
+
+    func wrapLine0(_ line: String) -> String {
+        return tab(scopeLevel) + line
     }
 
     func wrapLine(_ line: String) -> String {

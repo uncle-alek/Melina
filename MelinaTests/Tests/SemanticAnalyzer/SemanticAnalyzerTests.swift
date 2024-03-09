@@ -322,3 +322,142 @@ extension SemanticAnalyzerTests {
         )
     }
 }
+
+extension SemanticAnalyzerTests {
+
+    func test_json_name_collision() {
+
+        assert(
+            source:
+            """
+            json "Login":
+                file "./Mock_1.json"
+            end
+            json "Login":
+                file "./Mock_2.json"
+            end
+            """,
+            errors: [
+                .jsonNameCollision,
+                .jsonNameCollision
+            ]
+        )
+    }
+
+    func test_json_definition_not_found() {
+
+        assert(
+            source:
+            """
+            suite "Melina":
+                scenario "First scenario":
+                    arguments:
+                        "endpoint" to json "Mock"
+                    end
+                    tap button "Ok"
+                end
+            end
+            """,
+            errors: [
+                .jsonDefinitionNotFound
+            ]
+        )
+    }
+}
+
+extension SemanticAnalyzerTests {
+
+    func test_json_table_entry() {
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "[\"Hello\",\"World\"]",
+            contains: [
+                "Login endpoint mock": "[\"Hello\",\"World\"]"
+            ]
+        )
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "{\"Hello\":\"World\"}",
+            contains: [
+                "Login endpoint mock": "{\"Hello\":\"World\"}"
+            ]
+        )
+    }
+
+    func test_json_file_content_has_incorrect_format() {
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "",
+            fileExists: true,
+            errors: [
+                .jsonFileContentHasIncorrectFormat
+            ]
+        )
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "{hello:world}",
+            fileExists: true,
+            errors: [
+                .jsonFileContentHasIncorrectFormat
+            ]
+        )
+    }
+
+    func test_json_file_not_found() {
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "{\"Hello\":\"World\"}",
+            fileExists: false,
+            errors: [
+                .jsonFileNotFound
+            ]
+        )
+    }
+
+    func test_json_file_absolute_path() {
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "/Users/user1/Mock.json"
+            end
+            """,
+            fileContent: "{}",
+            isAbsolutePath: true,
+            errors: [
+                .jsonFileAbsolutePath
+            ]
+        )
+    }
+}

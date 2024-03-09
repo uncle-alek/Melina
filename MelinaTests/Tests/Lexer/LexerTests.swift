@@ -139,6 +139,26 @@ final class LexerTests: BaseLexerTests {
                 )
             ]
         )
+
+        assert(
+            source: "json",
+            produce: [
+                .init(
+                    type: .json,
+                    lexeme: "json"
+                )
+            ]
+        )
+
+        assert(
+            source: "file",
+            produce: [
+                .init(
+                    type: .file,
+                    lexeme: "file"
+                )
+            ]
+        )
     }
 
     func test_compound_tokens() {
