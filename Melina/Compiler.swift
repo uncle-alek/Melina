@@ -12,7 +12,8 @@ final class Compiler {
     
     private let source: String
     private let filePath: String
-    
+    private let jsonTable = JsonTable()
+
     init(
         source: String,
         filePath: String
@@ -22,7 +23,7 @@ final class Compiler {
     }
 
     func compileSwiftCode() throws -> File {
-        try compileCodeWithBuilder(SwiftCodeBuilder())
+        try compileCodeWithBuilder(SwiftCodeBuilder(jsonTable))
     }
 
     func compileSwiftTeCode() throws -> File {
@@ -33,7 +34,6 @@ final class Compiler {
 private extension Compiler {
 
     func compileCodeWithBuilder(_ codeBuilder: CodeBuilder) throws -> File {
-        let jsonTable = JsonTable()
         let result = Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
             .flatMap { SemanticAnalyzer(program: $0, jsonTable, FileService()).analyze() }

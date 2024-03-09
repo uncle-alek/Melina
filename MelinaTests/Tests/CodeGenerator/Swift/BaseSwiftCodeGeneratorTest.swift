@@ -156,13 +156,22 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
 
     func assertFullFile(
         source: String,
+        jsonTableEntries: [String:String] = [:],
         expect: File,
         file: StaticString = #file,
         line: UInt = #line
     ) throws {
+        let jsonTable = JsonTable()
+        jsonTableEntries.forEach { key, value in
+            jsonTable.put(key, json: value)
+        }
         let result = try Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
-            .flatMap { CodeGenerator(program: $0, SwiftCodeBuilder()).generate() }
+            .flatMap {
+                CodeGenerator(
+                    program: $0, SwiftCodeBuilder(jsonTable)
+                ).generate()
+            }
             .get()
         XCTAssertNoDifference(
             result,
@@ -205,6 +214,25 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
             line: line
         )
     }
+
+    func assertJsonDefinition(
+        jsonName: String,
+        jsonTableEntries: [String:String],
+        expect defenition: String,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws {
+        let result = try generateCode(
+            jsonName: jsonName,
+            jsonTableEntries: jsonTableEntries
+        )
+        XCTAssertTrue(
+            result.content.contains(defenition),
+            "No expected json defenition found in the code: \n \"\(result.content)\"",
+            file: file,
+            line: line
+        )
+    }
 }
 
 extension BaseSwiftCodeGeneratorTest {
@@ -227,7 +255,12 @@ extension BaseSwiftCodeGeneratorTest {
                 """
         return try Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
-            .flatMap { CodeGenerator(program: $0, SwiftCodeBuilder(indentation: indentation)).generate() }
+            .flatMap {
+                CodeGenerator(
+                    program: $0,
+                    SwiftCodeBuilder(indentation: indentation, JsonTable())
+                ).generate()
+            }
             .get()
     }
 
@@ -244,7 +277,38 @@ extension BaseSwiftCodeGeneratorTest {
                 """
         return try Lexer(source: source).tokenize()
             .flatMap { Parser(tokens: $0).parse() }
-            .flatMap { CodeGenerator(program: $0, SwiftCodeBuilder(indentation: indentation)).generate() }
+            .flatMap {
+                CodeGenerator(
+                    program: $0,
+                    SwiftCodeBuilder(indentation: indentation, JsonTable())
+                ).generate()
+            }
+            .get()
+    }
+
+    func generateCode(
+        jsonName: String,
+        jsonTableEntries: [String:String],
+        indentation: Int = 0
+    ) throws -> File {
+        let source =
+                """
+                json "\(jsonName)":
+                    file "./Mock.json"
+                end
+                """
+        let jsonTable = JsonTable()
+        jsonTableEntries.forEach { key, value in
+            jsonTable.put(key, json: value)
+        }
+        return try Lexer(source: source).tokenize()
+            .flatMap { Parser(tokens: $0).parse() }
+            .flatMap {
+                CodeGenerator(
+                    program: $0,
+                    SwiftCodeBuilder(indentation: indentation, jsonTable)
+                ).generate()
+            }
             .get()
     }
 

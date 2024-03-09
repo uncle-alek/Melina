@@ -22,6 +22,16 @@ final class SwiftTeCodeBuilder: CodeBuilder {
     func buildForSubscenarioEnd(_ subscenario: Subscenario) {
     }
 
+    func buildForJsonDefinition(_ jsonDefinition: JsonDefinition) {}
+
+    func buildForArgumentBeginning(_ argument: Argument) {}
+
+    func buildForArgumentValue(_ value: Token) {}
+
+    func buildForJsonReference(_ jsonReference: JsonReference) {}
+
+    func buildForArgumentEnd(_ argument: Argument) {}
+
     func buildForScenarioBeginning(_ scenario: Scenario) {
         commands.append(SwiftTeCode.Command(mnemonic: .scenarioBegin, operands: [scenario.name.lexeme]))
         commands.append(SwiftTeCode.Command(mnemonic: .application, operands: []))
