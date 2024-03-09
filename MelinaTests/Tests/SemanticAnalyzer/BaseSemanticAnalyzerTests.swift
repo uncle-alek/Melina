@@ -19,7 +19,7 @@ open class BaseSemanticAnalyzerTests: XCTestCase {
             let errorTypes = errors.map { $0.type }
             XCTAssertNoDifference(errorTypes, testErrors, file: file, line: line)
         } catch {
-            XCTFail("Unexpected error type", file: file, line: line)
+            XCTFail("Unexpected error \(error)", file: file, line: line)
         }
     }
 

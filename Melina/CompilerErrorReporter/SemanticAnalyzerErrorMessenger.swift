@@ -20,6 +20,10 @@ struct SemanticAnalyzerErrorMessenger: ErrorMessenger {
             return "The definition for the subscenario `\(error.subscenarioCall!.lexeme)` was not found."
         case .redundantCondition:
             return "The condition `\(error.condition!.lexeme)` is redundant and must be removed from the action `\(error.action!.lexeme)`."
+        case .jsonNameCollision:
+            return "A json with the name `\(error.jsonDefinition!.lexeme)` is already defined."
+        case .jsonDefinitionNotFound:
+            return "The definition for the json `\(error.jsonReference!.lexeme)` was not found."
         }
     }
 }

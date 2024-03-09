@@ -322,3 +322,45 @@ extension SemanticAnalyzerTests {
         )
     }
 }
+
+extension SemanticAnalyzerTests {
+
+    func test_json_name_collision() {
+
+        assert(
+            source:
+            """
+            json "Login":
+                file "./Mock_1.json"
+            end
+            json "Login":
+                file "./Mock_2.json"
+            end
+            """,
+            errors: [
+                .jsonNameCollision,
+                .jsonNameCollision
+            ]
+        )
+    }
+
+    func test_json_definition_not_found() {
+
+        assert(
+            source:
+            """
+            suite "Melina":
+                scenario "First scenario":
+                    arguments:
+                        "endpoint" to json "Mock"
+                    end
+                    tap button "Ok"
+                end
+            end
+            """,
+            errors: [
+                .jsonDefinitionNotFound
+            ]
+        )
+    }
+}

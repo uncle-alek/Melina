@@ -93,6 +93,14 @@ private extension CompilerErrorReporter {
             line = error.action!.line
             lineIndex = error.action!.startIndex
             markerIndex = error.action!.startIndex
+        case .jsonNameCollision:
+            line = error.jsonDefinition!.line
+            lineIndex = error.jsonDefinition!.startIndex
+            markerIndex = error.jsonDefinition!.startIndex
+        case .jsonDefinitionNotFound:
+            line = error.jsonReference!.line
+            lineIndex = error.jsonReference!.startIndex
+            markerIndex = error.jsonReference!.startIndex
         }
         let message = saemb()
             .fullMessage(line: line, error: error)

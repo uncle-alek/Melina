@@ -3,6 +3,7 @@ struct Symbol: Equatable {
         case suite
         case subscenario
         case scenario
+        case json
     }
     let type: SymbolType
     let name: Token
@@ -13,6 +14,7 @@ final class Scope {
         case global
         case suite
         case subscenario
+        case dummy
     }
 
     let type: ScopeType

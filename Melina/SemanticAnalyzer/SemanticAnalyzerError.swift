@@ -9,6 +9,8 @@ struct SemanticAnalyzerError: Error, Equatable {
         case subscenarioRecursion
         case subscenarioNameCollision
         case subscenarioDefinitionNotFound
+        case jsonNameCollision
+        case jsonDefinitionNotFound
     }
 
     let type: ErrorType
@@ -19,6 +21,8 @@ struct SemanticAnalyzerError: Error, Equatable {
     let condition: Token?
     let subscenarioDefinition: Token?
     let subscenarioCall: Token?
+    let jsonDefinition: Token?
+    let jsonReference: Token?
 
     init(
         type: ErrorType,
@@ -28,7 +32,9 @@ struct SemanticAnalyzerError: Error, Equatable {
         element: Token? = nil,
         condition: Token? = nil,
         subscenarioDefinition: Token? = nil,
-        subscenarioCall: Token? = nil
+        subscenarioCall: Token? = nil,
+        jsonDefinition: Token? = nil,
+        jsonReference: Token? = nil
     ) {
         self.type = type
         self.suite = suite
@@ -38,6 +44,8 @@ struct SemanticAnalyzerError: Error, Equatable {
         self.condition = condition
         self.subscenarioDefinition = subscenarioDefinition
         self.subscenarioCall = subscenarioCall
+        self.jsonDefinition = jsonDefinition
+        self.jsonReference = jsonReference
     }
 
     static func incompatibleElement(action: Token, element: Token) -> Self {
@@ -74,5 +82,13 @@ struct SemanticAnalyzerError: Error, Equatable {
 
     static func subscenarioDefinitionNotFound(call: Token) -> Self {
         return SemanticAnalyzerError(type: .subscenarioDefinitionNotFound, subscenarioCall: call)
+    }
+
+    static func jsonNameCollision(definition: Token) -> Self {
+        return SemanticAnalyzerError(type: .jsonNameCollision, jsonDefinition: definition)
+    }
+
+    static func jsonDefinitionNotFound(reference: Token) -> Self {
+        return SemanticAnalyzerError(type: .jsonDefinitionNotFound, jsonReference: reference)
     }
 }

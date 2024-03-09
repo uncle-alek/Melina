@@ -50,7 +50,7 @@ private extension SemanticAnalyzer {
         switch definition {
         case .subscenario(let value): registerSubscenario(value, parentScope: self.globalScope)
         case .suite(let value): registerSuite(value, parentScope: self.globalScope)
-        case .json(_): break
+        case .json(let value): registerJson(value, parentScope: self.globalScope)
         }
     }
 
@@ -64,6 +64,12 @@ private extension SemanticAnalyzer {
         parentScope.declareSymbol(Symbol(type: .suite, name: suite.name))
         let newScope = Scope(parentScope: parentScope, type: .suite, name: suite.name.lexeme)
         suite.scenarios.forEach { registerScenario($0, parentScope: newScope) }
+        parentScope.childScopes.append(newScope)
+    }
+
+    func registerJson(_ json: JsonDefinition, parentScope: Scope) {
+        let newScope = Scope(parentScope: parentScope, type: .dummy, name: json.name.lexeme)
+        parentScope.declareSymbol(Symbol(type: .json, name: json.name))
         parentScope.childScopes.append(newScope)
     }
 
@@ -86,7 +92,7 @@ private extension SemanticAnalyzer {
         switch definition {
         case .subscenario(let value): analyzeSubscenario(value, scope: scope)
         case .suite(let value): analyzeSuite(value, scope: scope)
-        case .json(_): break
+        case .json(let value): analyzeJson(value, scope: scope)
         }
     }
 
@@ -107,6 +113,10 @@ private extension SemanticAnalyzer {
         _ = scopeStack.popLast()
     }
 
+    func analyzeJson(_ json: JsonDefinition, scope: Scope) {
+        analyzeJsonForNameCollision(json)
+    }
+
     func analyzeScenario(_ scenario: Scenario) {
         analyzeScenarioForNameCollision(scenario)
 
@@ -114,7 +124,12 @@ private extension SemanticAnalyzer {
         scenario.steps.forEach(analyzeStep)
     }
 
-    func analyzeArument(_ argument: Argument) {}
+    func analyzeArument(_ argument: Argument) {
+        switch argument.value {
+        case .value(_): break
+        case .jsonReference(let v): analyzeJsonReference(v)
+        }
+    }
 
     func analyzeStep(_ step: Step) {
         switch step {
@@ -132,6 +147,10 @@ private extension SemanticAnalyzer {
 
     func analyzeSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
         analyzeForSubscenarioDefinition(subscenarioCall)
+    }
+
+    func analyzeJsonReference(_ jsonReference: JsonReference) {
+        analyzeForJsonDefinition(jsonReference)
     }
 }
 
@@ -152,6 +171,12 @@ private extension SemanticAnalyzer {
     func analyzeSuiteForNameCollision(_ suite: Suite) {
         if scopeStack.last!.isSymbolCollided(Symbol(type: .suite, name: suite.name)) {
             errors.append(.suiteNameCollision(suite: suite.name))
+        }
+    }
+
+    func analyzeJsonForNameCollision(_ json: JsonDefinition) {
+        if scopeStack.last!.isSymbolCollided(Symbol(type: .json, name: json.name)) {
+            errors.append(.jsonNameCollision(definition: json.name))
         }
     }
 
@@ -244,6 +269,20 @@ private extension SemanticAnalyzer {
         }
         if isDefinitionFound == false {
             errors.append(.subscenarioDefinitionNotFound(call: subscenarioCall.name))
+        }
+    }
+
+    func analyzeForJsonDefinition(_ jsonReference: JsonReference) {
+        var isDefinitionFound = false
+        var currentScope = scopeStack.last
+        while currentScope != nil {
+            if currentScope!.isSymbolDeclared(type: .json, name: jsonReference.name.lexeme) {
+                isDefinitionFound = true
+            }
+            currentScope = currentScope?.parentScope
+        }
+        if isDefinitionFound == false {
+            errors.append(.jsonDefinitionNotFound(reference: jsonReference.name))
         }
     }
 }
