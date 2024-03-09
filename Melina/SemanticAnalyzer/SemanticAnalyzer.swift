@@ -3,6 +3,7 @@ import Foundation
 protocol SemanticAnalyzerFileService {
 
     func fileExists(at path: String) -> Bool
+    func isAbsolutePath(_ path: String) -> Bool
     func loadContent(from path: String) -> String?
 }
 
@@ -175,6 +176,9 @@ private extension SemanticAnalyzer {
         guard fileService.fileExists(at: json.filePath.lexeme) else {
             errors.append(.jsonFileNotFound(filePath: json.filePath))
             return
+        }
+        if fileService.isAbsolutePath(json.filePath.lexeme) {
+            errors.append(.jsonFileAbsolutePath(filePath: json.filePath))
         }
         if let fileContent = fileService.loadContent(from: json.filePath.lexeme),
            isJsonFormat(fileContent) {

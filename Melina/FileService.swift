@@ -86,6 +86,10 @@ final class DefaultSemanticAnalyzerFileService: SemanticAnalyzerFileService {
         fileManager.fileExists(atPath: absolutePath(path))
     }
 
+    func isAbsolutePath(_ path: String) -> Bool {
+        path.hasPrefix("/")
+    }
+
     func loadContent(from path: String) -> String? {
         if let content = fileManager.contents(atPath: absolutePath(path)) {
             return String(decoding: content, as: UTF8.self)

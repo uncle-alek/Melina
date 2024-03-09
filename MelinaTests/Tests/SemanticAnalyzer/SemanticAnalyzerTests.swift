@@ -443,4 +443,21 @@ extension SemanticAnalyzerTests {
             ]
         )
     }
+
+    func test_json_file_absolute_path() {
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "/Users/user1/Mock.json"
+            end
+            """,
+            fileContent: "{}",
+            isAbsolutePath: true,
+            errors: [
+                .jsonFileAbsolutePath
+            ]
+        )
+    }
 }

@@ -13,6 +13,7 @@ struct SemanticAnalyzerError: Error, Equatable {
         case jsonDefinitionNotFound
         case jsonFileNotFound
         case jsonFileContentHasIncorrectFormat
+        case jsonFileAbsolutePath
     }
 
     let type: ErrorType
@@ -103,5 +104,9 @@ struct SemanticAnalyzerError: Error, Equatable {
 
     static func jsonFileContentHasIncorrectFormat(filePath: Token) -> Self {
         return SemanticAnalyzerError(type: .jsonFileContentHasIncorrectFormat, jsonFilePath: filePath)
+    }
+
+    static func jsonFileAbsolutePath(filePath: Token) -> Self {
+        return SemanticAnalyzerError(type: .jsonFileAbsolutePath, jsonFilePath: filePath)
     }
 }

@@ -28,6 +28,8 @@ struct SemanticAnalyzerErrorMessenger: ErrorMessenger {
             return "The file at the path `\(error.jsonFilePath!.lexeme)` was not found."
         case .jsonFileContentHasIncorrectFormat:
             return "The content of the file at path '\(error.jsonFilePath!.lexeme)' has an incorrect format. JSON expected."
+        case .jsonFileAbsolutePath:
+            return "Absolute paths are not allowed for json file path. Please use a relative path like ./mocks/Mock.json."
         }
     }
 }

@@ -109,6 +109,10 @@ private extension CompilerErrorReporter {
             line = error.jsonFilePath!.line
             lineIndex = error.jsonFilePath!.startIndex
             markerIndex = error.jsonFilePath!.startIndex
+        case .jsonFileAbsolutePath:
+            line = error.jsonFilePath!.line
+            lineIndex = error.jsonFilePath!.startIndex
+            markerIndex = error.jsonFilePath!.startIndex
         }
         let message = saemb()
             .fullMessage(line: line, error: error)

@@ -71,7 +71,8 @@ open class BaseSemanticAnalyzerTests: XCTestCase {
     func assertJsonTable(
         source: String,
         fileContent: String,
-        fileExists: Bool,
+        fileExists: Bool = true,
+        isAbsolutePath: Bool = false,
         errors testErrors: [SemanticAnalyzerError.ErrorType],
         file: StaticString = #file,
         line: UInt = #line
@@ -80,6 +81,7 @@ open class BaseSemanticAnalyzerTests: XCTestCase {
             let stub = SemanticAnalyzerFileServiceStub()
             stub.content = fileContent
             stub.exists = fileExists
+            stub.absolutePath = isAbsolutePath
             _  = try Lexer(source: source).tokenize()
                 .flatMap { Parser(tokens: $0).parse() }
                 .flatMap { SemanticAnalyzer(program: $0, JsonTable(), stub).analyze() }
