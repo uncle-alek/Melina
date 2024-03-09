@@ -364,3 +364,83 @@ extension SemanticAnalyzerTests {
         )
     }
 }
+
+extension SemanticAnalyzerTests {
+
+    func test_json_table_entry() {
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "[\"Hello\",\"World\"]",
+            contains: [
+                "Login endpoint mock": "[\"Hello\",\"World\"]"
+            ]
+        )
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "{\"Hello\":\"World\"}",
+            contains: [
+                "Login endpoint mock": "{\"Hello\":\"World\"}"
+            ]
+        )
+    }
+
+    func test_json_file_content_has_incorrect_format() {
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "",
+            fileExists: true,
+            errors: [
+                .jsonFileContentHasIncorrectFormat
+            ]
+        )
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "{hello:world}",
+            fileExists: true,
+            errors: [
+                .jsonFileContentHasIncorrectFormat
+            ]
+        )
+    }
+
+    func test_json_file_not_found() {
+
+        assertJsonTable(
+            source:
+            """
+            json "Login endpoint mock":
+                file "./Mock.json"
+            end
+            """,
+            fileContent: "{\"Hello\":\"World\"}",
+            fileExists: false,
+            errors: [
+                .jsonFileNotFound
+            ]
+        )
+    }
+}

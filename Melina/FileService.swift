@@ -68,3 +68,17 @@ final class FileService {
         return path
     }
 }
+
+extension FileService: SemanticAnalyzerFileService {
+
+    func fileExists(at path: String) -> Bool {
+        fileManager.fileExists(atPath: path)
+    }
+
+    func loadContent(from path: String) -> String? {
+        if let content = fileManager.contents(atPath: path) {
+            return String(decoding: content, as: UTF8.self)
+        }
+        return nil
+    }
+}

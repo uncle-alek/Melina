@@ -1,5 +1,13 @@
+import Foundation
+
+protocol SemanticAnalyzerFileService {
+
+    func fileExists(at path: String) -> Bool
+    func loadContent(from path: String) -> String?
+}
+
 final class SemanticAnalyzer {
-    
+
     private let compatibleElements: [TokenType : [TokenType]] = [
         .tap    : [.button],
         .verify : [.button, .label, .textField, .view],
@@ -21,11 +29,17 @@ final class SemanticAnalyzer {
     private var errors: [SemanticAnalyzerError] = []
     private var scopeStack: [Scope] = []
     private var globalScope: Scope!
+    private var jsonTable: JsonTable
+    private var fileService: SemanticAnalyzerFileService
 
     init(
-        program: Program
+        program: Program,
+        _ jsonTable: JsonTable,
+        _ fileService: SemanticAnalyzerFileService
     ) {
         self.program = program
+        self.jsonTable = jsonTable
+        self.fileService = fileService
     }
 
     func analyze() -> Result<Program, [Error]> {
@@ -115,6 +129,7 @@ private extension SemanticAnalyzer {
 
     func analyzeJson(_ json: JsonDefinition, scope: Scope) {
         analyzeJsonForNameCollision(json)
+        fillOutJsonTable(json)
     }
 
     func analyzeScenario(_ scenario: Scenario) {
@@ -151,6 +166,34 @@ private extension SemanticAnalyzer {
 
     func analyzeJsonReference(_ jsonReference: JsonReference) {
         analyzeForJsonDefinition(jsonReference)
+    }
+}
+
+private extension SemanticAnalyzer {
+
+    func fillOutJsonTable(_ json: JsonDefinition) {
+        guard fileService.fileExists(at: json.filePath.lexeme) else {
+            errors.append(.jsonFileNotFound(filePath: json.filePath))
+            return
+        }
+        if let fileContent = fileService.loadContent(from: json.filePath.lexeme),
+           isJsonFormat(fileContent) {
+            jsonTable.put(json.name.lexeme, json: fileContent)
+        } else {
+            errors.append(.jsonFileContentHasIncorrectFormat(filePath: json.filePath))
+        }
+    }
+
+    func isJsonFormat(_ string: String) -> Bool {
+        guard let data = string.data(using: .utf8) else {
+            return false
+        }
+        do {
+            let _ = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+            return true
+        } catch {
+            return false
+        }
     }
 }
 

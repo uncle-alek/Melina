@@ -24,6 +24,10 @@ struct SemanticAnalyzerErrorMessenger: ErrorMessenger {
             return "A json with the name `\(error.jsonDefinition!.lexeme)` is already defined."
         case .jsonDefinitionNotFound:
             return "The definition for the json `\(error.jsonReference!.lexeme)` was not found."
+        case .jsonFileNotFound:
+            return "The file at the path `\(error.jsonFilePath!.lexeme)` was not found."
+        case .jsonFileContentHasIncorrectFormat:
+            return "The content of the file at path '\(error.jsonFilePath!.lexeme)' has an incorrect format. JSON expected."
         }
     }
 }

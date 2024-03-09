@@ -11,6 +11,8 @@ struct SemanticAnalyzerError: Error, Equatable {
         case subscenarioDefinitionNotFound
         case jsonNameCollision
         case jsonDefinitionNotFound
+        case jsonFileNotFound
+        case jsonFileContentHasIncorrectFormat
     }
 
     let type: ErrorType
@@ -23,6 +25,7 @@ struct SemanticAnalyzerError: Error, Equatable {
     let subscenarioCall: Token?
     let jsonDefinition: Token?
     let jsonReference: Token?
+    let jsonFilePath: Token?
 
     init(
         type: ErrorType,
@@ -34,7 +37,8 @@ struct SemanticAnalyzerError: Error, Equatable {
         subscenarioDefinition: Token? = nil,
         subscenarioCall: Token? = nil,
         jsonDefinition: Token? = nil,
-        jsonReference: Token? = nil
+        jsonReference: Token? = nil,
+        jsonFilePath: Token? = nil
     ) {
         self.type = type
         self.suite = suite
@@ -46,6 +50,7 @@ struct SemanticAnalyzerError: Error, Equatable {
         self.subscenarioCall = subscenarioCall
         self.jsonDefinition = jsonDefinition
         self.jsonReference = jsonReference
+        self.jsonFilePath = jsonFilePath
     }
 
     static func incompatibleElement(action: Token, element: Token) -> Self {
@@ -90,5 +95,13 @@ struct SemanticAnalyzerError: Error, Equatable {
 
     static func jsonDefinitionNotFound(reference: Token) -> Self {
         return SemanticAnalyzerError(type: .jsonDefinitionNotFound, jsonReference: reference)
+    }
+
+    static func jsonFileNotFound(filePath: Token) -> Self {
+        return SemanticAnalyzerError(type: .jsonFileNotFound, jsonFilePath: filePath)
+    }
+
+    static func jsonFileContentHasIncorrectFormat(filePath: Token) -> Self {
+        return SemanticAnalyzerError(type: .jsonFileContentHasIncorrectFormat, jsonFilePath: filePath)
     }
 }

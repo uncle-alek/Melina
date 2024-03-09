@@ -45,6 +45,9 @@
 		3C3DEC4A29E5713B0040FF7D /* SemanticAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4929E5713B0040FF7D /* SemanticAnalyzer.swift */; };
 		3C3DEC4B29E5713E0040FF7D /* SemanticAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4929E5713B0040FF7D /* SemanticAnalyzer.swift */; };
 		3C3DEC4D29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEC4C29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift */; };
+		3C60E1DF2B9C2DAD0050C310 /* SemanticAnalyzerFileServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C60E1DE2B9C2DAD0050C310 /* SemanticAnalyzerFileServiceStub.swift */; };
+		3C60E1E12B9C380E0050C310 /* JsonTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C60E1E02B9C380E0050C310 /* JsonTable.swift */; };
+		3C60E1E22B9C38140050C310 /* JsonTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C60E1E02B9C380E0050C310 /* JsonTable.swift */; };
 		3C82ABD02B899BB800369964 /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C82ABCF2B899BB800369964 /* CodeGenerator.swift */; };
 		3C82ABD12B899ED400369964 /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C82ABCF2B899BB800369964 /* CodeGenerator.swift */; };
 		3C82ABD22B89A96C00369964 /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2157702AEAA0B800003233 /* JSONSerializer.swift */; };
@@ -117,6 +120,8 @@
 		3C3DEC4229E55CFF0040FF7D /* TestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestToken.swift; sourceTree = "<group>"; };
 		3C3DEC4929E5713B0040FF7D /* SemanticAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticAnalyzer.swift; sourceTree = "<group>"; };
 		3C3DEC4C29E574D90040FF7D /* SemanticAnalyzerErrorMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticAnalyzerErrorMessenger.swift; sourceTree = "<group>"; };
+		3C60E1DE2B9C2DAD0050C310 /* SemanticAnalyzerFileServiceStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticAnalyzerFileServiceStub.swift; sourceTree = "<group>"; };
+		3C60E1E02B9C380E0050C310 /* JsonTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonTable.swift; sourceTree = "<group>"; };
 		3C82ABCF2B899BB800369964 /* CodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
 		3C82ABD52B8C363F00369964 /* Scope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scope.swift; sourceTree = "<group>"; };
 		3C82ABD72B8C373E00369964 /* SemanticAnalyzerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticAnalyzerError.swift; sourceTree = "<group>"; };
@@ -274,6 +279,7 @@
 				3C3DEB8729DD71340040FF7D /* ASTPrinter.swift */,
 				3C3DEC3C29E55C230040FF7D /* String+.swift */,
 				3C3DEC4229E55CFF0040FF7D /* TestToken.swift */,
+				3C60E1DE2B9C2DAD0050C310 /* SemanticAnalyzerFileServiceStub.swift */,
 			);
 			path = Assistants;
 			sourceTree = "<group>";
@@ -281,9 +287,10 @@
 		3C3DEC4829E5713B0040FF7D /* SemanticAnalyzer */ = {
 			isa = PBXGroup;
 			children = (
-				3C82ABD42B8C362C00369964 /* Scope */,
+				3C82ABD52B8C363F00369964 /* Scope.swift */,
 				3C3DEC4929E5713B0040FF7D /* SemanticAnalyzer.swift */,
 				3C82ABD72B8C373E00369964 /* SemanticAnalyzerError.swift */,
+				3C60E1E02B9C380E0050C310 /* JsonTable.swift */,
 			);
 			path = SemanticAnalyzer;
 			sourceTree = "<group>";
@@ -295,14 +302,6 @@
 				3CE96AC52AEA89F8003B3340 /* SwiftTeCode.swift */,
 			);
 			path = TeCode;
-			sourceTree = "<group>";
-		};
-		3C82ABD42B8C362C00369964 /* Scope */ = {
-			isa = PBXGroup;
-			children = (
-				3C82ABD52B8C363F00369964 /* Scope.swift */,
-			);
-			path = Scope;
 			sourceTree = "<group>";
 		};
 		3CB12FBC28FFE70B007902DB /* Frameworks */ = {
@@ -511,6 +510,7 @@
 				3C1A61FF29EAF7FA0014B908 /* Compiler.swift in Sources */,
 				3C3DEC2729E07F470040FF7D /* LexerErrorMessenger.swift in Sources */,
 				3C3DEC2329E076F60040FF7D /* CompilerErrorMessageBuilder.swift in Sources */,
+				3C60E1E12B9C380E0050C310 /* JsonTable.swift in Sources */,
 				3C1A620229EBA7DC0014B908 /* CompilerErrorReporter.swift in Sources */,
 				3C3DEC2129E075270040FF7D /* ParserErrorMessenger.swift in Sources */,
 			);
@@ -538,6 +538,7 @@
 				3CE96AC72AEA8B42003B3340 /* SwiftTeCode.swift in Sources */,
 				3C3DEC2A29E12F900040FF7D /* BaseCompilerErrorReporterTests.swift in Sources */,
 				3CB136BC29029F64007902DB /* Parser.swift in Sources */,
+				3C60E1E22B9C38140050C310 /* JsonTable.swift in Sources */,
 				3C38334B2B777D6700F60B6E /* SwiftCodeBuilder.swift in Sources */,
 				3C3DEC4B29E5713E0040FF7D /* SemanticAnalyzer.swift in Sources */,
 				3C82ABD22B89A96C00369964 /* JSONSerializer.swift in Sources */,
@@ -556,6 +557,7 @@
 				3C3DEC2E29E12F9D0040FF7D /* LexerErrorMessenger.swift in Sources */,
 				3C3833482B777C5800F60B6E /* SwiftCodeGeneratorTests.swift in Sources */,
 				3C82ABD12B899ED400369964 /* CodeGenerator.swift in Sources */,
+				3C60E1DF2B9C2DAD0050C310 /* SemanticAnalyzerFileServiceStub.swift in Sources */,
 				3C3DEC3D29E55C230040FF7D /* String+.swift in Sources */,
 				3CE96ACC2AEA8DEA003B3340 /* SwiftTeCodeGeneratorTests.swift in Sources */,
 				3C38334A2B777CA400F60B6E /* BaseSwiftCodeGeneratorTest.swift in Sources */,
