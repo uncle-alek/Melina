@@ -3,14 +3,17 @@ import Foundation
 final class JSONSerializer {
 
     static func serialize(_ code: SwiftTeCode) -> String {
-        var result = "[" + "\n"
+        var results = "[\n"
         for command in code.commands {
-            let data = try! JSONEncoder().encode(command)
-            let stringData = String(data: data, encoding: .utf8)!
-            result += stringData + "," + "\n"
+            var commandString = "{"
+            commandString += "\"mnemonic\":\"\(command.mnemonic.rawValue)\","
+            let operandsString = command.operands.map { "\"\($0)\"" }.joined(separator: ",")
+            commandString += "\"operands\":[\(operandsString)]"
+            commandString += "},\n"
+            results += commandString
         }
-        result += "]"
-        return result
+        results += "\n]"
+        return results
     }
 
     static func deserialize(_ string: String) -> [SwiftTeCode.Command] {
@@ -25,17 +28,11 @@ final class JSONSerializer {
     }
 }
 
-extension SwiftTeCode.Command: Codable {
+extension SwiftTeCode.Command: Decodable {
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case operands
         case mnemonic
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(mnemonic, forKey: .mnemonic)
-        try container.encode(operands, forKey: .operands)
     }
 
     init(from decoder: Decoder) throws {
