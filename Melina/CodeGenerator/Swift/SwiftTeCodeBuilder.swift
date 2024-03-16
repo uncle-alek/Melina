@@ -1,112 +1,188 @@
 import Foundation
 
+struct CommandsStack {
+    private var stack: [[SwiftTeCode.Command]] = []
+
+    mutating func push(_ commands: [SwiftTeCode.Command]) {
+        stack.append(commands)
+    }
+
+    mutating func pop() -> [SwiftTeCode.Command] {
+        return stack.popLast()!
+    }
+
+    mutating func append(_ command: SwiftTeCode.Command) {
+        var last = stack.popLast()!
+        last.append(command)
+        stack.append(last)
+    }
+}
+
 final class SwiftTeCodeBuilder: CodeBuilder {
 
-    private var commands: [SwiftTeCode.Command] = []
+    private var commandsStack = CommandsStack()
+    private var subscenarioTable: [String: [SwiftTeCode.Command]] = [:]
+    private var currentArgumentKey: String!
+    private let jsonTable: JsonTable
+    private let waitForTimeout = 5
 
-    func buildForProgramBeginning(_ program: Program) {}
+    init(
+        _ jsonTable: JsonTable
+    ) {
+        self.jsonTable = jsonTable
+    }
+
+    func buildForProgramBeginning(_ program: Program) {
+        commandsStack.push([])
+    }
 
     func buildForProgramEnd(_ program: Program) {}
 
-    func buildForSuitBeginning(_ suite: Suite) {
-        commands.append(SwiftTeCode.Command(mnemonic: .suiteBegin, operands: [suite.name.lexeme]))
-    }
+    func buildForSuitBeginning(_ suite: Suite) {}
     
-    func buildForSuitEnd(_ suite: Suite) {
-        commands.append(SwiftTeCode.Command(mnemonic: .suiteEnd, operands: [suite.name.lexeme]))
-    }
+    func buildForSuitEnd(_ suite: Suite) {}
 
     func buildForSubscenarioBeginning(_ subscenario: Subscenario) {
+        commandsStack.push([])
     }
 
     func buildForSubscenarioEnd(_ subscenario: Subscenario) {
+        let commands = commandsStack.pop()
+        subscenarioTable[subscenario.name.lexeme] = commands
     }
 
     func buildForJsonDefinition(_ jsonDefinition: JsonDefinition) {}
 
-    func buildForArgumentBeginning(_ argument: Argument) {}
-
-    func buildForArgumentValue(_ value: Token) {}
-
-    func buildForJsonReference(_ jsonReference: JsonReference) {}
-
-    func buildForArgumentEnd(_ argument: Argument) {}
-
     func buildForScenarioBeginning(_ scenario: Scenario) {
-        commands.append(SwiftTeCode.Command(mnemonic: .scenarioBegin, operands: [scenario.name.lexeme]))
-        commands.append(SwiftTeCode.Command(mnemonic: .application, operands: []))
+        commandsStack.append(.command(.application))
     }
     
     func buildForScenarioEnd(_ scenario: Scenario) {
-        commands.append(SwiftTeCode.Command(mnemonic: .terminate, operands: []))
-        commands.append(SwiftTeCode.Command(mnemonic: .scenarioEnd, operands: [scenario.name.lexeme]))
+        commandsStack.append(.command(.terminate))
     }
     
     func buildForArgumentsBeginning(_ arguments: [Argument]) {
-        commands.append(SwiftTeCode.Command(mnemonic: .launchArgument, operands: ["RUNNING_UI_TESTS"]))
+        commandsStack.append(.command(.launchEnvironment, with: ["RUNNING_UI_TESTS", "true"]))
     }
-    
-    func buildForArgument(_ argument: Argument) {
-//        commands.append(SwiftTeCode.Command(mnemonic: .launchEnvironment, operands: [argument.key.lexeme, argument.value.lexeme]))
+
+    func buildForArgumentBeginning(_ argument: Argument) {
+        currentArgumentKey = argument.key.lexeme
     }
-    
+
+    func buildForArgumentValue(_ value: Token) {
+        commandsStack.append(.command(.launchEnvironment, with: [currentArgumentKey, value.lexeme]))
+    }
+
+    func buildForJsonReference(_ jsonReference: JsonReference) {
+        commandsStack.append(.command(.launchEnvironment, with: [currentArgumentKey, jsonTable.get(jsonReference.name.lexeme)!]))
+    }
+
+    func buildForArgumentEnd(_ argument: Argument) {
+        currentArgumentKey = nil
+    }
+
     func buildForArgumentsEnd(_ arguments: [Argument]) {
-        commands.append(SwiftTeCode.Command(mnemonic: .launch, operands: []))
+        commandsStack.append(.command(.launch, with: []))
     }
 
     func buildForAction(_ action: Action) {
-        buildElement(action.element)
-        buildAction(action.type)
-        if let condition = action.condition {
-            buildCondition(condition)
-        }
+        buildElement(action)
+        buildWaitFor(action)
+        buildAction(action)
     }
 
-    func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {}
+    func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall) {
+        commandsStack.append(.command(.subscenarioCall, with: [subscenarioCall.name.lexeme]))
+    }
 
     func fileExtension() -> String {
         "json"
     }
     
     func code() -> String {
+        let commandsWithPlaceholders = commandsStack.pop()
+        let commands = replacePlaceholders(commandsWithPlaceholders)
         return JSONSerializer.serialize(SwiftTeCode(commands: commands))
     }
 }
 
 private extension SwiftTeCodeBuilder {
 
-    func buildElement(_ element: Element) {
-        commands.append(SwiftTeCode.Command(mnemonic: mapElement(element.type), operands: [element.name.lexeme]))
-        commands.append(SwiftTeCode.Command(mnemonic: .exists, operands: []))
-        commands.append(SwiftTeCode.Command(mnemonic: .jumpIfTrue, operands: ["2"]))
-        commands.append(SwiftTeCode.Command(mnemonic: .waitForExistence, operands: ["5"]))
-        commands.append(SwiftTeCode.Command(mnemonic: .assertBool, operands: ["true"]))
+    func replacePlaceholders(_ commands: [SwiftTeCode.Command]) -> [SwiftTeCode.Command] {
+        var finalCommands: [SwiftTeCode.Command] = []
+        for command in commands {
+            if command.mnemonic == .subscenarioCall {
+                let subscenarioName = command.operands[0]
+                let subscenarioCommands = subscenarioTable[subscenarioName]!
+                finalCommands.append(contentsOf: subscenarioCommands)
+            } else {
+                finalCommands.append(command)
+            }
+        }
+        return finalCommands
+    }
+}
+
+private extension SwiftTeCodeBuilder {
+
+    func buildElement(_ action: Action) {
+        let mnemonic: SwiftTeCode.Mnemonic = switch action.element.type.type {
+        case .label     : .staticText
+        case .textField : .textField
+        case .button    : .button
+        case .view      : .otherElement
+        default: fatalError("Unsupported query type: \(self)")
+        }
+        commandsStack.append(.command(mnemonic, with: [action.element.name.lexeme]))
     }
 
-    func buildAction(_ actionType: Token) {
-        commands.append(SwiftTeCode.Command(mnemonic: mapAction(actionType), operands: []))
+    func buildWaitFor(_ action: Action) {
+        let mnemonic: SwiftTeCode.Mnemonic = switch action.condition?.type.type {
+        case .isNotExist : .waitForDisappear
+        default: .waitForExistence
+        }
+        commandsStack.append(.command(mnemonic, with: ["\(waitForTimeout)"]))
     }
 
-    func buildCondition(_ condition: Condition) {}
-
-    func genFileName(_ lexeme: String) -> String {
-        return lexeme
-            .split(separator: " ")
-            .map { $0.capitalized }
-            .joined() + "TeCode" + ".json"
-    }
-
-    func mapAction( _ token: Token) -> SwiftTeCode.Mnemonic {
-        switch token.type {
-        case .tap: return .tap
-        default: fatalError("Not supported action type: \(token)")
+    func buildAction(_ action: Action) {
+        switch action.type.type {
+        case .edit   : buildEdit(action)
+        case .tap    : buildTap()
+        case .verify : buildVerify(action)
+        default: fatalError("Not supported action type: \(action.type.lexeme)")
         }
     }
 
-    func mapElement( _ token: Token) -> SwiftTeCode.Mnemonic {
-        switch token.type {
-        case .button: return .button
-        default: fatalError("Not supported element type: \(token)")
+    func buildEdit(_ action: Action) {
+        switch action.condition?.type.type {
+        case .withText:
+            commandsStack.append(.command(.typeText, with: [action.condition!.parameter!.lexeme]))
+        default: fatalError("Not supported condition type: \(action.condition!.type.lexeme)")
+        }
+    }
+
+    func buildTap() {
+        commandsStack.append(.command(.tap))
+    }
+
+    func buildVerify(_ action: Action) {
+        switch action.condition?.type.type {
+        case .isExist:
+            commandsStack.append(.command(.exists))
+            commandsStack.append(.command(.assertTrue))
+        case .isNotExist:
+            commandsStack.append(.command(.exists))
+            commandsStack.append(.command(.assertFalse))
+        case .isSelected:
+            commandsStack.append(.command(.isSelected))
+            commandsStack.append(.command(.assertTrue))
+        case .isNotSelected:
+            commandsStack.append(.command(.isSelected))
+            commandsStack.append(.command(.assertFalse))
+        case .containsValue:
+            commandsStack.append(.command(.value))
+            commandsStack.append(.command(.assertEqual, with: [action.condition!.parameter!.lexeme]))
+        default: fatalError("Not supported condition type: \(action.condition!.type.lexeme)")
         }
     }
 }

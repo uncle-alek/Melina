@@ -5,7 +5,7 @@ suite "Melina":
     scenario "First scenario":
         arguments:
             "experiment" to "NewExperiment"
-            "endpoint" to json "Hello"
+            // "endpoint" to json "Hello"
         end
 
         // Do some steps
@@ -30,9 +30,9 @@ subscenario "Login":
     verify view "View_2" contains value "Hello"
 end
 
-json "Hello":
-    file "../File.json"
-end
+// json "Hello":
+//   file "../File.json"
+// end
 
 // const 'experimet UCS home widge' is 'MAPPTRIP-MARK-IOS'
 // const 'experimet key' is 'experiment'

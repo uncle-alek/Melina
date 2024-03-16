@@ -4,6 +4,10 @@ struct SwiftTeCode: Equatable {
     struct Command: Equatable {
         let mnemonic: Mnemonic
         let operands: [String]
+
+        static func command(_ mnemonic: Mnemonic, with operands: [String] = []) -> Command {
+            return Command(mnemonic: mnemonic, operands: operands)
+        }
     }
 
     enum Mnemonic: String {
@@ -12,43 +16,35 @@ struct SwiftTeCode: Equatable {
         case launch = "launch"
         case terminate = "terminate"
         case launchEnvironment = "launchEnvironment"
-        case launchArgument = "launchArgument"
 
         // elements
         case button = "button"
         case staticText = "staticText"
         case textField = "textField"
-        case scrollView = "scrollView"
-        case view = "view"
+        case otherElement = "otherElement"
 
         // elements properties
-        case isHittable = "isHittable"
         case exists = "exists"
-        case label = "label"
         case isSelected = "isSelected"
+        case value = "value"
+
+        // wait for element
         case waitForExistence = "waitForExistence"
+        case waitForDisappear = "waitForDisappear"
 
         // actions
         case tap = "tap"
         case typeText = "typeText"
-        case swipeUp = "swipeUp"
-        case swipeDown = "swipeDown"
-        case swipeLeft = "swipeLeft"
-        case swipeRight = "swipeRight"
 
         // asserts
-        case assertBool = "assertBool"
-        case assertString = "assertString"
+        case assertTrue = "assertTrue"
+        case assertFalse = "assertFalse"
+        case assertEqual = "assertEqual"
 
-        // control transfer
-        case jumpIfTrue = "jumpIfTrue"
-        case jump = "jump"
-
-        // other
-        case suiteBegin = "suiteBegin"
-        case suiteEnd = "suiteEnd"
-        case scenarioBegin = "scenarioBegin"
-        case scenarioEnd = "scenarioEnd"
+        // others
         case print = "print"
+
+        // placeholders
+        case subscenarioCall
     }
 }

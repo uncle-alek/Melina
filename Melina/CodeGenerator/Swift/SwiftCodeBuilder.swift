@@ -24,7 +24,7 @@ final class SwiftCodeBuilder: CodeBuilder {
     func buildForProgramEnd(_ program: Program) {
         generatedCode += genPrivateMethodLaunchApp().map(wrapLine).joined()
         generatedCode += genPrivateWaitForExistenceIfNeeded().map(wrapLine).joined()
-        generatedCode += genPrivateWaitDisappear().map(wrapLine).joined()
+        generatedCode += genPrivateWaitForDisappear().map(wrapLine).joined()
     }
 
     func buildForSubscenarioBeginning(_ subscenario: Subscenario) {
@@ -140,7 +140,7 @@ extension SwiftCodeBuilder {
         ]
     }
 
-    func genPrivateWaitDisappear() -> [String] {
+    func genPrivateWaitForDisappear() -> [String] {
         return [
             genFilePrivateExtension(),
             "\(tab(1))func waitForDisappear(_ element: XCUIElement) {",
