@@ -17,5 +17,5 @@ actionType = "verify" | "tap" | "edit"
 element = elementType STRING
 elementType = "button" | "view" | "textfield" | "label"
 condition = conditionType STRING?
-conditionType = "is not selected" | "is selected" | "is not exist" | "is exist" | "contains value" | "with text"
+conditionType = "not selected" | "selected" | "not exists" | "exists" | "contains" | "with"
 subscenarioCall = "subscenario" STRING

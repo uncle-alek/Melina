@@ -172,7 +172,7 @@ final class SemanticAnalyzerTests: BaseSemanticAnalyzerTests {
             suite "Melina":
                 scenario "First scenario":
 
-                    tap button "Ok" contains value "Hello"
+                    tap button "Ok" contains "Hello"
                 end
             end
             """,

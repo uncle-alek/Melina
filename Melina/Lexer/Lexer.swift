@@ -37,12 +37,12 @@ final class Lexer {
         "tap"             : .tap,
         "edit"            : .edit,
 
-        "is selected"     : .isSelected,
-        "is not selected" : .isNotSelected,
-        "is exist"        : .isExist,
-        "is not exist"    : .isNotExist,
-        "contains value"  : .containsValue,
-        "with text"       : .withText
+        "selected"        : .selected,
+        "not selected"    : .notSelected,
+        "exists"          : .exists,
+        "not exists"      : .notExists,
+        "contains"        : .contains,
+        "with"            : .with
     ]
     
     private let source: String

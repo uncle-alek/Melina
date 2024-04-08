@@ -138,7 +138,7 @@ private extension SwiftTeCodeBuilder {
 
     func buildWaitFor(_ action: Action) {
         let mnemonic: SwiftTeCode.Mnemonic = switch action.condition?.type.type {
-        case .isNotExist : .waitForDisappear
+        case .notExists : .waitForDisappear
         default: .waitForExistence
         }
         commandsStack.append(.command(mnemonic, with: ["\(waitForTimeout)"]))
@@ -155,7 +155,7 @@ private extension SwiftTeCodeBuilder {
 
     func buildEdit(_ action: Action) {
         switch action.condition?.type.type {
-        case .withText:
+        case .with:
             commandsStack.append(.command(.typeText, with: [action.condition!.parameter!.lexeme]))
         default: fatalError("Not supported condition type: \(action.condition!.type.lexeme)")
         }
@@ -167,19 +167,19 @@ private extension SwiftTeCodeBuilder {
 
     func buildVerify(_ action: Action) {
         switch action.condition?.type.type {
-        case .isExist:
+        case .exists:
             commandsStack.append(.command(.exists))
             commandsStack.append(.command(.assertTrue))
-        case .isNotExist:
+        case .notExists:
             commandsStack.append(.command(.exists))
             commandsStack.append(.command(.assertFalse))
-        case .isSelected:
-            commandsStack.append(.command(.isSelected))
+        case .selected:
+            commandsStack.append(.command(.selected))
             commandsStack.append(.command(.assertTrue))
-        case .isNotSelected:
-            commandsStack.append(.command(.isSelected))
+        case .notSelected:
+            commandsStack.append(.command(.selected))
             commandsStack.append(.command(.assertFalse))
-        case .containsValue:
+        case .contains:
             commandsStack.append(.command(.value))
             commandsStack.append(.command(.assertEqual, with: [action.condition!.parameter!.lexeme]))
         default: fatalError("Not supported condition type: \(action.condition!.type.lexeme)")

@@ -6,29 +6,38 @@ final class MelinaUITests: XCTestCase {
 
     func testFirstScenario() {
         let app = launchApp([
-            "experimet key":"experimet UCS home widget",
-            "use_mock_server":"Hello",
+            "experiment":"NewExperiment",
         ])
         let label_1 = app.staticTexts["Label_2"].firstMatch
         waitForExistenceIfNeeded(label_1)
         XCTAssertFalse(label_1.isSelected)
         let view_2 = app.otherElements["View_2"].firstMatch
         waitForExistenceIfNeeded(view_2)
-        XCTAssertEqual(view_2.value as? String, "Hello")
-        let button_3 = app.buttons["Button 5555"].firstMatch
-        waitForExistenceIfNeeded(button_3)
-        button_3.tap()
-        let textField_4 = app.textFields["Text 1"].firstMatch
-        waitForExistenceIfNeeded(textField_4)
-        textField_4.tap()
-        textField_4.typeText("Hello world")
-        self.loginInApp(app)
+        XCTAssertFalse(view_2.isSelected)
+        let view_3 = app.otherElements["View_2"].firstMatch
+        waitForExistenceIfNeeded(view_3)
+        XCTAssertTrue(view_3.isSelected)
+        let view_4 = app.otherElements["View_2"].firstMatch
+        waitForExistenceIfNeeded(view_4)
+        let view_5 = app.otherElements["View_2"].firstMatch
+        waitForDisappear(view_5)
+        let view_6 = app.otherElements["View_2"].firstMatch
+        waitForExistenceIfNeeded(view_6)
+        XCTAssertEqual(view_6.value as? String, "Hello")
+        let button_7 = app.buttons["Button 4"].firstMatch
+        waitForExistenceIfNeeded(button_7)
+        button_7.tap()
+        let textField_8 = app.textFields["Text 1"].firstMatch
+        waitForExistenceIfNeeded(textField_8)
+        textField_8.tap()
+        textField_8.typeText("Hello world")
+        self.login(app)
     }
 
 }
 
 fileprivate extension XCTestCase {
-    func loginInApp(_ app: XCUIApplication) {
+    func login(_ app: XCUIApplication) {
         let button_1 = app.buttons["Button 1"].firstMatch
         waitForExistenceIfNeeded(button_1)
         button_1.tap()

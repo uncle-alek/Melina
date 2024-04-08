@@ -17,13 +17,13 @@ final class SemanticAnalyzer {
 
     private let compatibleConditions: [TokenType : [TokenType]] = [
         .tap    : [],
-        .verify : [.isExist, .isNotExist, .isSelected, .isNotSelected, .containsValue],
-        .edit   : [.withText]
+        .verify : [.exists, .notExists, .selected, .notSelected, .contains],
+        .edit   : [.with]
     ]
 
     private let conditionsWithParameters: [TokenType] = [
-        .containsValue,
-        .withText
+        .contains,
+        .with
     ]
 
     private var program: Program

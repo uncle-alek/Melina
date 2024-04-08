@@ -257,7 +257,7 @@ extension SwiftCodeBuilder {
     }
 
     func genWaitFor(_ action: Action, variable: String) -> [String] {
-        if action.condition?.type.type == .isNotExist {
+        if action.condition?.type.type == .notExists {
             return [
                 "waitForDisappear(\(variable))"
             ]
@@ -279,11 +279,11 @@ extension SwiftCodeBuilder {
 
     func genVerifyEffect(_ action: Action, variable: String) -> [String] {
         return switch action.condition!.type.type {
-        case .isExist       : []
-        case .isNotExist    : []
-        case .isSelected    : ["XCTAssertTrue(\(variable).isSelected)"]
-        case .isNotSelected : ["XCTAssertFalse(\(variable).isSelected)"]
-        case .containsValue : ["XCTAssertEqual(\(variable).value as? String, \"\(action.condition!.parameter!.lexeme)\")"]
+        case .exists        : []
+        case .notExists     : []
+        case .selected      : ["XCTAssertTrue(\(variable).isSelected)"]
+        case .notSelected   : ["XCTAssertFalse(\(variable).isSelected)"]
+        case .contains      : ["XCTAssertEqual(\(variable).value as? String, \"\(action.condition!.parameter!.lexeme)\")"]
         default: fatalError("Unsupported condition type \(action.type.type)")
         }
     }

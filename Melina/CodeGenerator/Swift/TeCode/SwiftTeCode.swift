@@ -25,7 +25,7 @@ struct SwiftTeCode: Equatable {
 
         // elements properties
         case exists = "exists"
-        case isSelected = "isSelected"
+        case selected = "selected"
         case value = "value"
 
         // wait for element

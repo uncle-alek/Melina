@@ -20,10 +20,10 @@ final class SwiftTeCodeGeneratorTests: BaseSwiftTeCodeGeneratorTests {
                 SwiftTeCode(
                     commands: [
                         SwiftTeCode.Command(mnemonic: .application, operands: []),
+                        SwiftTeCode.Command(mnemonic: .launchEnvironment, operands: ["RUNNING_UI_TESTS", "true"]),
                         SwiftTeCode.Command(mnemonic: .launchEnvironment, operands: ["clearState", "true"]),
                         SwiftTeCode.Command(mnemonic: .launch, operands: []),
                         SwiftTeCode.Command(mnemonic: .button, operands: ["Ok"]),
-                        SwiftTeCode.Command(mnemonic: .exists, operands: []),
                         SwiftTeCode.Command(mnemonic: .waitForExistence, operands: ["5"]),
                         SwiftTeCode.Command(mnemonic: .tap, operands: []),
                         SwiftTeCode.Command(mnemonic: .terminate, operands: []),

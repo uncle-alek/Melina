@@ -119,14 +119,14 @@ final class ParserTests: BaseParserTests {
                 """
                     suite "HomeScreen":
                         scenario "Open Home Screen":
-                            verify label "Label_2" is not selected
-                            verify view "View_2" is not selected
-                            verify view "View_2" is selected
-                            verify view "View_2" is exist
-                            verify view "View_2" is not exist
-                            verify view "View_2" contains value "Hello"
+                            verify label "Label_2" not selected
+                            verify view "View_2" not selected
+                            verify view "View_2" selected
+                            verify view "View_2" exists
+                            verify view "View_2" not exists
+                            verify view "View_2" contains "Hello"
                             tap button "Button 4"
-                            edit textfield "Text 1" with text "Hello world"
+                            edit textfield "Text 1" with "Hello world"
                         end
                     end
                 """,
@@ -136,14 +136,14 @@ final class ParserTests: BaseParserTests {
                 <Suite_beggining>:HomeScreen
                 <Scenario_begging>:Open Home Screen
                 Steps:[
-                verify-label:Label_2=>is not selected,
-                verify-view:View_2=>is not selected,
-                verify-view:View_2=>is selected,
-                verify-view:View_2=>is exist,
-                verify-view:View_2=>is not exist,
-                verify-view:View_2=>contains value:Hello,
+                verify-label:Label_2=>not selected,
+                verify-view:View_2=>not selected,
+                verify-view:View_2=>selected,
+                verify-view:View_2=>exists,
+                verify-view:View_2=>not exists,
+                verify-view:View_2=>contains:Hello,
                 tap-button:Button 4,
-                edit-textfield:Text 1=>with text:Hello world,
+                edit-textfield:Text 1=>with:Hello world,
                 ]
                 <Scenario_end>
                 <Suite_end>

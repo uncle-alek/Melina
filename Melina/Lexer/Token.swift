@@ -34,10 +34,10 @@ enum TokenType: Equatable {
          tap,
          edit
 
-    case isSelected,
-         isNotSelected,
-         isExist,
-         isNotExist,
-         containsValue,
-         withText
+    case selected,
+         notSelected,
+         exists,
+         notExists,
+         contains,
+         with
 }
