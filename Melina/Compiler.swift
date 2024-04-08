@@ -27,7 +27,7 @@ final class Compiler {
     }
 
     func compileSwiftTeCode() throws -> File {
-        try compileCodeWithBuilder(SwiftTeCodeBuilder())
+        try compileCodeWithBuilder(SwiftTeCodeBuilder(jsonTable))
     }
 }
 

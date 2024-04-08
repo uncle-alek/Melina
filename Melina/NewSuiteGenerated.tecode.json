@@ -1,0 +1,13 @@
+[
+{"mnemonic":"application","operands":[]},
+{"mnemonic":"launchEnvironment","operands":["RUNNING_UI_TESTS","true"]},
+{"mnemonic":"launch","operands":[]},
+{"mnemonic":"textField","operands":["Input Field 5"]},
+{"mnemonic":"waitForExistence","operands":["5"]},
+{"mnemonic":"typeText","operands":["Hello world"]},
+{"mnemonic":"button","operands":["Button 4 horizontal"]},
+{"mnemonic":"waitForExistence","operands":["5"]},
+{"mnemonic":"tap","operands":[]},
+{"mnemonic":"terminate","operands":[]},
+
+]

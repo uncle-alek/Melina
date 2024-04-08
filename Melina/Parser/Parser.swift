@@ -47,12 +47,12 @@ private var elementTypes: [TokenType] = [
     .label
 ]
 private var conditionTypes: [TokenType] = [
-    .isSelected,
-    .isNotSelected,
-    .isExist,
-    .isNotExist,
-    .containsValue,
-    .withText
+    .selected,
+    .notSelected,
+    .exists,
+    .notExists,
+    .contains,
+    .with
 ]
 
 final class Parser {

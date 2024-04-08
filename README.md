@@ -113,7 +113,7 @@ Steps are the actions or checks you want to perform:
 
 ```
 tap button "LoginButton"
-verify label "WelcomeMessage" contains value "Welcome"
+verify label "WelcomeMessage" contains "Welcome"
 ```
 
 ### Define subscenarios
@@ -137,7 +137,7 @@ subscenario "LoginProcess"
 Assert the state of elements as part of your test steps like so:
 
 ```
-verify button "Ok" is selected
+verify button "Ok" selected
 ```
 
 ## Example of a Complete Test Spec
@@ -153,7 +153,7 @@ suite "User Authentication":
         end
         // Reuse the subscenario
         subscenario "Complete Login Process"
-        verify view "WelcomeMessage" contains value "Welcome, testuser!"
+        verify view "WelcomeMessage" contains "Welcome, testuser!"
     end
 
     scenario "Invalid User Login":
@@ -162,15 +162,15 @@ suite "User Authentication":
         end
         // Reuse the subscenario
         subscenario "Complete Login Process"
-        verify label "ErrorMessage" contains value "Invalid credentials"
+        verify label "ErrorMessage" contains "Invalid credentials"
     end
 
 end
 
 subscenario "Complete Login Process":
     tap button "LoginButton"
-    edit textfield "UsernameField" with text "providedUsername"
-    edit textfield "PasswordField" with text "providedPassword"
+    edit textfield "UsernameField" with "providedUsername"
+    edit textfield "PasswordField" with "providedPassword"
 end
 ```
 
@@ -190,8 +190,8 @@ The following table outlines the available elements and conditions that can be u
 | Action  |  Elements                      | Conditions Without Parameters  | Conditions With Parameters |
 |---------|--------------------------------|--------------------------------|----------------------------|
 | tap     | button                         | -                              | -                          |
-| verify  | button, label, textfield, view | is exist, is not exist,<br>is selected, is not selected<br>| contains value  {parameter} |
-| edit    | textField                      | -                              | with text {parameter}      |
+| verify  | button, label, textfield, view | exists, not exists,<br>selected, not selected<br>| contains {parameter} |
+| edit    | textfield                      | -                              | with {parameter}           |
 
 Note:
 - 'Conditions Without Parameters' are conditions that do not require an additional parameter.

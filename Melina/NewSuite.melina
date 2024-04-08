@@ -1,0 +1,9 @@
+suite "YourSuiteNameHere":
+  
+  scenario "YourScenarioName1":
+    // verify label "Tappable view" is exist
+    edit textfield "Input Field 5" with text "Hello world"
+    tap button "Button 4 horizontal"
+  end
+  
+end

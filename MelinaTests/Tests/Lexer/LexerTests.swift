@@ -159,75 +159,76 @@ final class LexerTests: BaseLexerTests {
                 )
             ]
         )
+
+        assert(
+            source: "selected",
+            produce: [
+                .init(
+                    type: .selected,
+                    lexeme: "selected"
+                )
+            ]
+        )
+
+        assert(
+            source: "exists",
+            produce: [
+                .init(
+                    type: .exists,
+                    lexeme: "exists"
+                )
+            ]
+        )
+
+        assert(
+            source: "contains",
+            produce: [
+                .init(
+                    type: .contains,
+                    lexeme: "contains"
+                )
+            ]
+        )
+
+        assert(
+            source: "with",
+            produce: [
+                .init(
+                    type: .with,
+                    lexeme: "with"
+                )
+            ]
+        )
     }
 
     func test_compound_tokens() {
+
         assert(
-            source: "is selected",
+            source: "not      selected",
             produce: [
                 .init(
-                    type: .isSelected,
-                    lexeme: "is selected"
+                    type: .notSelected,
+                    lexeme: "not      selected"
                 )
             ]
         )
 
         assert(
-            source: "is    selected",
+            source: "not selected",
             produce: [
                 .init(
-                    type: .isSelected,
-                    lexeme: "is    selected"
+                    type: .notSelected,
+                    lexeme: "not selected"
                 )
             ]
         )
 
         assert(
-            source: "is not selected",
+            source: "not exists",
             produce: [
                 .init(
-                    type: .isNotSelected,
-                    lexeme: "is not selected"
-                )
-            ]
-        )
-
-        assert(
-            source: "is exist",
-            produce: [
-                .init(
-                    type: .isExist,
-                    lexeme: "is exist"
-                )
-            ]
-        )
-
-        assert(
-            source: "is not exist",
-            produce: [
-                .init(
-                    type: .isNotExist,
-                    lexeme: "is not exist"
-                )
-            ]
-        )
-
-        assert(
-            source: "contains value",
-            produce: [
-                .init(
-                    type: .containsValue,
-                    lexeme: "contains value"
-                )
-            ]
-        )
-
-        assert(
-            source: "with text",
-            produce: [
-                .init(
-                    type: .withText,
-                    lexeme: "with text"
+                    type: .notExists,
+                    lexeme: "not exists"
                 )
             ]
         )

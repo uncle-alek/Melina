@@ -13,7 +13,7 @@ open class BaseSwiftTeCodeGeneratorTests: XCTestCase {
         do {
             let result = try Lexer(source: source).tokenize()
                 .flatMap { Parser(tokens: $0).parse() }
-                .flatMap { CodeGenerator(program: $0, SwiftTeCodeBuilder()).generate() }
+                .flatMap { CodeGenerator(program: $0, SwiftTeCodeBuilder(JsonTable())).generate() }
                 .get()
             XCTAssertNoDifference(
                 JSONSerializer.deserialize(result.content),

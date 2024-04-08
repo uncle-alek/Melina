@@ -21,7 +21,6 @@ protocol CodeBuilder {
     func buildForSubscenarioCall(_ subscenarioCall: SubscenarioCall)
     func fileExtension() -> String
     func code() -> String
-
 }
 
 final class CodeGenerator {

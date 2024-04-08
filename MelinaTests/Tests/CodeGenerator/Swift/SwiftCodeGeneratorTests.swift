@@ -122,9 +122,9 @@ let app = launchApp([
         )
     }
 
-    func test_call_xctest_api_with_verify_view_is_exist() throws {
+    func test_call_xctest_api_with_verify_view_exists() throws {
         try assertCallXCtestApi(
-            step: "verify view \"View_1\" is exist",
+            step: "verify view \"View_1\" exists",
             expect: [
                 "let view_1 = app.otherElements[\"View_1\"].firstMatch",
                 "waitForExistenceIfNeeded(view_1)"
@@ -132,9 +132,9 @@ let app = launchApp([
         )
     }
 
-    func test_call_xctest_api_with_verify_view_is_not_exist() throws {
+    func test_call_xctest_api_with_verify_view_not_exists() throws {
         try assertCallXCtestApi(
-            step: "verify view \"View_1\" is not exist",
+            step: "verify view \"View_1\" not exists",
             expect: [
                 "let view_1 = app.otherElements[\"View_1\"].firstMatch",
                 "waitForDisappear(view_1)"
@@ -142,9 +142,9 @@ let app = launchApp([
         )
     }
 
-    func test_call_xctest_api_with_verify_button_is_selected() throws {
+    func test_call_xctest_api_with_verify_button_selected() throws {
         try assertCallXCtestApi(
-            step: "verify button \"Ok\" is selected",
+            step: "verify button \"Ok\" selected",
             expect: [
                 "let button_1 = app.buttons[\"Ok\"].firstMatch",
                 "waitForExistenceIfNeeded(button_1)",
@@ -153,9 +153,9 @@ let app = launchApp([
         )
     }
 
-    func test_call_xctest_api_with_verify_button_is_not_selected() throws {
+    func test_call_xctest_api_with_verify_button_not_selected() throws {
         try assertCallXCtestApi(
-            step: "verify button \"Ok\" is not selected",
+            step: "verify button \"Ok\" not selected",
             expect: [
                 "let button_1 = app.buttons[\"Ok\"].firstMatch",
                 "waitForExistenceIfNeeded(button_1)",
@@ -164,9 +164,9 @@ let app = launchApp([
         )
     }
 
-    func test_call_xctest_api_with_verify_label_contains_value() throws {
+    func test_call_xctest_api_with_verify_label_contains() throws {
         try assertCallXCtestApi(
-            step: "verify label \"Label_1\" contains value \"Hello\"",
+            step: "verify label \"Label_1\" contains \"Hello\"",
             expect: [
                 "let label_1 = app.staticTexts[\"Label_1\"].firstMatch",
                 "waitForExistenceIfNeeded(label_1)",
@@ -175,9 +175,9 @@ let app = launchApp([
         )
     }
 
-    func test_call_xctest_api_with_edit_text_field_with_text() throws {
+    func test_call_xctest_api_with_edit_text_field_with() throws {
         try assertCallXCtestApi(
-            step: "edit textfield \"Text_1\" with text \"Hello\"",
+            step: "edit textfield \"Text_1\" with \"Hello\"",
             expect: [
                 "let textField_1 = app.textFields[\"Text_1\"].firstMatch",
                 "waitForExistenceIfNeeded(textField_1)",
