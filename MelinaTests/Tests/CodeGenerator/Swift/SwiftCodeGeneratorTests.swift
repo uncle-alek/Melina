@@ -65,6 +65,7 @@ func launchApp(_ launchEnvironment: [String : String]) -> XCUIApplication {
 continueAfterFailure = false
 let app = XCUIApplication()
 app.launchEnvironment = launchEnvironment
+app.launchArguments = ["RUNNING_UI_TESTS"]
 app.launch()
 return app
 }
@@ -203,7 +204,7 @@ let app = launchApp([
 fileprivate extension XCTestCase {
 func waitForExistenceIfNeeded(_ element: XCUIElement) {
 if !element.exists {
-XCTAssertTrue(element.waitForExistence(timeout: 5))
+XCTAssertTrue(element.waitForExistence(timeout: 10))
 }
 }
 }
@@ -219,7 +220,7 @@ fileprivate extension XCTestCase {
 func waitForDisappear(_ element: XCUIElement) {
 let doesNotExistPredicate = NSPredicate(format: "exists == false")
 expectation(for: doesNotExistPredicate, evaluatedWith: element, handler: nil)
-waitForExpectations(timeout: 5) { error in
+waitForExpectations(timeout: 10) { error in
 if error != nil {
 XCTFail("The element did not disappear")
 }
@@ -365,6 +366,7 @@ fileprivate extension XCTestCase {
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchEnvironment = launchEnvironment
+        app.launchArguments = ["RUNNING_UI_TESTS"]
         app.launch()
         return app
     }
@@ -372,7 +374,7 @@ fileprivate extension XCTestCase {
 fileprivate extension XCTestCase {
     func waitForExistenceIfNeeded(_ element: XCUIElement) {
         if !element.exists {
-            XCTAssertTrue(element.waitForExistence(timeout: 5))
+            XCTAssertTrue(element.waitForExistence(timeout: 10))
         }
     }
 }
@@ -380,7 +382,7 @@ fileprivate extension XCTestCase {
     func waitForDisappear(_ element: XCUIElement) {
         let doesNotExistPredicate = NSPredicate(format: "exists == false")
         expectation(for: doesNotExistPredicate, evaluatedWith: element, handler: nil)
-        waitForExpectations(timeout: 5) { error in
+        waitForExpectations(timeout: 10) { error in
             if error != nil {
                 XCTFail("The element did not disappear")
             }
@@ -484,6 +486,7 @@ fileprivate extension XCTestCase {
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchEnvironment = launchEnvironment
+        app.launchArguments = ["RUNNING_UI_TESTS"]
         app.launch()
         return app
     }
@@ -491,7 +494,7 @@ fileprivate extension XCTestCase {
 fileprivate extension XCTestCase {
     func waitForExistenceIfNeeded(_ element: XCUIElement) {
         if !element.exists {
-            XCTAssertTrue(element.waitForExistence(timeout: 5))
+            XCTAssertTrue(element.waitForExistence(timeout: 10))
         }
     }
 }
@@ -499,7 +502,7 @@ fileprivate extension XCTestCase {
     func waitForDisappear(_ element: XCUIElement) {
         let doesNotExistPredicate = NSPredicate(format: "exists == false")
         expectation(for: doesNotExistPredicate, evaluatedWith: element, handler: nil)
-        waitForExpectations(timeout: 5) { error in
+        waitForExpectations(timeout: 10) { error in
             if error != nil {
                 XCTFail("The element did not disappear")
             }
@@ -538,6 +541,7 @@ fileprivate extension XCTestCase {
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchEnvironment = launchEnvironment
+        app.launchArguments = ["RUNNING_UI_TESTS"]
         app.launch()
         return app
     }
@@ -545,7 +549,7 @@ fileprivate extension XCTestCase {
 fileprivate extension XCTestCase {
     func waitForExistenceIfNeeded(_ element: XCUIElement) {
         if !element.exists {
-            XCTAssertTrue(element.waitForExistence(timeout: 5))
+            XCTAssertTrue(element.waitForExistence(timeout: 10))
         }
     }
 }
@@ -553,7 +557,7 @@ fileprivate extension XCTestCase {
     func waitForDisappear(_ element: XCUIElement) {
         let doesNotExistPredicate = NSPredicate(format: "exists == false")
         expectation(for: doesNotExistPredicate, evaluatedWith: element, handler: nil)
-        waitForExpectations(timeout: 5) { error in
+        waitForExpectations(timeout: 10) { error in
             if error != nil {
                 XCTFail("The element did not disappear")
             }

@@ -5,11 +5,11 @@ final class SwiftCodeBuilder: CodeBuilder {
     private var variableId: Int = 0
     private var scopeLevel: Int = 0
     private let indentation: Int
-    private let waitForTimeout = 5
+    private let waitForTimeout = 10
     private let jsonTable: JsonTable
 
     init(
-        indentation: Int = 4,
+        indentation: Int = 2,
         _ jsonTable: JsonTable
     ) {
         self.indentation = indentation
@@ -121,6 +121,7 @@ extension SwiftCodeBuilder {
             "\(tab(2))continueAfterFailure = false",
             "\(tab(2))let app = XCUIApplication()",
             "\(tab(2))app.launchEnvironment = launchEnvironment",
+            "\(tab(2))app.launchArguments = [\"RUNNING_UI_TESTS\"]",
             "\(tab(2))app.launch()",
             "\(tab(2))return app",
             "\(tab(1))}",
