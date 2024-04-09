@@ -169,7 +169,8 @@ open class BaseSwiftCodeGeneratorTest: XCTestCase {
             .flatMap { Parser(tokens: $0).parse() }
             .flatMap {
                 CodeGenerator(
-                    program: $0, SwiftCodeBuilder(jsonTable)
+                    program: $0,
+                    SwiftCodeBuilder(indentation: 4, jsonTable)
                 ).generate()
             }
             .get()
