@@ -23,6 +23,7 @@ final class SwiftCodeBuilder: CodeBuilder {
 
     func buildForProgramEnd(_ program: Program) {
         generatedCode += genPrivateMethodLaunchApp().map(wrapLine).joined()
+        generatedCode += genPrivateAddInterruptionMonitor().map(wrapLine).joined()
         generatedCode += genPrivateWaitForExistenceIfNeeded().map(wrapLine).joined()
         generatedCode += genPrivateWaitForDisappear().map(wrapLine).joined()
     }
@@ -123,7 +124,21 @@ extension SwiftCodeBuilder {
             "\(tab(2))app.launchEnvironment = launchEnvironment",
             "\(tab(2))app.launchArguments = [\"RUNNING_UI_TESTS\"]",
             "\(tab(2))app.launch()",
+            "\(tab(2))addInterruptionMonitor(app)",
             "\(tab(2))return app",
+            "\(tab(1))}",
+            "}"
+        ]
+    }
+
+    func genPrivateAddInterruptionMonitor() -> [String] {
+        return [
+            genFilePrivateExtension(),
+            "\(tab(1))func addInterruptionMonitor(_ app: XCUIApplication) {",
+            "\(tab(2))addUIInterruptionMonitor(withDescription: \"System Alert\") { (alert) -> Bool in",
+            "\(tab(3))alert.buttons.element(boundBy: 1).tap()",
+            "\(tab(3))return true",
+            "\(tab(2))}",
             "\(tab(1))}",
             "}"
         ]
