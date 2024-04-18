@@ -67,7 +67,24 @@ let app = XCUIApplication()
 app.launchEnvironment = launchEnvironment
 app.launchArguments = ["RUNNING_UI_TESTS"]
 app.launch()
+addInterruptionMonitor(app)
 return app
+}
+}
+"""
+        )
+    }
+
+    func test_private_method_add_interruption_monitor() throws {
+        try assertPrivateMethod(
+            expect:
+"""
+fileprivate extension XCTestCase {
+func addInterruptionMonitor(_ app: XCUIApplication) {
+addUIInterruptionMonitor(withDescription: "System Alert") { (alert) -> Bool in
+alert.buttons.element(boundBy: 1).tap()
+return true
+}
 }
 }
 """
@@ -368,7 +385,16 @@ fileprivate extension XCTestCase {
         app.launchEnvironment = launchEnvironment
         app.launchArguments = ["RUNNING_UI_TESTS"]
         app.launch()
+        addInterruptionMonitor(app)
         return app
+    }
+}
+fileprivate extension XCTestCase {
+    func addInterruptionMonitor(_ app: XCUIApplication) {
+        addUIInterruptionMonitor(withDescription: "System Alert") { (alert) -> Bool in
+            alert.buttons.element(boundBy: 1).tap()
+            return true
+        }
     }
 }
 fileprivate extension XCTestCase {
@@ -488,7 +514,16 @@ fileprivate extension XCTestCase {
         app.launchEnvironment = launchEnvironment
         app.launchArguments = ["RUNNING_UI_TESTS"]
         app.launch()
+        addInterruptionMonitor(app)
         return app
+    }
+}
+fileprivate extension XCTestCase {
+    func addInterruptionMonitor(_ app: XCUIApplication) {
+        addUIInterruptionMonitor(withDescription: "System Alert") { (alert) -> Bool in
+            alert.buttons.element(boundBy: 1).tap()
+            return true
+        }
     }
 }
 fileprivate extension XCTestCase {
@@ -543,7 +578,16 @@ fileprivate extension XCTestCase {
         app.launchEnvironment = launchEnvironment
         app.launchArguments = ["RUNNING_UI_TESTS"]
         app.launch()
+        addInterruptionMonitor(app)
         return app
+    }
+}
+fileprivate extension XCTestCase {
+    func addInterruptionMonitor(_ app: XCUIApplication) {
+        addUIInterruptionMonitor(withDescription: "System Alert") { (alert) -> Bool in
+            alert.buttons.element(boundBy: 1).tap()
+            return true
+        }
     }
 }
 fileprivate extension XCTestCase {
